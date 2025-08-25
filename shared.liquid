@@ -1,0 +1,937 @@
+{% comment %} ================================================================
+GLOBAL VARIABLES & UTILITIES
+Used across all templates and layouts
+================================================================ {% endcomment %}
+
+{% comment %} Global sleeper logo template - available to all templates {% endcomment %}
+{% template sleeper_logo %}
+{% comment %}
+Renders the Sleeper logo SVG with size parameter
+Parameters:
+- size: 'small' (33px), 'medium' (48px), 'large' (64px), or custom number
+{% endcomment %}
+<svg class="image image-stroke image--dither rounded--full hidden sm:inline" width="33.333" height="33.333" fill="none" version="1.1" viewBox="0 0 33.333 40" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(-5.8333 -4)" clip-path="url(#fahpw200aa)">
+    <path d="m11.363 4a8.863 8.863 0 0 0-8.863 8.863v22.274a8.863 8.863 0 0 0 8.863 8.863h22.274a8.863 8.863 0 0 0 8.863-8.863v-22.274a8.863 8.863 0 0 0-8.863-8.863z" fill="url(#7gf0pys8xb)"/>
+    <path d="m23.281 12.946a2.657 2.657 0 0 0-0.781-5.196 2.656 2.656 0 0 0-0.781 5.196v2.403a14.317 14.317 0 0 0-8.785 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 1.995 0.4 4.058 0.61 6.171 0.61s4.176-0.21 6.171-0.61c5.061-1.465 7.032-6.18 7.032-10.953 0-3.5-0.956-6.873-3.637-9.324a14.318 14.318 0 0 0-8.785-3.624z" clip-rule="evenodd" fill="#022047" fill-rule="evenodd"/>
+    <path d="m22.5 7.75a2.656 2.656 0 0 0-0.781 5.196v2.403h-3e-3a14.317 14.317 0 0 0-8.782 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 0.96 0.193 1.937 0.34 2.927 0.443-3.637-0.779-6.51-3.67-7.312-7.297l-0.018-0.046c-0.223-0.584-0.364-1.193-0.364-1.788a5.471 5.471 0 0 1 3.7-5.176c0.855-0.292 1.808-0.37 2.707-0.37 0.751 0 1.502 0.039 2.256 0.078l0.141 7e-3c0.34 0.017 0.679 0.034 1.019 0.047-3.321-0.243-5.916-2.343-5.916-4.898 0-2.099 1.752-3.891 4.219-4.599 0 0 0.666-0.158 1.093-0.206 0.43-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.031-1.444-2.031-2.734 0-1.067 0.546-2 1.406-2.5z" fill="url(#ervf3aoc7c)"/>
+    <path d="m25.156 10.406c0 1.195-0.79 2.206-1.875 2.54v2.403a14.317 14.317 0 0 1 8.785 3.624c2.68 2.451 3.637 5.824 3.637 9.324 0 4.772-1.971 9.488-7.032 10.953a31.633 31.633 0 0 1-9.415 0.443c-3.638-0.779-6.51-3.67-7.313-7.297a8.22 8.22 0 0 0 0.982 1.779 7.673 7.673 0 0 0 3.842 2.81c1.814 0.59 3.86 0.609 5.733 0.609s3.919-0.019 5.733-0.61a7.672 7.672 0 0 0 3.841-2.81c0.726-1.006 1.363-2.344 1.363-3.611a5.471 5.471 0 0 0-3.7-5.177c-0.854-0.292-1.807-0.37-2.706-0.37-0.751 0-1.503 0.039-2.256 0.078-0.756 0.039-1.514 0.078-2.275 0.078-0.373 0-0.744-0.01-1.115-0.024-3.321-0.243-5.917-2.343-5.917-4.898 0-2.099 1.752-3.891 4.22-4.599 0 0 0.666-0.158 1.093-0.206 0.429-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.032-1.444-2.032-2.734 0-1.067 0.547-2 1.407-2.5a2.656 2.656 0 0 1 2.656 2.656zm-1.218 6.464c-0.49 0.32-0.813 0.874-0.813 1.502 0 2.323 3.794 2.543 5.4 2.42 2.032-0.158 4.335 1e-3 5.928 1.411a10.4 10.4 0 0 0-2.392-3.233 14.404 14.404 0 0 0-4.067-2.554 5.076 5.076 0 0 0-1.512-0.229c-0.86 0-1.813 0.205-2.544 0.683z" clip-rule="evenodd" fill="url(#xnufxgertd)" fill-rule="evenodd"/>
+    <path d="m21.718 15.35h-2e-3l2e-3 -1e-3z" fill="url(#xnufxgertd)"/>
+    <path d="m23.125 18.372c0-0.628 0.324-1.182 0.814-1.502 0.73-0.478 1.684-0.683 2.544-0.683 0.526 0 1.034 0.08 1.511 0.23a14.329 14.329 0 0 1 4.067 2.553 10.392 10.392 0 0 1 2.392 3.233c-1.592-1.41-3.896-1.569-5.929-1.412-1.605 0.124-5.399-0.096-5.399-2.419z" fill="#fff"/>
+    <path d="m14.063 28.922c0.886 3.91 2.792 4.297 4.347 4.297 0.745 0 1.446-0.269 2.059-0.604l-6.407-3.693z" fill="url(#g3wsk8a9qf)"/>
+    <path d="m30.938 28.922c-0.887 3.91-2.793 4.297-4.348 4.297-0.745 0-1.446-0.269-2.059-0.604z" fill="url(#y58b36rxlg)"/>
+  </g>
+  <defs>
+    <linearGradient id="7gf0pys8xb" x1="2.101" x2="2.101" y1="3.201" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#253659" offset="0"/>
+      <stop stop-color="#102131" offset="1"/>
+    </linearGradient>
+    <linearGradient id="xnufxgertd" x1="31.591" x2="15.617" y1="18.688" y2="36.253" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EEF2F7" offset="0"/>
+      <stop stop-color="#A3B1D3" offset="1"/>
+    </linearGradient>
+    <linearGradient id="g3wsk8a9qf" x1="17.266" x2="17.266" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00FFC6" offset="0"/>
+      <stop stop-color="#00BAE9" offset="1"/>
+    </linearGradient>
+    <linearGradient id="y58b36rxlg" x1="27.734" x2="27.734" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00FFC6" offset="0"/>
+      <stop stop-color="#00BAE9" offset="1"/>
+    </linearGradient>
+    <radialGradient id="ervf3aoc7c" cx="0" cy="0" r="1" gradientTransform="matrix(-8.3823 4.7696 -8.5637 -15.05 17.679 23.254)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#192A42" offset="0"/>
+      <stop stop-color="#62728F" offset="1"/>
+    </radialGradient>
+    <clipPath id="fahpw200aa">
+      <path transform="translate(.5)" d="m0 0h193v48h-193z" fill="#fff"/>
+    </clipPath>
+  </defs>
+</svg>
+
+{% endtemplate %}
+
+{% comment %}
+Optional local test overrides. For production, prefer setting
+custom fields `test_status` and `test_week` in TRMNL plugin settings.
+Uncomment the two lines below to force locally while developing:
+{% endcomment %}
+{% comment %}
+{% assign force_status = 'in_season' %}
+{% assign force_week = 5 %}
+{% endcomment %}
+
+{% template title_bar %}
+{% comment %}
+Title bar template with layout size control
+Parameters:
+- layout_size: 'team' (shows team info), 'week' (shows week number), or 'empty' (shows nothing)
+- week: Week number to display (for 'week' layout)
+- status: League status (pre_draft, in_season, complete)
+{% endcomment %}
+
+{% assign layout_size = layout_size | default: 'team' %}
+{% assign user_team = trmnl.plugin_settings.custom_fields_values.user_team %}
+{% assign my_team_name = nil %}
+{% assign my_avatar_url = nil %}
+
+{% comment %} Find user's team if specified (only for team layout) {% endcomment %}
+{% if layout_size == 'team' and user_team and user_team != '' %}
+{% for user in IDX_1.data %}
+{% if user.display_name == user_team or user.metadata.team_name == user_team %}
+{% assign my_team_name = user.metadata.team_name | default: user.display_name %}
+{% assign my_avatar_url = user.metadata.avatar %}
+{% break %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+<div class="title_bar">
+  {% comment %} League avatar {% endcomment %}
+  {% if IDX_0.avatar %}
+  <img class="image image-stroke image--dither rounded--full" src="https://sleepercdn.com/uploads/{{ IDX_0.avatar }}" />
+  {% else %}
+  {% render 'sleeper_logo' %}
+  {% endif %}
+
+  {% comment %} League name {% endcomment %}
+  <span class="title">{{ IDX_0.name }}</span>
+
+  {% comment %} Bottom right content based on layout_size and status {% endcomment %}
+  {% if layout_size == 'week' %}
+    {% if status == 'complete' %}
+      {% comment %} Show nothing for completed season {% endcomment %}
+    {% elsif status == 'pre_draft' %}
+      <span class="instance" data-field="title-week">Pre-Season</span>
+    {% elsif week %}
+      <span class="instance" data-field="title-week">Week {{ week }}</span>
+    {% endif %}
+  {% elsif layout_size == 'team' and my_team_name %}
+    <span class="instance">{{ my_team_name }}</span>
+    {% render 'render_avatar', avatar_url: my_avatar_url, title_bar: true %}
+  {% endif %}
+  {% comment %} layout_size == 'empty' shows nothing in bottom right {% endcomment %}
+</div>
+{% endtemplate %}
+
+{% template team_header %}
+{% comment %}
+Reusable team header component with avatar, team name, and username
+Parameters:
+- user: User object from IDX_1.data
+- alignment: 'left', 'right', or 'center' (default: 'left')
+- show_avatar: true/false to show avatar (default: true)
+{% endcomment %}
+
+{% assign alignment = alignment | default: 'left' %}
+{% assign show_avatar = show_avatar | default: true %}
+
+{% if user %}
+{% assign team_name = user.metadata.team_name | default: user.display_name %}
+{% assign username = user.display_name %}
+{% assign avatar_url = user.metadata.avatar %}
+
+{% comment %} Determine flex direction and text alignment based on alignment parameter {% endcomment %}
+{% if alignment == 'right' %}
+{% assign flex_class = 'flex flex--row-reverse gap--medium' %}
+{% assign text_align_class = 'text--right' %}
+{% elsif alignment == 'center' %}
+{% assign flex_class = 'flex flex--col flex--center-x flex--center-y gap--medium' %}
+{% assign text_align_class = 'text--center' %}
+{% else %}
+{% assign flex_class = 'flex gap--medium' %}
+{% assign text_align_class = 'text--left' %}
+{% endif %}
+
+<div class="{{ flex_class }}">
+  {% if show_avatar %}
+  {% render 'render_avatar', avatar_url: avatar_url, title_bar: false %}
+  {% endif %}
+
+  <div class="{{ text_align_class }}">
+    <div class="title title--medium">{{ team_name }}</div>
+    <div class="label label--small dim">@{{ username }}</div>
+  </div>
+</div>
+{% endif %}
+{% endtemplate %}
+
+{% template render_avatar %}
+{% comment %}
+Renders avatar with fallback to Sleeper logo
+Parameters:
+- avatar_url: URL of the avatar
+- title_bar: true if this is for the title bar (uses default size), false for w--12 h--12
+{% endcomment %}
+
+{% assign title_bar = title_bar | default: false %}
+
+{% comment %} Determine if we should show the avatar or fallback {% endcomment %}
+{% if avatar_url == nil or avatar_url == '' or avatar_url == blank or avatar_url == 'undefined' %}
+{% comment %} No avatar - show Sleeper logo {% endcomment %}
+{% if title_bar %}
+<svg class="image image-stroke image--dither circle hidden sm:inline" width="33.333" height="33.333" fill="none" version="1.1" viewBox="0 0 33.333 40" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-5.8333 -4)" clip-path="url(#fahpw200aa)"><path d="m11.363 4a8.863 8.863 0 0 0-8.863 8.863v22.274a8.863 8.863 0 0 0 8.863 8.863h22.274a8.863 8.863 0 0 0 8.863-8.863v-22.274a8.863 8.863 0 0 0-8.863-8.863z" fill="url(#7gf0pys8xb)"/><path d="m23.281 12.946a2.657 2.657 0 0 0-0.781-5.196 2.656 2.656 0 0 0-0.781 5.196v2.403a14.317 14.317 0 0 0-8.785 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 1.995 0.4 4.058 0.61 6.171 0.61s4.176-0.21 6.171-0.61c5.061-1.465 7.032-6.18 7.032-10.953 0-3.5-0.956-6.873-3.637-9.324a14.318 14.318 0 0 0-8.785-3.624z" clip-rule="evenodd" fill="#022047" fill-rule="evenodd"/><path d="m22.5 7.75a2.656 2.656 0 0 0-0.781 5.196v2.403h-3e-3a14.317 14.317 0 0 0-8.782 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 0.96 0.193 1.937 0.34 2.927 0.443-3.637-0.779-6.51-3.67-7.312-7.297l-0.018-0.046c-0.223-0.584-0.364-1.193-0.364-1.788a5.471 5.471 0 0 1 3.7-5.176c0.855-0.292 1.808-0.37 2.707-0.37 0.751 0 1.502 0.039 2.256 0.078l0.141 7e-3c0.34 0.017 0.679 0.034 1.019 0.047-3.321-0.243-5.916-2.343-5.916-4.898 0-2.099 1.752-3.891 4.219-4.599 0 0 0.666-0.158 1.093-0.206 0.43-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.031-1.444-2.031-2.734 0-1.067 0.546-2 1.406-2.5z" fill="url(#ervf3aoc7c)"/><path d="m25.156 10.406c0 1.195-0.79 2.206-1.875 2.54v2.403a14.317 14.317 0 0 1 8.785 3.624c2.68 2.451 3.637 5.824 3.637 9.324 0 4.772-1.971 9.488-7.032 10.953a31.633 31.633 0 0 1-9.415 0.443c-3.638-0.779-6.51-3.67-7.313-7.297a8.22 8.22 0 0 0 0.982 1.779 7.673 7.673 0 0 0 3.842 2.81c1.814 0.59 3.86 0.609 5.733 0.609s3.919-0.019 5.733-0.61a7.672 7.672 0 0 0 3.841-2.81c0.726-1.006 1.363-2.344 1.363-3.611a5.471 5.471 0 0 0-3.7-5.177c-0.854-0.292-1.807-0.37-2.706-0.37-0.751 0-1.503 0.039-2.256 0.078-0.756 0.039-1.514 0.078-2.275 0.078-0.373 0-0.744-0.01-1.115-0.024-3.321-0.243-5.917-2.343-5.917-4.898 0-2.099 1.752-3.891 4.22-4.599 0 0 0.666-0.158 1.093-0.206 0.429-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.032-1.444-2.032-2.734 0-1.067 0.547-2 1.407-2.5a2.656 2.656 0 0 1 2.656 2.656zm-1.218 6.464c-0.49 0.32-0.813 0.874-0.813 1.502 0 2.323 3.794 2.543 5.4 2.42 2.032-0.158 4.335 1e-3 5.928 1.411a10.4 10.4 0 0 0-2.392-3.233 14.404 14.404 0 0 0-4.067-2.554 5.076 5.076 0 0 0-1.512-0.229c-0.86 0-1.813 0.205-2.544 0.683z" clip-rule="evenodd" fill="url(#xnufxgertd)" fill-rule="evenodd"/><path d="m21.718 15.35h-2e-3l2e-3 -1e-3z" fill="url(#xnufxgertd)"/><path d="m23.125 18.372c0-0.628 0.324-1.182 0.814-1.502 0.73-0.478 1.684-0.683 2.544-0.683 0.526 0 1.034 0.08 1.511 0.23a14.329 14.329 0 0 1 4.067 2.553 10.392 10.392 0 0 1 2.392 3.233c-1.592-1.41-3.896-1.569-5.929-1.412-1.605 0.124-5.399-0.096-5.399-2.419z" fill="#fff"/><path d="m14.063 28.922c0.886 3.91 2.792 4.297 4.347 4.297 0.745 0 1.446-0.269 2.059-0.604l-6.407-3.693z" fill="url(#g3wsk8a9qf)"/><path d="m30.938 28.922c-0.887 3.91-2.793 4.297-4.348 4.297-0.745 0-1.446-0.269-2.059-0.604z" fill="url(#y58b36rxlg)"/></g><defs><linearGradient id="7gf0pys8xb" x1="2.101" x2="2.101" y1="3.201" y2="44" gradientUnits="userSpaceOnUse"><stop stop-color="#253659" offset="0"/><stop stop-color="#102131" offset="1"/></linearGradient><linearGradient id="xnufxgertd" x1="31.591" x2="15.617" y1="18.688" y2="36.253" gradientUnits="userSpaceOnUse"><stop stop-color="#EEF2F7" offset="0"/><stop stop-color="#A3B1D3" offset="1"/></linearGradient><linearGradient id="g3wsk8a9qf" x1="17.266" x2="17.266" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse"><stop stop-color="#00FFC6" offset="0"/><stop stop-color="#00BAE9" offset="1"/></linearGradient><linearGradient id="y58b36rxlg" x1="27.734" x2="27.734" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse"><stop stop-color="#00FFC6" offset="0"/><stop stop-color="#00BAE9" offset="1"/></linearGradient><radialGradient id="ervf3aoc7c" cx="0" cy="0" r="1" gradientTransform="matrix(-8.3823 4.7696 -8.5637 -15.05 17.679 23.254)" gradientUnits="userSpaceOnUse"><stop stop-color="#192A42" offset="0"/><stop stop-color="#62728F" offset="1"/></radialGradient><clipPath id="fahpw200aa"><path transform="translate(.5)" d="m0 0h193v48h-193z" fill="#fff"/></clipPath></defs></svg>
+{% else %}
+<svg class="image image-stroke image--dither rounded--full w--12 h--12" width="33.333" height="33.333" fill="none" version="1.1" viewBox="0 0 33.333 40" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-5.8333 -4)" clip-path="url(#fahpw200aa)"><path d="m11.363 4a8.863 8.863 0 0 0-8.863 8.863v22.274a8.863 8.863 0 0 0 8.863 8.863h22.274a8.863 8.863 0 0 0 8.863-8.863v-22.274a8.863 8.863 0 0 0-8.863-8.863z" fill="url(#7gf0pys8xb)"/><path d="m23.281 12.946a2.657 2.657 0 0 0-0.781-5.196 2.656 2.656 0 0 0-0.781 5.196v2.403a14.317 14.317 0 0 0-8.785 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 1.995 0.4 4.058 0.61 6.171 0.61s4.176-0.21 6.171-0.61c5.061-1.465 7.032-6.18 7.032-10.953 0-3.5-0.956-6.873-3.637-9.324a14.318 14.318 0 0 0-8.785-3.624z" clip-rule="evenodd" fill="#022047" fill-rule="evenodd"/><path d="m22.5 7.75a2.656 2.656 0 0 0-0.781 5.196v2.403h-3e-3a14.317 14.317 0 0 0-8.782 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 0.96 0.193 1.937 0.34 2.927 0.443-3.637-0.779-6.51-3.67-7.312-7.297l-0.018-0.046c-0.223-0.584-0.364-1.193-0.364-1.788a5.471 5.471 0 0 1 3.7-5.176c0.855-0.292 1.808-0.37 2.707-0.37 0.751 0 1.502 0.039 2.256 0.078l0.141 7e-3c0.34 0.017 0.679 0.034 1.019 0.047-3.321-0.243-5.916-2.343-5.916-4.898 0-2.099 1.752-3.891 4.219-4.599 0 0 0.666-0.158 1.093-0.206 0.43-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.031-1.444-2.031-2.734 0-1.067 0.546-2 1.406-2.5z" fill="url(#ervf3aoc7c)"/><path d="m25.156 10.406c0 1.195-0.79 2.206-1.875 2.54v2.403a14.317 14.317 0 0 1 8.785 3.624c2.68 2.451 3.637 5.824 3.637 9.324 0 4.772-1.971 9.488-7.032 10.953a31.633 31.633 0 0 1-9.415 0.443c-3.638-0.779-6.51-3.67-7.313-7.297a8.22 8.22 0 0 0 0.982 1.779 7.673 7.673 0 0 0 3.842 2.81c1.814 0.59 3.86 0.609 5.733 0.609s3.919-0.019 5.733-0.61a7.672 7.672 0 0 0 3.841-2.81c0.726-1.006 1.363-2.344 1.363-3.611a5.471 5.471 0 0 0-3.7-5.177c-0.854-0.292-1.807-0.37-2.706-0.37-0.751 0-1.503 0.039-2.256 0.078-0.756 0.039-1.514 0.078-2.275 0.078-0.373 0-0.744-0.01-1.115-0.024-3.321-0.243-5.917-2.343-5.917-4.898 0-2.099 1.752-3.891 4.22-4.599 0 0 0.666-0.158 1.093-0.206 0.429-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.032-1.444-2.032-2.734 0-1.067 0.547-2 1.407-2.5a2.656 2.656 0 0 1 2.656 2.656zm-1.218 6.464c-0.49 0.32-0.813 0.874-0.813 1.502 0 2.323 3.794 2.543 5.4 2.42 2.032-0.158 4.335 1e-3 5.928 1.411a10.4 10.4 0 0 0-2.392-3.233 14.404 14.404 0 0 0-4.067-2.554 5.076 5.076 0 0 0-1.512-0.229c-0.86 0-1.813 0.205-2.544 0.683z" clip-rule="evenodd" fill="url(#xnufxgertd)" fill-rule="evenodd"/><path d="m21.718 15.35h-2e-3l2e-3 -1e-3z" fill="url(#xnufxgertd)"/><path d="m23.125 18.372c0-0.628 0.324-1.182 0.814-1.502 0.73-0.478 1.684-0.683 2.544-0.683 0.526 0 1.034 0.08 1.511 0.23a14.329 14.329 0 0 1 4.067 2.553a10.392 10.392 0 0 1 2.392 3.233c-1.592-1.41-3.896-1.569-5.929-1.412-1.605 0.124-5.399-0.096-5.399-2.419z" fill="#fff"/><path d="m14.063 28.922c0.886 3.91 2.792 4.297 4.347 4.297 0.745 0 1.446-0.269 2.059-0.604l-6.407-3.693z" fill="url(#g3wsk8a9qf)"/><path d="m30.938 28.922c-0.887 3.91-2.793 4.297-4.348 4.297-0.745 0-1.446-0.269-2.059-0.604z" fill="url(#y58b36rxlg)"/></g><defs><linearGradient id="7gf0pys8xb" x1="2.101" x2="2.101" y1="3.201" y2="44" gradientUnits="userSpaceOnUse"><stop stop-color="#253659" offset="0"/><stop stop-color="#102131" offset="1"/></linearGradient><linearGradient id="xnufxgertd" x1="31.591" x2="15.617" y1="18.688" y2="36.253" gradientUnits="userSpaceOnUse"><stop stop-color="#EEF2F7" offset="0"/><stop stop-color="#A3B1D3" offset="1"/></linearGradient><linearGradient id="g3wsk8a9qf" x1="17.266" x2="17.266" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse"><stop stop-color="#00FFC6" offset="0"/><stop stop-color="#00BAE9" offset="1"/></linearGradient><linearGradient id="y58b36rxlg" x1="27.734" x2="27.734" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse"><stop stop-color="#00FFC6" offset="0"/><stop stop-color="#00BAE9" offset="1"/></linearGradient><radialGradient id="ervf3aoc7c" cx="0" cy="0" r="1" gradientTransform="matrix(-8.3823 4.7696 -8.5637 -15.05 17.679 23.254)" gradientUnits="userSpaceOnUse"><stop stop-color="#192A42" offset="0"/><stop stop-color="#62728F" offset="1"/></radialGradient><clipPath id="fahpw200aa"><path transform="translate(.5)" d="m0 0h193v48h-193z" fill="#fff"/></clipPath></defs></svg>
+{% endif %}
+{% else %}
+{% comment %} Has avatar - show image {% endcomment %}
+{% if title_bar %}
+<img class="image image-stroke image--dither rounded--full" src="{{ avatar_url }}" />
+{% else %}
+<img class="image image-stroke image--dither rounded--full w--12 h--12" src="{{ avatar_url }}" />
+{% endif %}
+{% endif %}
+{% endtemplate %}
+
+{% template record_pills %}
+{% comment %}
+Renders win/loss record as pills
+Parameters:
+- record: String of W/L characters
+- size: Size of pills (small, xsmall)
+- alignment: left or right
+{% endcomment %}
+
+{% assign size = size | default: 'small' %}
+{% assign alignment = alignment | default: 'left' %}
+
+{% if record and record != '' %}
+<div class="flex gap--xsmall {% if alignment == 'right' %}flex--right{% endif %}">
+  {% assign record_chars = record | split: '' %}
+  {% assign display_chars = record_chars | slice: -6, 6 %}
+  {% for char in display_chars %}
+  {% if char == 'W' %}
+  <span class="label label--{{ size }} label--outline">W</span>
+  {% elsif char == 'L' %}
+  <span class="label label--{{ size }} label--inverted">L</span>
+  {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+{% endtemplate %}
+
+{% comment %} ================================================================
+PRE-SEASON TEMPLATES
+Templates for pre-draft/pre-season status
+================================================================ {% endcomment %}
+
+{% template pre_season_draft_card %}
+{% comment %}
+Template for displaying pre-season draft status
+Parameters passed via render:
+- IDX_0: League data
+- IDX_3: NFL state data with season start date
+{% endcomment %}
+
+<div class="flex flex--center-x flex--center-y w--full h--full">
+  <div class="text--center">
+    {% if IDX_3.season_start_date %}
+      {% assign start_date = IDX_3.season_start_date | date: "%B %-d, %Y" %}
+      <span class="title title--small">Week 1 of the NFL season starts {{ start_date }}</span>
+    {% else %}
+      <span class="title title--small">{{ IDX_0.name }} is in pre-season</span>
+    {% endif %}
+  </div>
+</div>
+{% endtemplate %}
+
+{% comment %} ================================================================
+IN-SEASON TEMPLATES
+Templates for active season matchups and displays
+================================================================ {% endcomment %}
+
+
+{% template size_config %}
+{% comment %}
+Returns size configuration based on layout_size
+Parameters:
+- layout_size: 'full', 'half-horizontal', 'half-vertical', or 'quadrant'
+{% endcomment %}
+
+{% assign layout_size = layout_size | default: 'full' %}
+
+{% case layout_size %}
+{% when 'quadrant' %}
+{% assign title_size = 'small' %}
+{% assign value_size = 'small' %}
+{% assign label_size = 'xsmall' %}
+{% assign padding = 'p--2' %}
+{% assign gap_size = 'small' %}
+{% when 'half-horizontal', 'half-vertical' %}
+{% assign title_size = 'small' %}
+{% assign value_size = 'small' %}
+{% assign label_size = 'small' %}
+{% assign padding = 'p--3' %}
+{% assign gap_size = 'medium' %}
+{% else %}
+{% assign title_size = 'medium' %}
+{% assign value_size = 'medium' %}
+{% assign label_size = 'small' %}
+{% assign padding = 'p--4' %}
+{% assign gap_size = 'medium' %}
+{% endcase %}
+{% endtemplate %}
+
+{% template matchup_card %}
+{% comment %}
+Unified template for rendering matchup cards (both team 1 and team 2)
+Parameters:
+- card_id: Unique ID for the card element
+- roster_id: Roster ID for data attribute  
+- team_name: Team name to display
+- username: Username to display
+- avatar_url: Avatar URL
+- record: Win/loss record string
+- score: Current score (default: 0.00)
+- alignment: 'left' or 'right'
+- layout_size: Layout size for responsive adjustments
+{% endcomment %}
+
+{% comment %} Set size configuration based on layout_size {% endcomment %}
+{% assign layout_size = layout_size | default: 'full' %}
+{% case layout_size %}
+{% when 'quadrant' %}
+{% assign title_size = 'small' %}
+{% assign value_size = 'small' %}
+{% assign label_size = 'xsmall' %}
+{% assign padding = 'p--2' %}
+{% when 'half-horizontal', 'half-vertical' %}
+{% assign title_size = 'small' %}
+{% assign value_size = 'small' %}
+{% assign label_size = 'small' %}
+{% assign padding = 'p--3' %}
+{% else %}
+{% assign title_size = 'medium' %}
+{% assign value_size = 'medium' %}
+{% assign label_size = 'small' %}
+{% assign padding = 'p--4' %}
+{% endcase %}
+
+{% assign alignment = alignment | default: 'left' %}
+{% assign score = score | default: '0.00' %}
+
+{% comment %} Alignment classes {% endcomment %}
+{% if alignment == 'right' %}
+{% assign text_align = 'text--right' %}
+{% assign flex_dir = 'flex--row-reverse' %}
+{% assign order_class = 'order--2' %}
+{% assign order_class_inv = 'order--1' %}
+{% assign flex_align = 'flex--right' %}
+{% assign score_align = 'flex--end' %}
+{% else %}
+{% assign text_align = 'text--left' %}
+{% assign flex_dir = '' %}
+{% assign order_class = '' %}
+{% assign order_class_inv = '' %}
+{% assign flex_align = 'flex--start' %}
+{% assign score_align = 'flex--start' %}
+{% endif %}
+
+<div id="{{ card_id }}" class="bg--white rounded {{ padding }} stretch-x" data-roster-id="{{ roster_id }}">
+  {% comment %} Header with avatar {% endcomment %}
+  <div class="flex flex--space-between flex--center-y {{ flex_dir }} mb--4">
+    {% if alignment == 'right' %}
+    {% render 'render_avatar', avatar_url: avatar_url, title_bar: false %}
+    <div class="stretch-x {{ text_align }}">
+      <div class="title title--{{ title_size }}" data-field="team-name">{{ team_name }}</div>
+      {% unless layout_size == 'quadrant' %}
+      <div class="label label--{{ label_size }} dim" data-field="username">@{{ username }}</div>
+      {% endunless %}
+    </div>
+    {% else %}
+    <div class="stretch-x {{ text_align }}">
+      <div class="title title--{{ title_size }}" data-field="team-name">{{ team_name }}</div>
+      {% unless layout_size == 'quadrant' %}
+      <div class="label label--{{ label_size }} dim" data-field="username">@{{ username }}</div>
+      {% endunless %}
+    </div>
+    {% render 'render_avatar', avatar_url: avatar_url, title_bar: false %}
+    {% endif %}
+  </div>
+
+  {% comment %} Win/Loss Record {% endcomment %}
+  <div class="flex flex--row gap--xsmall {{ flex_align }} mb--4" data-field="record">
+    {% if record and record != '' %}
+    {% render 'record_pills', record: record, size: label_size, alignment: alignment %}
+    {% endif %}
+  </div>
+
+  {% comment %} Score {% endcomment %}
+  <div class="flex flex--row {{ score_align }} gap--medium">
+    <span class="label label--{{ label_size }} {{ order_class }}">Score</span>
+    <span class="value value--{{ value_size }} {{ order_class_inv }}" data-field="score">{{ score }}</span>
+  </div>
+</div>
+{% endtemplate %}
+
+{% template quadrant_matchup_card %}
+{% comment %}
+Simplified matchup card specifically for quadrant layout
+Shows only team name, username, and score in a compact horizontal layout
+Parameters:
+- card_id: Unique ID for the card element
+- roster_id: Roster ID for data attribute
+- team_name: Team name to display
+- username: Username to display
+- score: Current score (default: 0.00)
+- alignment: 'left' or 'right'
+{% endcomment %}
+
+{% assign alignment = alignment | default: 'left' %}
+{% assign score = score | default: '0.00' %}
+
+{% comment %} Alignment classes {% endcomment %}
+{% if alignment == 'right' %}
+  {% assign text_align = 'text--right' %}
+{% else %}
+  {% assign text_align = 'text--left' %}
+{% endif %}
+
+<div id="{{ card_id }}" class="bg--white rounded p--2 stretch-x" data-roster-id="{{ roster_id }}">
+  <div class="{{ text_align }}">
+    <div class="title title--xsmall" data-field="team-name">{{ team_name }}</div>
+    <div class="label label--xsmall dim" data-field="username">@{{ username }}</div>
+    <div class="value value--small mt--2" data-field="score">{{ score }}</div>
+  </div>
+</div>
+{% endtemplate %}
+
+{% template bye_week_skeleton %}
+{% comment %}
+Renders a BYE WEEK card skeleton
+Parameters:
+- user: User data
+- layout_size: Layout size
+{% endcomment %}
+
+{% comment %} Set size configuration based on layout_size {% endcomment %}
+{% assign layout_size = layout_size | default: 'full' %}
+{% case layout_size %}
+{% when 'quadrant' %}
+{% assign padding = 'p--2' %}
+{% when 'half-horizontal', 'half-vertical' %}
+{% assign padding = 'p--3' %}
+{% else %}
+{% assign padding = 'p--4' %}
+{% endcase %}
+
+{% assign team_name = user.metadata.team_name | default: user.display_name %}
+
+{% case layout_size %}
+{% when 'quadrant' %}
+{% assign bye_title_size = 'small' %}
+{% assign bye_label_size = 'xsmall' %}
+{% else %}
+{% assign bye_title_size = 'large' %}
+{% assign bye_label_size = 'small' %}
+{% endcase %}
+
+<div class="bg--white rounded {{ padding }} stretch-x">
+  <div class="flex flex--col flex--center-x flex--center-y h--full">
+    <div class="text--center">
+      <div class="label label--{{ bye_label_size }} dim mb--2">{{ team_name }}</div>
+      <div class="title title--{{ bye_title_size }}">BYE WEEK</div>
+    </div>
+  </div>
+</div>
+{% endtemplate %}
+
+{% template in_season_matchup_skeleton %}
+{% comment %}
+Renders the full matchup skeleton structure
+Parameters:
+- IDX_1: Users data
+- IDX_2: Rosters data  
+- layout_size: Layout size
+- user_team: Selected user team name
+- mode: 'my_team' or 'all_teams'
+{% endcomment %}
+
+{% comment %} Set size configuration based on layout_size {% endcomment %}
+{% assign layout_size = layout_size | default: 'full' %}
+{% case layout_size %}
+{% when 'quadrant' %}
+{% assign padding = 'p--2' %}
+{% assign gap_size = 'small' %}
+{% when 'half-horizontal', 'half-vertical' %}
+{% assign padding = 'p--3' %}
+{% assign gap_size = 'medium' %}
+{% else %}
+{% assign padding = 'p--4' %}
+{% assign gap_size = 'medium' %}
+{% endcase %}
+
+{% comment %} Find the target roster {% endcomment %}
+{% assign target_roster = nil %}
+{% assign target_user = nil %}
+
+{% if mode == 'my_team' and user_team and user_team != '' %}
+{% for user in IDX_1.data %}
+{% if user.display_name == user_team or user.metadata.team_name == user_team %}
+{% assign target_user = user %}
+{% for roster in IDX_2.data %}
+{% if roster.owner_id == user.user_id %}
+{% assign target_roster = roster %}
+{% break %}
+{% endif %}
+{% endfor %}
+{% break %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% comment %} Fall back to pseudo-random selection if no target found {% endcomment %}
+{% unless target_roster %}
+{% comment %} Use current timestamp for pseudo-randomization {% endcomment %}
+{% assign current_time = 'now' | date: '%s' %}
+{% assign random_index = current_time | modulo: IDX_2.data.size %}
+{% assign target_roster = IDX_2.data[random_index] %}
+{% for user in IDX_1.data %}
+{% if user.user_id == target_roster.owner_id %}
+{% assign target_user = user %}
+{% break %}
+{% endif %}
+{% endfor %}
+{% endunless %}
+
+{% comment %} Container structure based on layout {% endcomment %}
+<div id="matchup-container" class="layout {% if layout_size == 'quadrant' %}layout--row{% elsif layout_size == 'half-vertical' %}layout--col{% else %}layout--row{% endif %} layout--stretch-y bg--gray-65 {{ padding }} rounded--medium">
+
+  {% comment %} This will be populated by JavaScript with actual matchup pairing {% endcomment %}
+  <div class="flex {% if layout_size == 'quadrant' %}flex--row{% elsif layout_size == 'half-vertical' %}flex--col{% else %}flex--row{% endif %} gap--{{ gap_size }} w--full" id="matchup-content">
+
+    {% comment %} Team 1 card - always rendered {% endcomment %}
+    {% if target_user %}
+    {% assign team1_name = target_user.metadata.team_name | default: target_user.display_name %}
+    {% assign team1_username = target_user.display_name %}
+    {% assign team1_avatar = target_user.metadata.avatar %}
+    {% assign team1_record = target_roster.metadata.record | default: '' %}
+
+    {% if layout_size == 'quadrant' %}
+      {% render 'quadrant_matchup_card',
+      card_id: 'team1-card',
+      roster_id: target_roster.roster_id,
+      team_name: team1_name,
+      username: team1_username,
+      score: '0.00',
+      alignment: 'left' %}
+    {% else %}
+      {% render 'matchup_card',
+      card_id: 'team1-card',
+      roster_id: target_roster.roster_id,
+      team_name: team1_name,
+      username: team1_username,
+      avatar_url: team1_avatar,
+      record: team1_record,
+      score: '0.00',
+      alignment: 'left',
+      layout_size: layout_size %}
+    {% endif %}
+    {% endif %}
+
+    {% comment %} VS divider - Hidden initially, shown by JS if there's an opponent {% endcomment %}
+    <div id="vs-divider" class="flex flex--center-x flex--center-y {% if layout_size == 'quadrant' %}{% elsif layout_size == 'half-vertical' %}{% else %}flex--col flex--no-shrink{% endif %}" style="display: none;">
+      {% if layout_size == 'quadrant' %}
+      <span class="label label--xsmall dim">vs.</span>
+      {% elsif layout_size == 'half-vertical' %}
+      <span class="label label--small dim">vs • Week <span data-field="week">1</span></span>
+      {% else %}
+      <div class="label label--small dim">vs</div>
+      <div class="label label--small dim">Week <span data-field="week">1</span></div>
+      {% endif %}
+    </div>
+
+    {% comment %} Team 2 card - hidden initially, will be shown/populated by JS if there's an opponent {% endcomment %}
+    <div id="team2-container" class="stretch-x" style="display: none;">
+      {% if layout_size == 'quadrant' %}
+        {% render 'quadrant_matchup_card',
+        card_id: 'team2-card',
+        roster_id: '',
+        team_name: '',
+        username: '',
+        score: '0.00',
+        alignment: 'right' %}
+      {% else %}
+        {% render 'matchup_card',
+        card_id: 'team2-card',
+        roster_id: '',
+        team_name: '',
+        username: '',
+        avatar_url: nil,
+        record: '',
+        score: '0.00',
+        alignment: 'right',
+        layout_size: layout_size %}
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% endtemplate %}
+
+{% template matchup_display %}
+{% comment %}
+Complete matchup display with skeleton and hydration
+Parameters:
+- IDX_0, IDX_1, IDX_2, IDX_3: Data from Sleeper API
+- trmnl: TRMNL configuration
+- layout_size: Layout size for responsive adjustments
+- week: Week number to fetch
+{% endcomment %}
+
+{% assign mode = trmnl.plugin_settings.custom_fields_values.mode | default: 'all_teams' %}
+{% assign user_team = trmnl.plugin_settings.custom_fields_values.user_team | default: '' %}
+
+{% render "in_season_matchup_skeleton",
+IDX_1: IDX_1,
+IDX_2: IDX_2,
+layout_size: layout_size,
+user_team: user_team,
+mode: mode %}
+
+{% render "matchup_hydration_script",
+IDX_0: IDX_0,
+IDX_1: IDX_1,
+IDX_2: IDX_2,
+IDX_3: IDX_3,
+trmnl: trmnl,
+layout_size: layout_size,
+week: week %}
+{% endtemplate %}
+
+{% template matchup_hydration_script %}
+{% comment %}
+JavaScript for hydrating the matchup skeleton with live data
+Parameters:
+- IDX_0, IDX_1, IDX_2, IDX_3: Data from Sleeper API
+- trmnl: TRMNL configuration
+- layout_size: Layout size for adjustments
+- week: Week number to fetch
+{% endcomment %}
+
+{% comment %} Set size configuration based on layout_size {% endcomment %}
+{% assign layout_size = layout_size | default: 'full' %}
+{% case layout_size %}
+{% when 'quadrant' %}
+{% assign label_size = 'xsmall' %}
+{% when 'half-horizontal', 'half-vertical' %}
+{% assign label_size = 'small' %}
+{% else %}
+{% assign label_size = 'small' %}
+{% endcase %}
+
+<script>
+  // Sleeper logo SVG fallback - escape for JavaScript
+  const sleeperLogoFallback = {{ sleeper_logo_svg | replace: 'hidden sm:inline', 'rounded--full w--12 h--12' | json }};
+
+  document.addEventListener('DOMContentLoaded', async function() {
+    const mode = '{{ trmnl.plugin_settings.custom_fields_values.mode | default: "all_teams" }}';
+    const userTeamName = '{{ trmnl.plugin_settings.custom_fields_values.user_team | default: "" }}';
+    const leagueId = '{{ trmnl.plugin_settings.custom_fields_values.league_id }}';
+    const currentWeek = {{ week }};
+    const layoutSize = '{{ layout_size }}';
+    const labelSize = '{{ label_size }}';
+
+    const rosters = {{ IDX_2.data | json }};
+  const users = {{ IDX_1.data | json }};
+
+  try {
+    // Fetch matchups for the current week
+    const response = await fetch(`https://api.sleeper.app/v1/league/${leagueId}/matchups/${currentWeek}`);
+    const matchups = await response.json();
+
+    // Get team 1 card
+    const team1Card = document.getElementById('team1-card');
+    if (!team1Card) {
+      console.error('No team1 card found');
+      return;
+    }
+
+    const targetRosterId = parseInt(team1Card.dataset.rosterId);
+    const targetRoster = rosters.find(r => r.roster_id === targetRosterId);
+    const targetMatchup = matchups.find(m => m.roster_id === targetRosterId);
+
+    if (!targetMatchup) {
+      console.log('No matchup found for roster', targetRosterId);
+      return;
+    }
+
+    // Update week number in VS divider and title bar
+    const weekElements = document.querySelectorAll('[data-field="week"]');
+    weekElements.forEach(el => el.textContent = currentWeek);
+    
+    // Update week in title bar if it exists (quadrant layout shows week in title bar)
+    const titleWeek = document.querySelector('[data-field="title-week"]');
+    if (titleWeek) {
+      titleWeek.textContent = `Week ${currentWeek}`;
+    }
+
+    // Update team 1's score
+    const team1Score = team1Card.querySelector('[data-field="score"]');
+    if (team1Score) {
+      team1Score.textContent = (targetMatchup.points || 0).toFixed(2);
+    }
+
+    // Only update record if not quadrant layout
+    if (layoutSize !== 'quadrant') {
+      const team1RecordContainer = team1Card.querySelector('[data-field="record"]');
+      if (team1RecordContainer && targetRoster.metadata?.record) {
+        const recordHtml = generateRecordPills(targetRoster.metadata.record, labelSize, 'left');
+        if (recordHtml) {
+          team1RecordContainer.innerHTML = recordHtml;
+        }
+      }
+    }
+
+    // Find opponent
+    const opponentMatchup = matchups.find(m => 
+      m.matchup_id === targetMatchup.matchup_id && m.roster_id !== targetRosterId
+                                         );
+
+    if (opponentMatchup) {
+      // There's an opponent - update team 2 card
+      const opponentRoster = rosters.find(r => r.roster_id === opponentMatchup.roster_id);
+      const opponentUser = users.find(u => u.user_id === opponentRoster?.owner_id);
+
+      if (opponentRoster && opponentUser) {
+        const team2Container = document.getElementById('team2-container');
+        const team2Card = document.getElementById('team2-card');
+
+        // Update team 2 data
+        team2Card.dataset.rosterId = opponentRoster.roster_id;
+
+        // Only update avatar if not quadrant layout
+        if (layoutSize !== 'quadrant') {
+          const avatarContainer = team2Card.querySelector('.flex--space-between.flex--center-y');
+          const team2Avatar = avatarContainer ? avatarContainer.querySelector('.image, svg') : null;
+          const avatarUrl = opponentUser.metadata?.avatar;
+
+          if (team2Avatar) {
+            if (avatarUrl && avatarUrl !== '' && avatarUrl !== 'undefined') {
+              // User has avatar - replace with IMG if needed
+              if (team2Avatar.tagName === 'IMG') {
+                team2Avatar.src = avatarUrl;
+              } else {
+                // Replace SVG with IMG
+                const newImg = document.createElement('img');
+                newImg.className = 'image image-stroke image--dither rounded--full w--12 h--12';
+                newImg.src = avatarUrl;
+                team2Avatar.parentNode.replaceChild(newImg, team2Avatar);
+              }
+            }
+            // If no avatar URL, keep the existing Sleeper logo SVG
+          }
+        }
+
+        // Update team name and username
+        const team2Name = team2Card.querySelector('[data-field="team-name"]');
+        if (team2Name) {
+          team2Name.textContent = opponentUser.metadata?.team_name || opponentUser.display_name;
+        }
+
+        const team2Username = team2Card.querySelector('[data-field="username"]');
+        if (team2Username) {
+          team2Username.textContent = '@' + opponentUser.display_name;
+        }
+
+        // Update score
+        const team2Score = team2Card.querySelector('[data-field="score"]');
+        if (team2Score) {
+          team2Score.textContent = (opponentMatchup.points || 0).toFixed(2);
+        }
+
+        // Only update record if not quadrant layout
+        if (layoutSize !== 'quadrant') {
+          const team2RecordContainer = team2Card.querySelector('[data-field="record"]');
+          if (team2RecordContainer && opponentRoster.metadata?.record) {
+            const recordHtml = generateRecordPills(opponentRoster.metadata.record, labelSize, 'right');
+            team2RecordContainer.innerHTML = recordHtml;
+          }
+        }
+
+        // Show team 2 container and VS divider
+        team2Container.style.display = '';
+        document.getElementById('vs-divider').style.display = '';
+      }
+    } else {
+      // No opponent - convert to bye week
+      const matchupContent = document.getElementById('matchup-content');
+      matchupContent.innerHTML = generateByeWeekCard(targetRoster, users.find(u => u.user_id === targetRoster.owner_id), layoutSize);
+    }
+
+  } catch (error) {
+    console.error('Error fetching matchup data:', error);
+  }
+  });
+
+  // Helper function to generate record pills HTML
+  function generateRecordPills(record, labelSize, alignment) {
+    if (!record) return '';
+
+    const pills = record.split('').slice(-6).map(char => {
+      if (char === 'W') return `<span class="label label--${labelSize} label--outline">W</span>`;
+      if (char === 'L') return `<span class="label label--${labelSize} label--inverted">L</span>`;
+      return '';
+    }).join('');
+
+    return pills;
+  }
+
+
+  // Generate bye week card
+  function generateByeWeekCard(roster, user, layoutSize) {
+    const teamName = user?.metadata?.team_name || user?.display_name || 'Team';
+    const byeTitleSize = layoutSize === 'quadrant' ? 'small' : 'large';
+    const teamLabelSize = layoutSize === 'quadrant' ? 'xsmall' : 'small';
+    let padding;
+
+    switch(layoutSize) {
+      case 'quadrant':
+        padding = 'p--2';
+        break;
+      case 'half-horizontal':
+      case 'half-vertical':
+        padding = 'p--3';
+        break;
+      default:
+        padding = 'p--4';
+    }
+
+    return `
+    <div class="bg--white rounded ${padding} stretch-x">
+      <div class="flex flex--col flex--center-x flex--center-y h--full">
+        <div class="text--center">
+          <div class="label label--${teamLabelSize} dim mb--2">${teamName}</div>
+          <div class="title title--${byeTitleSize}">BYE WEEK</div>
+        </div>
+      </div>
+    </div>
+  `;
+  }
+
+</script>
+{% endtemplate %}
+
+{% comment %} ================================================================
+SEASON COMPLETE TEMPLATES
+Templates for completed season / winner display
+================================================================ {% endcomment %}
+
+{% template season_complete_card %}
+{% comment %}
+Template for displaying season winner
+Parameters passed via render:
+- IDX_0: League data
+- IDX_1: Users data
+- IDX_2: Rosters data
+{% endcomment %}
+
+{% assign layout_size = layout_size | default: 'full' %}
+{% comment %} Adjust sizes/margins for smaller layouts {% endcomment %}
+{% case layout_size %}
+{% when 'quadrant' %}
+{% assign trophy_title_size = 'large' %}
+{% assign spacing_class = 'mb--2' %}
+{% when 'half-horizontal' %}
+{% assign trophy_title_size = 'large' %}
+{% assign spacing_class = 'mb--4' %}
+{% else %}
+{% assign trophy_title_size = 'xlarge' %}
+{% assign spacing_class = 'mb--8' %}
+{% endcase %}
+
+{% comment %} Get winner roster ID from league metadata {% endcomment %}
+{% assign winner_roster_id = IDX_0.metadata.latest_league_winner_roster_id %}
+{% assign winner_roster_id_str = winner_roster_id | append: '' %}
+
+{% comment %} Find the winning roster (coerce types for reliable comparison) {% endcomment %}
+{% assign winner_roster = nil %}
+{% for roster in IDX_2.data %}
+{% assign rid = roster.roster_id | append: '' %}
+{% if rid == winner_roster_id_str %}
+{% assign winner_roster = roster %}
+{% break %}
+{% endif %}
+{% endfor %}
+
+{% comment %} Find the user for the winning roster {% endcomment %}
+{% assign winner_user = nil %}
+{% if winner_roster %}
+{% for user in IDX_1.data %}
+{% if user.user_id == winner_roster.owner_id %}
+{% assign winner_user = user %}
+{% break %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if winner_user %}
+<div class="flex flex--center-x flex--center-y w--full h--full">
+  <div class="text--center">
+    {% comment %} Trophy and title {% endcomment %}
+    <div class="{{ spacing_class }}">
+      <span class="title title--{{ trophy_title_size }}">🏆</span>
+    </div>
+
+    <div class="{{ spacing_class }}">
+      <span class="title title--small">The {{ IDX_0.season }} winner of {{ IDX_0.name }} is</span>
+    </div>
+
+    {% comment %} Winner team header {% endcomment %}
+    {% render 'team_header', 
+    user: winner_user,
+    alignment: 'center',
+    show_avatar: true %}
+  </div>
+</div>
+{% else %}
+<div class="flex flex--center-x flex--center-y w--full h--full">
+  <div class="text--center">
+    <span class="label label--small dim">Winner data unavailable</span>
+  </div>
+</div>
+{% endif %}
+{% endtemplate %}
+
+{% comment %} ================================================================
+MAIN CONTENT ORCHESTRATOR
+Routes to appropriate template based on league status
+================================================================ {% endcomment %}
+
+{% template main_content %}
+{% comment %}
+Main content orchestrator that determines what to display based on league status
+Parameters:
+- IDX_0, IDX_1, IDX_2, IDX_3: Data from Sleeper API
+- trmnl: TRMNL configuration
+- layout_size: 'full', 'half-horizontal', 'half-vertical', or 'quadrant'
+- status: Optional status override (pre_draft, in_season, complete)
+- week: Optional week override
+{% endcomment %}
+
+{% assign layout_size = layout_size | default: 'full' %}
+{% assign effective_status = status | default: trmnl.plugin_settings.custom_fields_values.test_status | default: IDX_0.status %}
+{% assign effective_week = week | default: trmnl.plugin_settings.custom_fields_values.test_week | default: IDX_3.week | default: IDX_0.settings.leg %}
+
+{% if effective_status == "pre_draft" %}
+{% render "pre_season_draft_card",
+IDX_0: IDX_0,
+IDX_3: IDX_3,
+layout_size: layout_size %}
+{% elsif effective_status == "in_season" %}
+{% render "matchup_display",
+IDX_0: IDX_0,
+IDX_1: IDX_1,
+IDX_2: IDX_2,
+IDX_3: IDX_3,
+trmnl: trmnl,
+layout_size: layout_size,
+week: effective_week %}
+{% elsif effective_status == "complete" %}
+{% render "season_complete_card",
+IDX_0: IDX_0,
+IDX_1: IDX_1,
+IDX_2: IDX_2,
+layout_size: layout_size %}
+{% endif %}
+{% endtemplate %}

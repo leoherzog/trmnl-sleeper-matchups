@@ -1,0 +1,165 @@
+{
+  "data": [
+    {
+      "avatar": "nfl_det",
+      "is_bot": null,
+      "user_id": "76441732065411072",
+      "is_owner": true,
+      "metadata": {
+        "avatar": "https://sleepercdn.com/uploads/c885f712a834866d8f03523fb0008df4",
+        "allow_pn": "on",
+        "team_name": "Kneecap Nibblers",
+        "mention_pn": "on",
+        "mascot_message": "on",
+        "player_like_pn": "on",
+        "trade_block_pn": "on",
+        "user_message_pn": "on",
+        "team_name_update": "on",
+        "transaction_trade": "on",
+        "transaction_waiver": "on",
+        "player_nickname_update": "off",
+        "transaction_free_agent": "on",
+        "transaction_commissioner": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "bbtancakes"
+    },
+    {
+      "avatar": "dce8e54b2da529bdab4b15dbc6678259",
+      "is_bot": false,
+      "user_id": "995707483266023424",
+      "is_owner": false,
+      "metadata": {
+        "avatar": "https://sleepercdn.com/uploads/57f5f50c3f9f9b5ebdf345e5b4fea6e1",
+        "allow_pn": "on",
+        "allow_sms": "on",
+        "team_name": "Illegal Use of Hands",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "leoherzog"
+    },
+    {
+      "avatar": "142abf1d16de8cbaa26325e3d0775468",
+      "is_bot": false,
+      "user_id": "999025462699438080",
+      "is_owner": false,
+      "metadata": {
+        "avatar": "https://sleepercdn.com/uploads/de2f65cdef81713bebd620383268b187.jpg",
+        "allow_pn": "on",
+        "allow_sms": "on",
+        "team_name": "Phil Dunphy",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "PhilDunphy8410"
+    },
+    {
+      "avatar": "8eb8f8bf999945d523f2c4033f70473e",
+      "is_bot": false,
+      "user_id": "999027098914299904",
+      "is_owner": false,
+      "metadata": {
+        "avatar": "https://sleepercdn.com/uploads/bc43b12fae629fc1cee31df2779656f8",
+        "allow_pn": "on",
+        "team_name": "Troublesome Tailors",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "chairwolf"
+    },
+    {
+      "avatar": "b3338675f635c2c1f42b469621d38ec6",
+      "is_bot": false,
+      "user_id": "999158577984192512",
+      "is_owner": false,
+      "metadata": {
+        "allow_pn": "on",
+        "allow_sms": "on",
+        "team_name": "Appletree",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "Shearluck"
+    },
+    {
+      "avatar": "8eb8f8bf999945d523f2c4033f70473e",
+      "is_bot": false,
+      "user_id": "1001231241355603968",
+      "is_owner": false,
+      "metadata": {
+        "allow_pn": "on",
+        "team_name": "DINKelberg",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "RampagingMilk"
+    },
+    {
+      "avatar": "056c1905152e27df51b920d4bfb74c38",
+      "is_bot": false,
+      "user_id": "1001300810166276096",
+      "is_owner": false,
+      "metadata": {
+        "avatar": "https://sleepercdn.com/uploads/19293ef8d83d2d442edbee86dd9738c0",
+        "allow_pn": "on",
+        "allow_sms": "on",
+        "team_name": "Dicker, Kelce",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "russellfyfe"
+    },
+    {
+      "avatar": "d8348f03a7012b2dd00afbddb7273b03",
+      "is_bot": false,
+      "user_id": "1001605098226659328",
+      "is_owner": false,
+      "metadata": {
+        "allow_pn": "on",
+        "allow_sms": "on",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "Cratty"
+    },
+    {
+      "avatar": "f0edbf4278f53f9425db175073df6584",
+      "is_bot": false,
+      "user_id": "1002388535137267712",
+      "is_owner": false,
+      "metadata": {
+        "avatar": "https://sleepercdn.com/uploads/430b8a587bf6934cb6825b6395698cad.jpg",
+        "allow_pn": "on",
+        "allow_sms": "on",
+        "team_name": "Streets Ahead",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "slkiefer"
+    },
+    {
+      "avatar": "82aec8e811b839b8ec25d7b458afd57b",
+      "is_bot": false,
+      "user_id": "1002843493154308096",
+      "is_owner": false,
+      "metadata": {
+        "allow_pn": "on",
+        "team_name": "Tua Infinity and Beyond",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "hallambae"
+    }
+  ]
+}
