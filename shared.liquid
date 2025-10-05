@@ -3,51 +3,48 @@ GLOBAL VARIABLES & UTILITIES
 Used across all templates and layouts
 ================================================================ {% endcomment %}
 
-{% comment %} Global sleeper logo template - available to all templates {% endcomment %}
-{% template sleeper_logo %}
-{% comment %}
-Renders the Sleeper logo SVG with size parameter
-Parameters:
-- size: 'small' (33px), 'medium' (48px), 'large' (64px), or custom number
-{% endcomment %}
-<svg class="image image-stroke image--dither rounded--full hidden sm:inline" width="33.333" height="33.333" fill="none" version="1.1" viewBox="0 0 33.333 40" xmlns="http://www.w3.org/2000/svg">
-  <g transform="translate(-5.8333 -4)" clip-path="url(#fahpw200aa)">
-    <path d="m11.363 4a8.863 8.863 0 0 0-8.863 8.863v22.274a8.863 8.863 0 0 0 8.863 8.863h22.274a8.863 8.863 0 0 0 8.863-8.863v-22.274a8.863 8.863 0 0 0-8.863-8.863z" fill="url(#7gf0pys8xb)"/>
-    <path d="m23.281 12.946a2.657 2.657 0 0 0-0.781-5.196 2.656 2.656 0 0 0-0.781 5.196v2.403a14.317 14.317 0 0 0-8.785 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 1.995 0.4 4.058 0.61 6.171 0.61s4.176-0.21 6.171-0.61c5.061-1.465 7.032-6.18 7.032-10.953 0-3.5-0.956-6.873-3.637-9.324a14.318 14.318 0 0 0-8.785-3.624z" clip-rule="evenodd" fill="#022047" fill-rule="evenodd"/>
-    <path d="m22.5 7.75a2.656 2.656 0 0 0-0.781 5.196v2.403h-3e-3a14.317 14.317 0 0 0-8.782 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 0.96 0.193 1.937 0.34 2.927 0.443-3.637-0.779-6.51-3.67-7.312-7.297l-0.018-0.046c-0.223-0.584-0.364-1.193-0.364-1.788a5.471 5.471 0 0 1 3.7-5.176c0.855-0.292 1.808-0.37 2.707-0.37 0.751 0 1.502 0.039 2.256 0.078l0.141 7e-3c0.34 0.017 0.679 0.034 1.019 0.047-3.321-0.243-5.916-2.343-5.916-4.898 0-2.099 1.752-3.891 4.219-4.599 0 0 0.666-0.158 1.093-0.206 0.43-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.031-1.444-2.031-2.734 0-1.067 0.546-2 1.406-2.5z" fill="url(#ervf3aoc7c)"/>
-    <path d="m25.156 10.406c0 1.195-0.79 2.206-1.875 2.54v2.403a14.317 14.317 0 0 1 8.785 3.624c2.68 2.451 3.637 5.824 3.637 9.324 0 4.772-1.971 9.488-7.032 10.953a31.633 31.633 0 0 1-9.415 0.443c-3.638-0.779-6.51-3.67-7.313-7.297a8.22 8.22 0 0 0 0.982 1.779 7.673 7.673 0 0 0 3.842 2.81c1.814 0.59 3.86 0.609 5.733 0.609s3.919-0.019 5.733-0.61a7.672 7.672 0 0 0 3.841-2.81c0.726-1.006 1.363-2.344 1.363-3.611a5.471 5.471 0 0 0-3.7-5.177c-0.854-0.292-1.807-0.37-2.706-0.37-0.751 0-1.503 0.039-2.256 0.078-0.756 0.039-1.514 0.078-2.275 0.078-0.373 0-0.744-0.01-1.115-0.024-3.321-0.243-5.917-2.343-5.917-4.898 0-2.099 1.752-3.891 4.22-4.599 0 0 0.666-0.158 1.093-0.206 0.429-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.032-1.444-2.032-2.734 0-1.067 0.547-2 1.407-2.5a2.656 2.656 0 0 1 2.656 2.656zm-1.218 6.464c-0.49 0.32-0.813 0.874-0.813 1.502 0 2.323 3.794 2.543 5.4 2.42 2.032-0.158 4.335 1e-3 5.928 1.411a10.4 10.4 0 0 0-2.392-3.233 14.404 14.404 0 0 0-4.067-2.554 5.076 5.076 0 0 0-1.512-0.229c-0.86 0-1.813 0.205-2.544 0.683z" clip-rule="evenodd" fill="url(#xnufxgertd)" fill-rule="evenodd"/>
-    <path d="m21.718 15.35h-2e-3l2e-3 -1e-3z" fill="url(#xnufxgertd)"/>
-    <path d="m23.125 18.372c0-0.628 0.324-1.182 0.814-1.502 0.73-0.478 1.684-0.683 2.544-0.683 0.526 0 1.034 0.08 1.511 0.23a14.329 14.329 0 0 1 4.067 2.553 10.392 10.392 0 0 1 2.392 3.233c-1.592-1.41-3.896-1.569-5.929-1.412-1.605 0.124-5.399-0.096-5.399-2.419z" fill="#fff"/>
-    <path d="m14.063 28.922c0.886 3.91 2.792 4.297 4.347 4.297 0.745 0 1.446-0.269 2.059-0.604l-6.407-3.693z" fill="url(#g3wsk8a9qf)"/>
-    <path d="m30.938 28.922c-0.887 3.91-2.793 4.297-4.348 4.297-0.745 0-1.446-0.269-2.059-0.604z" fill="url(#y58b36rxlg)"/>
-  </g>
-  <defs>
-    <linearGradient id="7gf0pys8xb" x1="2.101" x2="2.101" y1="3.201" y2="44" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#253659" offset="0"/>
-      <stop stop-color="#102131" offset="1"/>
-    </linearGradient>
-    <linearGradient id="xnufxgertd" x1="31.591" x2="15.617" y1="18.688" y2="36.253" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#EEF2F7" offset="0"/>
-      <stop stop-color="#A3B1D3" offset="1"/>
-    </linearGradient>
-    <linearGradient id="g3wsk8a9qf" x1="17.266" x2="17.266" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#00FFC6" offset="0"/>
-      <stop stop-color="#00BAE9" offset="1"/>
-    </linearGradient>
-    <linearGradient id="y58b36rxlg" x1="27.734" x2="27.734" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#00FFC6" offset="0"/>
-      <stop stop-color="#00BAE9" offset="1"/>
-    </linearGradient>
-    <radialGradient id="ervf3aoc7c" cx="0" cy="0" r="1" gradientTransform="matrix(-8.3823 4.7696 -8.5637 -15.05 17.679 23.254)" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#192A42" offset="0"/>
-      <stop stop-color="#62728F" offset="1"/>
-    </radialGradient>
-    <clipPath id="fahpw200aa">
-      <path transform="translate(.5)" d="m0 0h193v48h-193z" fill="#fff"/>
-    </clipPath>
-  </defs>
-</svg>
+{% comment %} Set unique plugin ID for Mashup compatibility {% endcomment %}
+{% assign plugin_id = trmnl.plugin_settings.custom_fields_values.league_id %}
 
+{% comment %} Global sleeper logo SVG template - available to all templates {% endcomment %}
+{% template sleeper_logo_svg %}
+<svg class="image image-stroke image--dither" width="33.333" height="33.333" fill="none" version="1.1" viewBox="0 0 33.333 40" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(-5.8333 -4)" clip-path="url(#fahpw200aa)">
+<path d="m11.363 4a8.863 8.863 0 0 0-8.863 8.863v22.274a8.863 8.863 0 0 0 8.863 8.863h22.274a8.863 8.863 0 0 0 8.863-8.863v-22.274a8.863 8.863 0 0 0-8.863-8.863z" fill="url(#7gf0pys8xb)"/>
+<path d="m23.281 12.946a2.657 2.657 0 0 0-0.781-5.196 2.656 2.656 0 0 0-0.781 5.196v2.403a14.317 14.317 0 0 0-8.785 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 1.995 0.4 4.058 0.61 6.171 0.61s4.176-0.21 6.171-0.61c5.061-1.465 7.032-6.18 7.032-10.953 0-3.5-0.956-6.873-3.637-9.324a14.318 14.318 0 0 0-8.785-3.624z" clip-rule="evenodd" fill="#022047" fill-rule="evenodd"/>
+<path d="m22.5 7.75a2.656 2.656 0 0 0-0.781 5.196v2.403h-3e-3a14.317 14.317 0 0 0-8.782 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 0.96 0.193 1.937 0.34 2.927 0.443-3.637-0.779-6.51-3.67-7.312-7.297l-0.018-0.046c-0.223-0.584-0.364-1.193-0.364-1.788a5.471 5.471 0 0 1 3.7-5.176c0.855-0.292 1.808-0.37 2.707-0.37 0.751 0 1.502 0.039 2.256 0.078l0.141 7e-3c0.34 0.017 0.679 0.034 1.019 0.047-3.321-0.243-5.916-2.343-5.916-4.898 0-2.099 1.752-3.891 4.219-4.599 0 0 0.666-0.158 1.093-0.206 0.43-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.031-1.444-2.031-2.734 0-1.067 0.546-2 1.406-2.5z" fill="url(#ervf3aoc7c)"/>
+<path d="m25.156 10.406c0 1.195-0.79 2.206-1.875 2.54v2.403a14.317 14.317 0 0 1 8.785 3.624c2.68 2.451 3.637 5.824 3.637 9.324 0 4.772-1.971 9.488-7.032 10.953a31.633 31.633 0 0 1-9.415 0.443c-3.638-0.779-6.51-3.67-7.313-7.297a8.22 8.22 0 0 0 0.982 1.779 7.673 7.673 0 0 0 3.842 2.81c1.814 0.59 3.86 0.609 5.733 0.609s3.919-0.019 5.733-0.61a7.672 7.672 0 0 0 3.841-2.81c0.726-1.006 1.363-2.344 1.363-3.611a5.471 5.471 0 0 0-3.7-5.177c-0.854-0.292-1.807-0.37-2.706-0.37-0.751 0-1.503 0.039-2.256 0.078-0.756 0.039-1.514 0.078-2.275 0.078-0.373 0-0.744-0.01-1.115-0.024-3.321-0.243-5.917-2.343-5.917-4.898 0-2.099 1.752-3.891 4.22-4.599 0 0 0.666-0.158 1.093-0.206 0.429-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.032-1.444-2.032-2.734 0-1.067 0.547-2 1.407-2.5a2.656 2.656 0 0 1 2.656 2.656zm-1.218 6.464c-0.49 0.32-0.813 0.874-0.813 1.502 0 2.323 3.794 2.543 5.4 2.42 2.032-0.158 4.335 1e-3 5.928 1.411a10.4 10.4 0 0 0-2.392-3.233 14.404 14.404 0 0 0-4.067-2.554 5.076 5.076 0 0 0-1.512-0.229c-0.86 0-1.813 0.205-2.544 0.683z" clip-rule="evenodd" fill="url(#xnufxgertd)" fill-rule="evenodd"/>
+<path d="m21.718 15.35h-2e-3l2e-3 -1e-3z" fill="url(#xnufxgertd)"/>
+<path d="m23.125 18.372c0-0.628 0.324-1.182 0.814-1.502 0.73-0.478 1.684-0.683 2.544-0.683 0.526 0 1.034 0.08 1.511 0.23a14.329 14.329 0 0 1 4.067 2.553a10.392 10.392 0 0 1 2.392 3.233c-1.592-1.41-3.896-1.569-5.929-1.412-1.605 0.124-5.399-0.096-5.399-2.419z" fill="#fff"/>
+<path d="m14.063 28.922c0.886 3.91 2.792 4.297 4.347 4.297 0.745 0 1.446-0.269 2.059-0.604l-6.407-3.693z" fill="url(#g3wsk8a9qf)"/>
+<path d="m30.938 28.922c-0.887 3.91-2.793 4.297-4.348 4.297-0.745 0-1.446-0.269-2.059-0.604z" fill="url(#y58b36rxlg)"/>
+</g>
+<defs>
+<linearGradient id="7gf0pys8xb" x1="2.101" x2="2.101" y1="3.201" y2="44" gradientUnits="userSpaceOnUse">
+<stop stop-color="#253659" offset="0"/>
+<stop stop-color="#102131" offset="1"/>
+</linearGradient>
+<linearGradient id="xnufxgertd" x1="31.591" x2="15.617" y1="18.688" y2="36.253" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EEF2F7" offset="0"/>
+<stop stop-color="#A3B1D3" offset="1"/>
+</linearGradient>
+<linearGradient id="g3wsk8a9qf" x1="17.266" x2="17.266" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse">
+<stop stop-color="#00FFC6" offset="0"/>
+<stop stop-color="#00BAE9" offset="1"/>
+</linearGradient>
+<linearGradient id="y58b36rxlg" x1="27.734" x2="27.734" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse">
+<stop stop-color="#00FFC6" offset="0"/>
+<stop stop-color="#00BAE9" offset="1"/>
+</linearGradient>
+<radialGradient id="ervf3aoc7c" cx="0" cy="0" r="1" gradientTransform="matrix(-8.3823 4.7696 -8.5637 -15.05 17.679 23.254)" gradientUnits="userSpaceOnUse">
+<stop stop-color="#192A42" offset="0"/>
+<stop stop-color="#62728F" offset="1"/>
+</radialGradient>
+<clipPath id="fahpw200aa">
+<path transform="translate(.5)" d="m0 0h193v48h-193z" fill="#fff"/>
+</clipPath>
+</defs>
+</svg>
 {% endtemplate %}
 
 {% comment %}
@@ -67,9 +64,11 @@ Parameters:
 - layout_size: 'team' (shows team info), 'week' (shows week number), or 'empty' (shows nothing)
 - week: Week number to display (for 'week' layout)
 - status: League status (pre_draft, in_season, complete)
+- trmnl: TRMNL configuration
 {% endcomment %}
 
 {% assign layout_size = layout_size | default: 'team' %}
+{% assign plugin_id = trmnl.plugin_settings.custom_fields_values.league_id %}
 {% assign user_team = trmnl.plugin_settings.custom_fields_values.user_team %}
 {% assign my_team_name = nil %}
 {% assign my_avatar_url = nil %}
@@ -107,7 +106,7 @@ Parameters:
     {% endif %}
   {% elsif layout_size == 'team' and my_team_name %}
     <span class="instance">{{ my_team_name }}</span>
-    {% render 'render_avatar', avatar_url: my_avatar_url, title_bar: true %}
+    {% render 'render_avatar', avatar_url: my_avatar_url, title_bar: true, plugin_id: plugin_id %}
   {% endif %}
   {% comment %} layout_size == 'empty' shows nothing in bottom right {% endcomment %}
 </div>
@@ -120,10 +119,12 @@ Parameters:
 - user: User object from IDX_1.data
 - alignment: 'left', 'right', or 'center' (default: 'left')
 - show_avatar: true/false to show avatar (default: true)
+- plugin_id: Unique plugin ID for Mashup compatibility
 {% endcomment %}
 
 {% assign alignment = alignment | default: 'left' %}
 {% assign show_avatar = show_avatar | default: true %}
+{% assign plugin_id = plugin_id | default: '' %}
 
 {% if user %}
 {% assign team_name = user.metadata.team_name | default: user.display_name %}
@@ -144,7 +145,7 @@ Parameters:
 
 <div class="{{ flex_class }}">
   {% if show_avatar %}
-  {% render 'render_avatar', avatar_url: avatar_url, title_bar: false %}
+  {% render 'render_avatar', avatar_url: avatar_url, title_bar: false, plugin_id: plugin_id %}
   {% endif %}
 
   <div class="{{ text_align_class }}">
@@ -161,17 +162,19 @@ Renders avatar with fallback to Sleeper logo
 Parameters:
 - avatar_url: URL of the avatar
 - title_bar: true if this is for the title bar (uses default size), false for w--12 h--12
+- plugin_id: Unique plugin ID for Mashup compatibility
 {% endcomment %}
 
 {% assign title_bar = title_bar | default: false %}
+{% assign plugin_id = plugin_id | default: '' %}
 
 {% comment %} Determine if we should show the avatar or fallback {% endcomment %}
 {% if avatar_url == nil or avatar_url == '' or avatar_url == blank or avatar_url == 'undefined' %}
 {% comment %} No avatar - show Sleeper logo {% endcomment %}
 {% if title_bar %}
-<svg class="image image-stroke image--dither circle hidden sm:inline" width="33.333" height="33.333" fill="none" version="1.1" viewBox="0 0 33.333 40" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-5.8333 -4)" clip-path="url(#fahpw200aa)"><path d="m11.363 4a8.863 8.863 0 0 0-8.863 8.863v22.274a8.863 8.863 0 0 0 8.863 8.863h22.274a8.863 8.863 0 0 0 8.863-8.863v-22.274a8.863 8.863 0 0 0-8.863-8.863z" fill="url(#7gf0pys8xb)"/><path d="m23.281 12.946a2.657 2.657 0 0 0-0.781-5.196 2.656 2.656 0 0 0-0.781 5.196v2.403a14.317 14.317 0 0 0-8.785 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 1.995 0.4 4.058 0.61 6.171 0.61s4.176-0.21 6.171-0.61c5.061-1.465 7.032-6.18 7.032-10.953 0-3.5-0.956-6.873-3.637-9.324a14.318 14.318 0 0 0-8.785-3.624z" clip-rule="evenodd" fill="#022047" fill-rule="evenodd"/><path d="m22.5 7.75a2.656 2.656 0 0 0-0.781 5.196v2.403h-3e-3a14.317 14.317 0 0 0-8.782 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 0.96 0.193 1.937 0.34 2.927 0.443-3.637-0.779-6.51-3.67-7.312-7.297l-0.018-0.046c-0.223-0.584-0.364-1.193-0.364-1.788a5.471 5.471 0 0 1 3.7-5.176c0.855-0.292 1.808-0.37 2.707-0.37 0.751 0 1.502 0.039 2.256 0.078l0.141 7e-3c0.34 0.017 0.679 0.034 1.019 0.047-3.321-0.243-5.916-2.343-5.916-4.898 0-2.099 1.752-3.891 4.219-4.599 0 0 0.666-0.158 1.093-0.206 0.43-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.031-1.444-2.031-2.734 0-1.067 0.546-2 1.406-2.5z" fill="url(#ervf3aoc7c)"/><path d="m25.156 10.406c0 1.195-0.79 2.206-1.875 2.54v2.403a14.317 14.317 0 0 1 8.785 3.624c2.68 2.451 3.637 5.824 3.637 9.324 0 4.772-1.971 9.488-7.032 10.953a31.633 31.633 0 0 1-9.415 0.443c-3.638-0.779-6.51-3.67-7.313-7.297a8.22 8.22 0 0 0 0.982 1.779 7.673 7.673 0 0 0 3.842 2.81c1.814 0.59 3.86 0.609 5.733 0.609s3.919-0.019 5.733-0.61a7.672 7.672 0 0 0 3.841-2.81c0.726-1.006 1.363-2.344 1.363-3.611a5.471 5.471 0 0 0-3.7-5.177c-0.854-0.292-1.807-0.37-2.706-0.37-0.751 0-1.503 0.039-2.256 0.078-0.756 0.039-1.514 0.078-2.275 0.078-0.373 0-0.744-0.01-1.115-0.024-3.321-0.243-5.917-2.343-5.917-4.898 0-2.099 1.752-3.891 4.22-4.599 0 0 0.666-0.158 1.093-0.206 0.429-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.032-1.444-2.032-2.734 0-1.067 0.547-2 1.407-2.5a2.656 2.656 0 0 1 2.656 2.656zm-1.218 6.464c-0.49 0.32-0.813 0.874-0.813 1.502 0 2.323 3.794 2.543 5.4 2.42 2.032-0.158 4.335 1e-3 5.928 1.411a10.4 10.4 0 0 0-2.392-3.233 14.404 14.404 0 0 0-4.067-2.554 5.076 5.076 0 0 0-1.512-0.229c-0.86 0-1.813 0.205-2.544 0.683z" clip-rule="evenodd" fill="url(#xnufxgertd)" fill-rule="evenodd"/><path d="m21.718 15.35h-2e-3l2e-3 -1e-3z" fill="url(#xnufxgertd)"/><path d="m23.125 18.372c0-0.628 0.324-1.182 0.814-1.502 0.73-0.478 1.684-0.683 2.544-0.683 0.526 0 1.034 0.08 1.511 0.23a14.329 14.329 0 0 1 4.067 2.553 10.392 10.392 0 0 1 2.392 3.233c-1.592-1.41-3.896-1.569-5.929-1.412-1.605 0.124-5.399-0.096-5.399-2.419z" fill="#fff"/><path d="m14.063 28.922c0.886 3.91 2.792 4.297 4.347 4.297 0.745 0 1.446-0.269 2.059-0.604l-6.407-3.693z" fill="url(#g3wsk8a9qf)"/><path d="m30.938 28.922c-0.887 3.91-2.793 4.297-4.348 4.297-0.745 0-1.446-0.269-2.059-0.604z" fill="url(#y58b36rxlg)"/></g><defs><linearGradient id="7gf0pys8xb" x1="2.101" x2="2.101" y1="3.201" y2="44" gradientUnits="userSpaceOnUse"><stop stop-color="#253659" offset="0"/><stop stop-color="#102131" offset="1"/></linearGradient><linearGradient id="xnufxgertd" x1="31.591" x2="15.617" y1="18.688" y2="36.253" gradientUnits="userSpaceOnUse"><stop stop-color="#EEF2F7" offset="0"/><stop stop-color="#A3B1D3" offset="1"/></linearGradient><linearGradient id="g3wsk8a9qf" x1="17.266" x2="17.266" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse"><stop stop-color="#00FFC6" offset="0"/><stop stop-color="#00BAE9" offset="1"/></linearGradient><linearGradient id="y58b36rxlg" x1="27.734" x2="27.734" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse"><stop stop-color="#00FFC6" offset="0"/><stop stop-color="#00BAE9" offset="1"/></linearGradient><radialGradient id="ervf3aoc7c" cx="0" cy="0" r="1" gradientTransform="matrix(-8.3823 4.7696 -8.5637 -15.05 17.679 23.254)" gradientUnits="userSpaceOnUse"><stop stop-color="#192A42" offset="0"/><stop stop-color="#62728F" offset="1"/></radialGradient><clipPath id="fahpw200aa"><path transform="translate(.5)" d="m0 0h193v48h-193z" fill="#fff"/></clipPath></defs></svg>
+<div class="circle hidden sm:inline">{% render "sleeper_logo_svg" %}</div>
 {% else %}
-<svg class="image image-stroke image--dither rounded--full w--12 h--12" width="33.333" height="33.333" fill="none" version="1.1" viewBox="0 0 33.333 40" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-5.8333 -4)" clip-path="url(#fahpw200aa)"><path d="m11.363 4a8.863 8.863 0 0 0-8.863 8.863v22.274a8.863 8.863 0 0 0 8.863 8.863h22.274a8.863 8.863 0 0 0 8.863-8.863v-22.274a8.863 8.863 0 0 0-8.863-8.863z" fill="url(#7gf0pys8xb)"/><path d="m23.281 12.946a2.657 2.657 0 0 0-0.781-5.196 2.656 2.656 0 0 0-0.781 5.196v2.403a14.317 14.317 0 0 0-8.785 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 1.995 0.4 4.058 0.61 6.171 0.61s4.176-0.21 6.171-0.61c5.061-1.465 7.032-6.18 7.032-10.953 0-3.5-0.956-6.873-3.637-9.324a14.318 14.318 0 0 0-8.785-3.624z" clip-rule="evenodd" fill="#022047" fill-rule="evenodd"/><path d="m22.5 7.75a2.656 2.656 0 0 0-0.781 5.196v2.403h-3e-3a14.317 14.317 0 0 0-8.782 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 0.96 0.193 1.937 0.34 2.927 0.443-3.637-0.779-6.51-3.67-7.312-7.297l-0.018-0.046c-0.223-0.584-0.364-1.193-0.364-1.788a5.471 5.471 0 0 1 3.7-5.176c0.855-0.292 1.808-0.37 2.707-0.37 0.751 0 1.502 0.039 2.256 0.078l0.141 7e-3c0.34 0.017 0.679 0.034 1.019 0.047-3.321-0.243-5.916-2.343-5.916-4.898 0-2.099 1.752-3.891 4.219-4.599 0 0 0.666-0.158 1.093-0.206 0.43-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.031-1.444-2.031-2.734 0-1.067 0.546-2 1.406-2.5z" fill="url(#ervf3aoc7c)"/><path d="m25.156 10.406c0 1.195-0.79 2.206-1.875 2.54v2.403a14.317 14.317 0 0 1 8.785 3.624c2.68 2.451 3.637 5.824 3.637 9.324 0 4.772-1.971 9.488-7.032 10.953a31.633 31.633 0 0 1-9.415 0.443c-3.638-0.779-6.51-3.67-7.313-7.297a8.22 8.22 0 0 0 0.982 1.779 7.673 7.673 0 0 0 3.842 2.81c1.814 0.59 3.86 0.609 5.733 0.609s3.919-0.019 5.733-0.61a7.672 7.672 0 0 0 3.841-2.81c0.726-1.006 1.363-2.344 1.363-3.611a5.471 5.471 0 0 0-3.7-5.177c-0.854-0.292-1.807-0.37-2.706-0.37-0.751 0-1.503 0.039-2.256 0.078-0.756 0.039-1.514 0.078-2.275 0.078-0.373 0-0.744-0.01-1.115-0.024-3.321-0.243-5.917-2.343-5.917-4.898 0-2.099 1.752-3.891 4.22-4.599 0 0 0.666-0.158 1.093-0.206 0.429-0.047 1.1-0.037 1.1-0.037 0.52-0.255 0.982-1.223 1.244-2.424-1.167-0.371-2.032-1.444-2.032-2.734 0-1.067 0.547-2 1.407-2.5a2.656 2.656 0 0 1 2.656 2.656zm-1.218 6.464c-0.49 0.32-0.813 0.874-0.813 1.502 0 2.323 3.794 2.543 5.4 2.42 2.032-0.158 4.335 1e-3 5.928 1.411a10.4 10.4 0 0 0-2.392-3.233 14.404 14.404 0 0 0-4.067-2.554 5.076 5.076 0 0 0-1.512-0.229c-0.86 0-1.813 0.205-2.544 0.683z" clip-rule="evenodd" fill="url(#xnufxgertd)" fill-rule="evenodd"/><path d="m21.718 15.35h-2e-3l2e-3 -1e-3z" fill="url(#xnufxgertd)"/><path d="m23.125 18.372c0-0.628 0.324-1.182 0.814-1.502 0.73-0.478 1.684-0.683 2.544-0.683 0.526 0 1.034 0.08 1.511 0.23a14.329 14.329 0 0 1 4.067 2.553a10.392 10.392 0 0 1 2.392 3.233c-1.592-1.41-3.896-1.569-5.929-1.412-1.605 0.124-5.399-0.096-5.399-2.419z" fill="#fff"/><path d="m14.063 28.922c0.886 3.91 2.792 4.297 4.347 4.297 0.745 0 1.446-0.269 2.059-0.604l-6.407-3.693z" fill="url(#g3wsk8a9qf)"/><path d="m30.938 28.922c-0.887 3.91-2.793 4.297-4.348 4.297-0.745 0-1.446-0.269-2.059-0.604z" fill="url(#y58b36rxlg)"/></g><defs><linearGradient id="7gf0pys8xb" x1="2.101" x2="2.101" y1="3.201" y2="44" gradientUnits="userSpaceOnUse"><stop stop-color="#253659" offset="0"/><stop stop-color="#102131" offset="1"/></linearGradient><linearGradient id="xnufxgertd" x1="31.591" x2="15.617" y1="18.688" y2="36.253" gradientUnits="userSpaceOnUse"><stop stop-color="#EEF2F7" offset="0"/><stop stop-color="#A3B1D3" offset="1"/></linearGradient><linearGradient id="g3wsk8a9qf" x1="17.266" x2="17.266" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse"><stop stop-color="#00FFC6" offset="0"/><stop stop-color="#00BAE9" offset="1"/></linearGradient><linearGradient id="y58b36rxlg" x1="27.734" x2="27.734" y1="28.922" y2="33.141" gradientUnits="userSpaceOnUse"><stop stop-color="#00FFC6" offset="0"/><stop stop-color="#00BAE9" offset="1"/></linearGradient><radialGradient id="ervf3aoc7c" cx="0" cy="0" r="1" gradientTransform="matrix(-8.3823 4.7696 -8.5637 -15.05 17.679 23.254)" gradientUnits="userSpaceOnUse"><stop stop-color="#192A42" offset="0"/><stop stop-color="#62728F" offset="1"/></radialGradient><clipPath id="fahpw200aa"><path transform="translate(.5)" d="m0 0h193v48h-193z" fill="#fff"/></clipPath></defs></svg>
+<div class="rounded--full w--12 h--12">{% render "sleeper_logo_svg" %}</div>
 {% endif %}
 {% else %}
 {% comment %} Has avatar - show image {% endcomment %}
@@ -277,7 +280,7 @@ Parameters:
 Unified template for rendering matchup cards (both team 1 and team 2)
 Parameters:
 - card_id: Unique ID for the card element
-- roster_id: Roster ID for data attribute  
+- roster_id: Roster ID for data attribute
 - team_name: Team name to display
 - username: Username to display
 - avatar_url: Avatar URL
@@ -285,10 +288,12 @@ Parameters:
 - score: Current score (default: 0.00)
 - alignment: 'left' or 'right'
 - layout_size: Layout size for responsive adjustments
+- plugin_id: Unique plugin ID for Mashup compatibility
 {% endcomment %}
 
 {% comment %} Set size configuration based on layout_size {% endcomment %}
 {% assign layout_size = layout_size | default: 'full' %}
+{% assign plugin_id = plugin_id | default: '' %}
 {% case layout_size %}
 {% when 'quadrant' %}
 {% assign title_size = 'small' %}
@@ -331,7 +336,7 @@ Parameters:
   {% comment %} Header with avatar {% endcomment %}
   <div class="flex flex--space-between flex--center-y {{ flex_dir }} mb--4">
     {% if alignment == 'right' %}
-    {% render 'render_avatar', avatar_url: avatar_url, title_bar: false %}
+    {% render 'render_avatar', avatar_url: avatar_url, title_bar: false, plugin_id: plugin_id %}
     <div class="stretch-x {{ text_align }}">
       <div class="title title--{{ title_size }}" data-field="team-name">{{ team_name }}</div>
       {% unless layout_size == 'quadrant' %}
@@ -345,7 +350,7 @@ Parameters:
       <div class="label label--{{ label_size }} dim" data-field="username">@{{ username }}</div>
       {% endunless %}
     </div>
-    {% render 'render_avatar', avatar_url: avatar_url, title_bar: false %}
+    {% render 'render_avatar', avatar_url: avatar_url, title_bar: false, plugin_id: plugin_id %}
     {% endif %}
   </div>
 
@@ -441,11 +446,15 @@ Parameters:
 Renders the full matchup skeleton structure
 Parameters:
 - IDX_1: Users data
-- IDX_2: Rosters data  
+- IDX_2: Rosters data
 - layout_size: Layout size
 - user_team: Selected user team name
 - mode: 'my_team' or 'all_teams'
+- trmnl: TRMNL configuration (for plugin_id)
 {% endcomment %}
+
+{% comment %} Set unique plugin ID for Mashup compatibility {% endcomment %}
+{% assign plugin_id = trmnl.plugin_settings.custom_fields_values.league_id %}
 
 {% comment %} Set size configuration based on layout_size {% endcomment %}
 {% assign layout_size = layout_size | default: 'full' %}
@@ -495,10 +504,10 @@ Parameters:
 {% endunless %}
 
 {% comment %} Container structure based on layout {% endcomment %}
-<div id="matchup-container" class="layout {% if layout_size == 'quadrant' %}layout--row{% elsif layout_size == 'half-vertical' %}layout--col{% else %}layout--row{% endif %} layout--stretch-y bg--gray-65 {{ padding }} rounded--medium">
+<div id="matchup-container-{{ plugin_id }}" class="layout {% if layout_size == 'quadrant' %}layout--row{% elsif layout_size == 'half-vertical' %}layout--col{% else %}layout--row{% endif %} layout--stretch-y bg--gray-65 {{ padding }} rounded--medium">
 
   {% comment %} This will be populated by JavaScript with actual matchup pairing {% endcomment %}
-  <div class="flex {% if layout_size == 'quadrant' %}flex--row{% elsif layout_size == 'half-vertical' %}flex--col{% else %}flex--row{% endif %} gap--{{ gap_size }} w--full" id="matchup-content">
+  <div class="flex {% if layout_size == 'quadrant' %}flex--row{% elsif layout_size == 'half-vertical' %}flex--col{% else %}flex--row{% endif %} gap--{{ gap_size }} w--full" id="matchup-content-{{ plugin_id }}">
 
     {% comment %} Team 1 card - always rendered {% endcomment %}
     {% if target_user %}
@@ -506,10 +515,11 @@ Parameters:
     {% assign team1_username = target_user.display_name %}
     {% assign team1_avatar = target_user.metadata.avatar %}
     {% assign team1_record = target_roster.metadata.record | default: '' %}
+    {% capture team1_card_id %}team1-card-{{ plugin_id }}{% endcapture %}
 
     {% if layout_size == 'quadrant' %}
       {% render 'quadrant_matchup_card',
-      card_id: 'team1-card',
+      card_id: team1_card_id,
       roster_id: target_roster.roster_id,
       team_name: team1_name,
       username: team1_username,
@@ -517,7 +527,7 @@ Parameters:
       alignment: 'left' %}
     {% else %}
       {% render 'matchup_card',
-      card_id: 'team1-card',
+      card_id: team1_card_id,
       roster_id: target_roster.roster_id,
       team_name: team1_name,
       username: team1_username,
@@ -525,12 +535,13 @@ Parameters:
       record: team1_record,
       score: '0.00',
       alignment: 'left',
-      layout_size: layout_size %}
+      layout_size: layout_size,
+      plugin_id: plugin_id %}
     {% endif %}
     {% endif %}
 
     {% comment %} VS divider - Hidden initially, shown by JS if there's an opponent {% endcomment %}
-    <div id="vs-divider" class="flex flex--center-x flex--center-y {% if layout_size == 'quadrant' %}{% elsif layout_size == 'half-vertical' %}{% else %}flex--col flex--no-shrink{% endif %}" style="display: none;">
+    <div id="vs-divider-{{ plugin_id }}" class="flex flex--center-x flex--center-y {% if layout_size == 'quadrant' %}{% elsif layout_size == 'half-vertical' %}{% else %}flex--col flex--no-shrink{% endif %}" style="display: none;">
       {% if layout_size == 'quadrant' %}
       <span class="label label--xsmall dim">vs.</span>
       {% elsif layout_size == 'half-vertical' %}
@@ -542,10 +553,11 @@ Parameters:
     </div>
 
     {% comment %} Team 2 card - hidden initially, will be shown/populated by JS if there's an opponent {% endcomment %}
-    <div id="team2-container" class="stretch-x" style="display: none;">
+    {% capture team2_card_id %}team2-card-{{ plugin_id }}{% endcapture %}
+    <div id="team2-container-{{ plugin_id }}" class="stretch-x" style="display: none;">
       {% if layout_size == 'quadrant' %}
         {% render 'quadrant_matchup_card',
-        card_id: 'team2-card',
+        card_id: team2_card_id,
         roster_id: '',
         team_name: '',
         username: '',
@@ -553,7 +565,7 @@ Parameters:
         alignment: 'right' %}
       {% else %}
         {% render 'matchup_card',
-        card_id: 'team2-card',
+        card_id: team2_card_id,
         roster_id: '',
         team_name: '',
         username: '',
@@ -561,7 +573,8 @@ Parameters:
         record: '',
         score: '0.00',
         alignment: 'right',
-        layout_size: layout_size %}
+        layout_size: layout_size,
+        plugin_id: plugin_id %}
       {% endif %}
     </div>
 
@@ -587,7 +600,8 @@ IDX_1: IDX_1,
 IDX_2: IDX_2,
 layout_size: layout_size,
 user_team: user_team,
-mode: mode %}
+mode: mode,
+trmnl: trmnl %}
 
 {% render "matchup_hydration_script",
 IDX_0: IDX_0,
@@ -609,6 +623,9 @@ Parameters:
 - week: Week number to fetch
 {% endcomment %}
 
+{% comment %} Set unique plugin ID for Mashup compatibility {% endcomment %}
+{% assign plugin_id = trmnl.plugin_settings.custom_fields_values.league_id %}
+
 {% comment %} Set size configuration based on layout_size {% endcomment %}
 {% assign layout_size = layout_size | default: 'full' %}
 {% case layout_size %}
@@ -625,6 +642,7 @@ Parameters:
   const sleeperLogoFallback = {{ sleeper_logo_svg | replace: 'hidden sm:inline', 'rounded--full w--12 h--12' | json }};
 
   document.addEventListener('DOMContentLoaded', async function() {
+    const pluginId = '{{ plugin_id }}';
     const mode = '{{ trmnl.plugin_settings.custom_fields_values.mode | default: "all_teams" }}';
     const userTeamName = '{{ trmnl.plugin_settings.custom_fields_values.user_team | default: "" }}';
     const leagueId = '{{ trmnl.plugin_settings.custom_fields_values.league_id }}';
@@ -641,7 +659,7 @@ Parameters:
     const matchups = await response.json();
 
     // Get team 1 card
-    const team1Card = document.getElementById('team1-card');
+    const team1Card = document.getElementById(`team1-card-${pluginId}`);
     if (!team1Card) {
       console.error('No team1 card found');
       return;
@@ -694,8 +712,8 @@ Parameters:
       const opponentUser = users.find(u => u.user_id === opponentRoster?.owner_id);
 
       if (opponentRoster && opponentUser) {
-        const team2Container = document.getElementById('team2-container');
-        const team2Card = document.getElementById('team2-card');
+        const team2Container = document.getElementById(`team2-container-${pluginId}`);
+        const team2Card = document.getElementById(`team2-card-${pluginId}`);
 
         // Update team 2 data
         team2Card.dataset.rosterId = opponentRoster.roster_id;
@@ -751,11 +769,11 @@ Parameters:
 
         // Show team 2 container and VS divider
         team2Container.style.display = '';
-        document.getElementById('vs-divider').style.display = '';
+        document.getElementById(`vs-divider-${pluginId}`).style.display = '';
       }
     } else {
       // No opponent - convert to bye week
-      const matchupContent = document.getElementById('matchup-content');
+      const matchupContent = document.getElementById(`matchup-content-${pluginId}`);
       matchupContent.innerHTML = generateByeWeekCard(targetRoster, users.find(u => u.user_id === targetRoster.owner_id), layoutSize);
     }
 
@@ -824,8 +842,10 @@ Parameters passed via render:
 - IDX_0: League data
 - IDX_1: Users data
 - IDX_2: Rosters data
+- trmnl: TRMNL configuration (for plugin_id)
 {% endcomment %}
 
+{% assign plugin_id = trmnl.plugin_settings.custom_fields_values.league_id %}
 {% assign layout_size = layout_size | default: 'full' %}
 {% comment %} Adjust sizes/margins for smaller layouts {% endcomment %}
 {% case layout_size %}
@@ -878,10 +898,11 @@ Parameters passed via render:
     </div>
 
     {% comment %} Winner team header {% endcomment %}
-    {% render 'team_header', 
+    {% render 'team_header',
     user: winner_user,
     alignment: 'center',
-    show_avatar: true %}
+    show_avatar: true,
+    plugin_id: plugin_id %}
   </div>
 </div>
 {% else %}
@@ -932,6 +953,7 @@ week: effective_week %}
 IDX_0: IDX_0,
 IDX_1: IDX_1,
 IDX_2: IDX_2,
+trmnl: trmnl,
 layout_size: layout_size %}
 {% endif %}
 {% endtemplate %}
