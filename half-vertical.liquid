@@ -1,17 +1,15 @@
-<div class="view w--full h--full">
-  {% render "main_content", 
-      IDX_0: IDX_0,
-      IDX_1: IDX_1,
-      IDX_2: IDX_2,
-      IDX_3: IDX_3,
-      trmnl: trmnl,
-      layout_size: "half-vertical",
-      status: status,
-      week: week %}
-</div>
+{% render "main_content", 
+    nfl_state: IDX_0,
+    league_data: IDX_1,
+    users_data: IDX_2,
+    rosters_data: IDX_3,
+    trmnl: trmnl,
+    layout_size: "half-vertical",
+    status: status,
+    week: week %}
 
 {% render "title_bar",
-    IDX_0: IDX_0,
-    IDX_1: IDX_1,
+    league_data: IDX_1,
+    users_data: IDX_2,
     trmnl: trmnl,
     layout_size: "empty" %}

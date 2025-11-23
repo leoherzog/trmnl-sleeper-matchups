@@ -1,22 +1,20 @@
-<div class="view w--full h--full">
-  {% render "main_content", 
-      IDX_0: IDX_0,
-      IDX_1: IDX_1,
-      IDX_2: IDX_2,
-      IDX_3: IDX_3,
-      trmnl: trmnl,
-      layout_size: "quadrant",
-      status: status,
-      week: week %}
-</div>
+{% render "main_content", 
+    nfl_state: IDX_0,
+    league_data: IDX_1,
+    users_data: IDX_2,
+    rosters_data: IDX_3,
+    trmnl: trmnl,
+    layout_size: "quadrant",
+    status: status,
+    week: week %}
 
 {% comment %} Determine the effective week and status for display {% endcomment %}
-{% assign effective_week = week | default: trmnl.plugin_settings.custom_fields_values.test_week | default: IDX_3.week | default: IDX_0.settings.leg %}
-{% assign effective_status = status | default: trmnl.plugin_settings.custom_fields_values.test_status | default: IDX_0.status %}
+{% assign effective_week = week | default: trmnl.plugin_settings.custom_fields_values.test_week | default: IDX_0.week | default: IDX_1.settings.leg %}
+{% assign effective_status = status | default: trmnl.plugin_settings.custom_fields_values.test_status | default: IDX_1.status %}
 
 {% render "title_bar",
-    IDX_0: IDX_0,
-    IDX_1: IDX_1,
+    nfl_state: IDX_0,
+    league_data: IDX_1,
     trmnl: trmnl,
     layout_size: "week",
     week: effective_week,
