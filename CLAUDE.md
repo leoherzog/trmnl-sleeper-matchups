@@ -20,7 +20,7 @@ The TRMNL system automatically prepends `shared.liquid` to whichever layout file
 - Templates defined in `shared.liquid` are available to all layout files via `{% render %}` tags
 
 ### Data Flow
-1. Sleeper API provides league, user, roster, and state data via IDX_0 through IDX_3
+1. Sleeper API provides NFL state, league, user, and roster data via IDX_0 through IDX_3 (in that order)
 2. TRMNL prepends `shared.liquid` to the selected layout file
 3. Liquid templates process this data server-side
 4. JavaScript fetches live matchup data client-side (when in-season)
@@ -28,7 +28,18 @@ The TRMNL system automatically prepends `shared.liquid` to whichever layout file
 
 ## Data Structure
 
-### IDX_0 - League Data
+### IDX_0 - NFL State
+```json
+{
+  "week": 1,
+  "leg": 1,
+  "season": "2025",
+  "season_type": "regular",
+  "season_start_date": "2025-09-04"
+}
+```
+
+### IDX_1 - League Data
 ```json
 {
   "name": "League Name",
@@ -46,7 +57,7 @@ The TRMNL system automatically prepends `shared.liquid` to whichever layout file
 }
 ```
 
-### IDX_1 - Users Data
+### IDX_2 - Users Data
 ```json
 {
   "data": [{
@@ -60,7 +71,7 @@ The TRMNL system automatically prepends `shared.liquid` to whichever layout file
 }
 ```
 
-### IDX_2 - Rosters Data
+### IDX_3 - Rosters Data
 ```json
 {
   "data": [{
@@ -83,15 +94,12 @@ The TRMNL system automatically prepends `shared.liquid` to whichever layout file
 }
 ```
 
-### IDX_3 - NFL State
-```json
-{
-  "week": 1,
-  "leg": 1,
-  "season": "2025",
-  "season_type": "regular"
-}
-```
+## Semantic Variables
+The templates now use semantic variable names mapped from the IDX data:
+- `nfl_state` (from IDX_0)
+- `league_data` (from IDX_1)
+- `users_data` (from IDX_2)
+- `rosters_data` (from IDX_3)
 
 ## Display Modes
 
@@ -102,8 +110,8 @@ The TRMNL system automatically prepends `shared.liquid` to whichever layout file
 ### 2. In-Season Mode (`status: "in_season"`)
 - Fetches live matchup data from the Sleeper matchups endpoint
 - Displays a simplified matchup view with:
-  - Team header (avatar, name, @username)
-  - Win/loss record pills (last 6)
+  - Team header (avatar, name, @username with record e.g. "7-3")
+  - Win/loss record pills (full history)
   - Current score only (no projected score/win probability)
   - VS divider with week number
   - BYE WEEK card when no opponent is scheduled
