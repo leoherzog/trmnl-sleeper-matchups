@@ -59,11 +59,14 @@ Uncomment the two lines below to force locally while developing:
 
 {% template title_bar %}
 {% comment %}
-Title bar template with layout size control
+Title Bar Template
+Displays league avatar, name, and contextual info (week/team) based on layout size.
+
 Parameters:
 - layout_size: 'team' (shows team info), 'week' (shows week number), or 'empty' (shows nothing)
-- week: Week number to display (for 'week' layout)
-- status: League status (pre_draft, in_season, complete)
+- nfl_state: NFL state data (for week)
+- league_data: League data (for status/name)
+- users_data: Users data (for team lookup)
 - trmnl: TRMNL configuration
 {% endcomment %}
 
@@ -72,6 +75,9 @@ Parameters:
 {% assign user_team = trmnl.plugin_settings.custom_fields_values.user_team %}
 {% assign my_team_name = nil %}
 {% assign my_avatar_url = nil %}
+
+{% assign effective_status = trmnl.plugin_settings.custom_fields_values.test_status | default: league_data.status %}
+{% assign effective_week = trmnl.plugin_settings.custom_fields_values.test_week | default: nfl_state.display_week | default: league_data.settings.leg %}
 
 {% comment %} Find user's team if specified (only for team layout) {% endcomment %}
 {% if layout_size == 'team' and user_team and user_team != '' %}
@@ -97,12 +103,12 @@ Parameters:
 
   {% comment %} Bottom right content based on layout_size and status {% endcomment %}
   {% if layout_size == 'week' %}
-    {% if status == 'complete' %}
+    {% if effective_status == 'complete' %}
       {% comment %} Show nothing for completed season {% endcomment %}
-    {% elsif status == 'pre_draft' %}
+    {% elsif effective_status == 'pre_draft' %}
       <span class="instance" data-field="title-week">Pre-Season</span>
-    {% elsif week %}
-      <span class="instance" data-field="title-week">Week {{ week }}</span>
+    {% elsif effective_week %}
+      <span class="instance" data-field="title-week">Week {{ effective_week }}</span>
     {% endif %}
   {% elsif layout_size == 'team' and my_team_name %}
     <span class="instance">{{ my_team_name }}</span>
