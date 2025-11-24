@@ -249,36 +249,7 @@ Templates for active season matchups and displays
 ================================================================ {% endcomment %}
 
 
-{% template size_config %}
-{% comment %}
-Returns size configuration based on layout_size
-Parameters:
-- layout_size: 'full', 'half-horizontal', 'half-vertical', or 'quadrant'
-{% endcomment %}
 
-{% assign layout_size = layout_size | default: 'full' %}
-
-{% case layout_size %}
-{% when 'quadrant' %}
-{% assign title_size = 'small' %}
-{% assign value_size = 'small' %}
-{% assign label_size = 'xsmall' %}
-{% assign padding = 'p--2' %}
-{% assign gap_size = 'small' %}
-{% when 'half-horizontal', 'half-vertical' %}
-{% assign title_size = 'small' %}
-{% assign value_size = 'small' %}
-{% assign label_size = 'small' %}
-{% assign padding = 'p--3' %}
-{% assign gap_size = 'medium' %}
-{% else %}
-{% assign title_size = 'medium' %}
-{% assign value_size = 'medium' %}
-{% assign label_size = 'small' %}
-{% assign padding = 'p--4' %}
-{% assign gap_size = 'medium' %}
-{% endcase %}
-{% endtemplate %}
 
 {% template matchup_card %}
 {% comment %}
@@ -303,7 +274,7 @@ Parameters:
 {% assign plugin_id = plugin_id | default: '' %}
 {% case layout_size %}
 {% when 'quadrant' %}
-{% assign title_size = 'small' %}
+{% assign title_size = 'xsmall' %}
 {% assign value_size = 'small' %}
 {% assign label_size = 'xsmall' %}
 {% assign padding = 'p--2' %}
@@ -340,63 +311,39 @@ Parameters:
 {% endif %}
 
 <div id="{{ card_id }}" class="bg--white rounded {{ padding }} stretch-x" data-roster-id="{{ roster_id }}">
-  {% comment %} Header with avatar {% endcomment %}
-  <div class="flex flex--space-between flex--center-y {{ flex_dir }} mb--4">
-    <div class="stretch-x {{ text_align }}">
+  {% if layout_size == 'quadrant' %}
+    <div class="{{ text_align }}">
       <div class="title title--{{ title_size }}" data-field="team-name">{{ team_name }}</div>
-      {% unless layout_size == 'quadrant' %}
-      <div class="label label--{{ label_size }} dim" data-field="username">@{{ username }} {% if wins %}<span class="label label--{{ label_size }} label--outline ml--1">{{ wins }}-{{ losses }}</span>{% endif %}</div>
-      {% endunless %}
+      <div class="label label--{{ label_size }} dim" data-field="username">@{{ username }}</div>
+      <div class="value value--{{ value_size }} mt--2" data-field="score">{{ score }}</div>
     </div>
-    {% render 'render_avatar', avatar_url: avatar_url, title_bar: false, plugin_id: plugin_id %}
-  </div>
+  {% else %}
+    {% comment %} Header with avatar {% endcomment %}
+    <div class="flex flex--space-between flex--center-y {{ flex_dir }} mb--4">
+      <div class="stretch-x {{ text_align }}">
+        <div class="title title--{{ title_size }}" data-field="team-name">{{ team_name }}</div>
+        <div class="label label--{{ label_size }} dim" data-field="username">@{{ username }} {% if wins %}<span class="label label--{{ label_size }} label--outline ml--1">{{ wins }}-{{ losses }}</span>{% endif %}</div>
+      </div>
+      {% render 'render_avatar', avatar_url: avatar_url, title_bar: false, plugin_id: plugin_id %}
+    </div>
 
-  {% comment %} Win/Loss Record {% endcomment %}
-  <div class="flex flex--row gap--xsmall {{ flex_align }} mb--4" data-field="record">
-    {% if record and record != '' %}
-    {% render 'record_pills', record: record, size: label_size, alignment: alignment %}
-    {% endif %}
-  </div>
+    {% comment %} Win/Loss Record {% endcomment %}
+    <div class="flex flex--row gap--xsmall {{ flex_align }} mb--4" data-field="record">
+      {% if record and record != '' %}
+      {% render 'record_pills', record: record, size: label_size, alignment: alignment %}
+      {% endif %}
+    </div>
 
-  {% comment %} Score {% endcomment %}
-  <div class="flex flex--row {{ score_align }} gap--medium">
-    <span class="label label--{{ label_size }} {{ order_class }}">Score</span>
-    <span class="value value--{{ value_size }} {{ order_class_inv }}" data-field="score">{{ score }}</span>
-  </div>
+    {% comment %} Score {% endcomment %}
+    <div class="flex flex--row {{ score_align }} gap--medium">
+      <span class="label label--{{ label_size }} {{ order_class }}">Score</span>
+      <span class="value value--{{ value_size }} {{ order_class_inv }}" data-field="score">{{ score }}</span>
+    </div>
+  {% endif %}
 </div>
 {% endtemplate %}
 
-{% template quadrant_matchup_card %}
-{% comment %}
-Simplified matchup card specifically for quadrant layout
-Shows only team name, username, and score in a compact horizontal layout
-Parameters:
-- card_id: Unique ID for the card element
-- roster_id: Roster ID for data attribute
-- team_name: Team name to display
-- username: Username to display
-- score: Current score (default: 0.00)
-- alignment: 'left' or 'right'
-{% endcomment %}
 
-{% assign alignment = alignment | default: 'left' %}
-{% assign score = score | default: '0.00' %}
-
-{% comment %} Alignment classes {% endcomment %}
-{% if alignment == 'right' %}
-  {% assign text_align = 'text--right' %}
-{% else %}
-  {% assign text_align = 'text--left' %}
-{% endif %}
-
-<div id="{{ card_id }}" class="bg--white rounded p--2 stretch-x" data-roster-id="{{ roster_id }}">
-  <div class="{{ text_align }}">
-    <div class="title title--xsmall" data-field="team-name">{{ team_name }}</div>
-    <div class="label label--xsmall dim" data-field="username">@{{ username }}</div>
-    <div class="value value--small mt--2" data-field="score">{{ score }}</div>
-  </div>
-</div>
-{% endtemplate %}
 
 {% template bye_week_skeleton %}
 {% comment %}
@@ -516,15 +463,6 @@ Parameters:
     {% assign team1_losses = target_roster.settings.losses %}
     {% capture team1_card_id %}team1-card-{{ plugin_id }}{% endcapture %}
 
-    {% if layout_size == 'quadrant' %}
-      {% render 'quadrant_matchup_card',
-      card_id: team1_card_id,
-      roster_id: target_roster.roster_id,
-      team_name: team1_name,
-      username: team1_username,
-      score: '0.00',
-      alignment: 'left' %}
-    {% else %}
       {% render 'matchup_card',
       card_id: team1_card_id,
       roster_id: target_roster.roster_id,
@@ -538,7 +476,6 @@ Parameters:
       alignment: 'left',
       layout_size: layout_size,
       plugin_id: plugin_id %}
-    {% endif %}
     {% endif %}
 
     {% comment %} VS divider - Hidden initially, shown by JS if there's an opponent {% endcomment %}
@@ -556,15 +493,6 @@ Parameters:
     {% comment %} Team 2 card - hidden initially, will be shown/populated by JS if there's an opponent {% endcomment %}
     {% capture team2_card_id %}team2-card-{{ plugin_id }}{% endcapture %}
     <div id="team2-container-{{ plugin_id }}" class="stretch-x" style="display: none;">
-      {% if layout_size == 'quadrant' %}
-        {% render 'quadrant_matchup_card',
-        card_id: team2_card_id,
-        roster_id: '',
-        team_name: '',
-        username: '',
-        score: '0.00',
-        alignment: 'right' %}
-      {% else %}
         {% render 'matchup_card',
         card_id: team2_card_id,
         roster_id: '',
@@ -578,7 +506,6 @@ Parameters:
         alignment: 'right',
         layout_size: layout_size,
         plugin_id: plugin_id %}
-      {% endif %}
     </div>
 
   </div>
