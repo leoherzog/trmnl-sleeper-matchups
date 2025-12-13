@@ -495,15 +495,19 @@ Parameters:
     {% comment %} VS divider - Hidden initially, shown by JS if there's an opponent {% endcomment %}
     <div id="vs-divider-{{ plugin_id }}" class="flex flex--center-x flex--center-y {% if layout_size == 'quadrant' %}{% elsif layout_size == 'half-vertical' %}{% else %}flex--col flex--no-shrink{% endif %}" style="display: none;" data-is-playoffs="{{ is_playoffs }}" data-playoff-round="{{ playoff_round }}">
       {% if layout_size == 'quadrant' %}
-      <span class="label label--xsmall dim">vs.</span>
+      <span class="label label--xsmall dim">{% if is_playoffs %}🏆{% else %}vs.{% endif %}</span>
       {% elsif layout_size == 'half-vertical' %}
       {% if is_playoffs %}
-      <span class="label label--small dim">vs • <span data-field="bracket-type"></span>Round <span data-field="week">{{ playoff_round }}</span></span>
+      <span class="label label--small dim">🏆 <span data-field="bracket-type"></span>Round <span data-field="week">{{ playoff_round }}</span></span>
       {% else %}
       <span class="label label--small dim">vs • Week <span data-field="week">1</span></span>
       {% endif %}
       {% else %}
+      {% if is_playoffs %}
+      <div class="title title--small">🏆</div>
+      {% else %}
       <div class="label label--small dim">vs</div>
+      {% endif %}
       {% if is_playoffs %}
       <div class="label label--small dim" data-field="bracket-type"></div>
       <div class="label label--small dim">Round <span data-field="week">{{ playoff_round }}</span></div>
