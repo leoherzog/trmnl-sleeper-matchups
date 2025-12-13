@@ -79,6 +79,16 @@ Parameters:
 {% assign effective_status = trmnl.plugin_settings.custom_fields_values.test_status | default: league_data.status %}
 {% assign effective_week = trmnl.plugin_settings.custom_fields_values.test_week | default: nfl_state.display_week | default: league_data.settings.leg %}
 
+{% comment %} Playoff detection and round calculation {% endcomment %}
+{% assign playoff_week_start = league_data.settings.playoff_week_start | default: 15 %}
+{% if effective_week >= playoff_week_start %}
+{% assign is_playoffs = true %}
+{% assign playoff_round = effective_week | minus: playoff_week_start | plus: 1 %}
+{% else %}
+{% assign is_playoffs = false %}
+{% assign playoff_round = 0 %}
+{% endif %}
+
 {% comment %} Find user's team if specified (only for team layout) {% endcomment %}
 {% if layout_size == 'team' and user_team and user_team != '' %}
 {% for user in users_data.data %}
@@ -107,8 +117,10 @@ Parameters:
       {% comment %} Show nothing for completed season {% endcomment %}
     {% elsif effective_status == 'pre_draft' %}
       <span class="instance" data-field="title-week">Pre-Season</span>
+    {% elsif is_playoffs %}
+      <span class="instance" data-field="title-week" data-is-playoffs="true" data-playoff-round="{{ playoff_round }}">Round {{ playoff_round }}</span>
     {% elsif effective_week %}
-      <span class="instance" data-field="title-week">Week {{ effective_week }}</span>
+      <span class="instance" data-field="title-week" data-is-playoffs="false">Week {{ effective_week }}</span>
     {% endif %}
   {% elsif layout_size == 'team' and my_team_name %}
     <span class="instance">{{ my_team_name }}</span>
@@ -395,6 +407,8 @@ Parameters:
 - user_team: Selected user team name
 - mode: 'my_team' or 'all_teams'
 - trmnl: TRMNL configuration (for plugin_id)
+- is_playoffs: Boolean indicating if we're in playoffs
+- playoff_round: Current playoff round number
 {% endcomment %}
 
 {% comment %} Set unique plugin ID for Mashup compatibility {% endcomment %}
@@ -479,14 +493,23 @@ Parameters:
     {% endif %}
 
     {% comment %} VS divider - Hidden initially, shown by JS if there's an opponent {% endcomment %}
-    <div id="vs-divider-{{ plugin_id }}" class="flex flex--center-x flex--center-y {% if layout_size == 'quadrant' %}{% elsif layout_size == 'half-vertical' %}{% else %}flex--col flex--no-shrink{% endif %}" style="display: none;">
+    <div id="vs-divider-{{ plugin_id }}" class="flex flex--center-x flex--center-y {% if layout_size == 'quadrant' %}{% elsif layout_size == 'half-vertical' %}{% else %}flex--col flex--no-shrink{% endif %}" style="display: none;" data-is-playoffs="{{ is_playoffs }}" data-playoff-round="{{ playoff_round }}">
       {% if layout_size == 'quadrant' %}
       <span class="label label--xsmall dim">vs.</span>
       {% elsif layout_size == 'half-vertical' %}
+      {% if is_playoffs %}
+      <span class="label label--small dim">vs • <span data-field="bracket-type"></span>Round <span data-field="week">{{ playoff_round }}</span></span>
+      {% else %}
       <span class="label label--small dim">vs • Week <span data-field="week">1</span></span>
+      {% endif %}
       {% else %}
       <div class="label label--small dim">vs</div>
+      {% if is_playoffs %}
+      <div class="label label--small dim" data-field="bracket-type"></div>
+      <div class="label label--small dim">Round <span data-field="week">{{ playoff_round }}</span></div>
+      {% else %}
       <div class="label label--small dim">Week <span data-field="week">1</span></div>
+      {% endif %}
       {% endif %}
     </div>
 
@@ -520,6 +543,8 @@ Parameters:
 - trmnl: TRMNL configuration
 - layout_size: Layout size for responsive adjustments
 - week: Week number to fetch
+- is_playoffs: Boolean indicating if we're in playoffs
+- playoff_round: Current playoff round number (1, 2, 3, etc.)
 {% endcomment %}
 
 {% assign mode = trmnl.plugin_settings.custom_fields_values.mode | default: 'all_teams' %}
@@ -531,7 +556,9 @@ rosters_data: rosters_data,
 layout_size: layout_size,
 user_team: user_team,
 mode: mode,
-trmnl: trmnl %}
+trmnl: trmnl,
+is_playoffs: is_playoffs,
+playoff_round: playoff_round %}
 
 {% render "matchup_hydration_script",
 league_data: league_data,
@@ -540,7 +567,9 @@ rosters_data: rosters_data,
 nfl_state: nfl_state,
 trmnl: trmnl,
 layout_size: layout_size,
-week: week %}
+week: week,
+is_playoffs: is_playoffs,
+playoff_round: playoff_round %}
 {% endtemplate %}
 
 {% template matchup_hydration_script %}
@@ -551,6 +580,8 @@ Parameters:
 - trmnl: TRMNL configuration
 - layout_size: Layout size for adjustments
 - week: Week number to fetch
+- is_playoffs: Boolean indicating if we're in playoffs
+- playoff_round: Current playoff round number
 {% endcomment %}
 
 {% comment %} Set unique plugin ID for Mashup compatibility {% endcomment %}
@@ -579,15 +610,13 @@ Parameters:
     const currentWeek = {{ week }};
     const layoutSize = '{{ layout_size }}';
     const labelSize = '{{ label_size }}';
+    const isPlayoffs = {{ is_playoffs | default: false }};
+    const playoffRound = {{ playoff_round | default: 0 }};
 
     const rosters = {{ rosters_data.data | json }};
   const users = {{ users_data.data | json }};
 
   try {
-    // Fetch matchups for the current week
-    const response = await fetch(`https://api.sleeper.app/v1/league/${leagueId}/matchups/${currentWeek}`);
-    const matchups = await response.json();
-
     // Get team 1 card
     const team1Card = document.getElementById(`team1-card-${pluginId}`);
     if (!team1Card) {
@@ -597,21 +626,183 @@ Parameters:
 
     const targetRosterId = parseInt(team1Card.dataset.rosterId);
     const targetRoster = rosters.find(r => r.roster_id === targetRosterId);
+    const matchupContent = document.getElementById(`matchup-content-${pluginId}`);
+
+    // During playoffs, fetch both winners and losers brackets
+    let bracket = null;
+    let bracketMatchup = null;
+    let opponentRosterIdFromBracket = null;
+    let isLosersBracket = false;
+
+    if (isPlayoffs) {
+      // Fetch both brackets in parallel
+      const [winnersResponse, losersResponse] = await Promise.all([
+        fetch(`https://api.sleeper.app/v1/league/${leagueId}/winners_bracket`),
+        fetch(`https://api.sleeper.app/v1/league/${leagueId}/losers_bracket`)
+      ]);
+      const winnersBracket = await winnersResponse.json();
+      const losersBracket = await losersResponse.json();
+
+      // Helper factory: creates resolveFromRef for a specific bracket
+      function createResolveFromRef(bracketData) {
+        return function(fromRef) {
+          if (!fromRef) return null;
+          const prevMatchId = fromRef.w ?? fromRef.l;
+          const prevMatch = bracketData.find(m => m.m === prevMatchId);
+          if (!prevMatch) return null;
+          return fromRef.w !== undefined ? prevMatch.w : prevMatch.l;
+        };
+      }
+
+      // Helper factory: creates matchInvolvesRoster for a specific bracket
+      function createMatchInvolvesRoster(resolveFromRef) {
+        return function(match, rosterId) {
+          if (match.t1 === rosterId || match.t2 === rosterId) return true;
+          if (resolveFromRef(match.t1_from) === rosterId) return true;
+          if (resolveFromRef(match.t2_from) === rosterId) return true;
+          return false;
+        };
+      }
+
+      // Helper factory: creates getOpponentFromMatch for a specific bracket
+      function createGetOpponentFromMatch(resolveFromRef) {
+        return function(match, rosterId) {
+          const t1Resolved = match.t1 ?? resolveFromRef(match.t1_from);
+          const t2Resolved = match.t2 ?? resolveFromRef(match.t2_from);
+          if (t1Resolved === rosterId) return t2Resolved;
+          if (t2Resolved === rosterId) return t1Resolved;
+          return null;
+        };
+      }
+
+      // Try winners bracket first
+      let resolveFromRef = createResolveFromRef(winnersBracket);
+      let matchInvolvesRoster = createMatchInvolvesRoster(resolveFromRef);
+      let getOpponentFromMatch = createGetOpponentFromMatch(resolveFromRef);
+
+      bracket = winnersBracket;
+      bracketMatchup = winnersBracket.find(m =>
+        m.r === playoffRound && matchInvolvesRoster(m, targetRosterId)
+      );
+
+      // If not in winners bracket for this round, check losers bracket
+      if (!bracketMatchup) {
+        resolveFromRef = createResolveFromRef(losersBracket);
+        matchInvolvesRoster = createMatchInvolvesRoster(resolveFromRef);
+        getOpponentFromMatch = createGetOpponentFromMatch(resolveFromRef);
+
+        bracket = losersBracket;
+        bracketMatchup = losersBracket.find(m =>
+          m.r === playoffRound && matchInvolvesRoster(m, targetRosterId)
+        );
+
+        if (bracketMatchup) {
+          isLosersBracket = true;
+        }
+      }
+
+      if (!bracketMatchup) {
+        // Team not found in current round of either bracket - determine why
+
+        // Check if team was eliminated from losers bracket (appears as loser 'l' in losers bracket)
+        const eliminatedFromLosers = losersBracket.some(m => m.l === targetRosterId);
+        if (eliminatedFromLosers) {
+          const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
+          matchupContent.innerHTML = generateEliminatedCard(targetRoster, targetUser, layoutSize);
+          return;
+        }
+
+        // Check if team appears in any round of either bracket
+        const winnersResolve = createResolveFromRef(winnersBracket);
+        const losersResolve = createResolveFromRef(losersBracket);
+        const winnersInvolves = createMatchInvolvesRoster(winnersResolve);
+        const losersInvolves = createMatchInvolvesRoster(losersResolve);
+
+        const inWinners = winnersBracket.some(m => winnersInvolves(m, targetRosterId));
+        const inLosers = losersBracket.some(m => losersInvolves(m, targetRosterId));
+
+        if (!inWinners && !inLosers) {
+          // Team not in any bracket at all
+          const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
+          matchupContent.innerHTML = generateEliminatedCard(targetRoster, targetUser, layoutSize);
+          return;
+        }
+
+        // Team is in a bracket but not in current round - show awaiting
+        const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
+        matchupContent.innerHTML = generateByeWeekCard(targetRoster, targetUser, layoutSize, isPlayoffs, playoffRound);
+        return;
+      }
+
+      // Get opponent from bracket
+      opponentRosterIdFromBracket = getOpponentFromMatch(bracketMatchup, targetRosterId);
+
+      // Check for true bye (opponent slot is null with no t*_from to resolve it)
+      if (opponentRosterIdFromBracket === null) {
+        const t1Resolved = bracketMatchup.t1 ?? resolveFromRef(bracketMatchup.t1_from);
+        const t2Resolved = bracketMatchup.t2 ?? resolveFromRef(bracketMatchup.t2_from);
+
+        const isT1Bye = t1Resolved === targetRosterId && bracketMatchup.t2 === null && !bracketMatchup.t2_from;
+        const isT2Bye = t2Resolved === targetRosterId && bracketMatchup.t1 === null && !bracketMatchup.t1_from;
+
+        if (isT1Bye || isT2Bye) {
+          const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
+          matchupContent.innerHTML = generateByeWeekCard(targetRoster, targetUser, layoutSize, isPlayoffs, playoffRound);
+          return;
+        }
+
+        // Opponent exists via t*_from but previous match not decided yet - awaiting opponent
+        const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
+        matchupContent.innerHTML = generateByeWeekCard(targetRoster, targetUser, layoutSize, isPlayoffs, playoffRound);
+        return;
+      }
+    }
+
+    // Fetch matchups for scores (works for both regular season and playoffs)
+    const response = await fetch(`https://api.sleeper.app/v1/league/${leagueId}/matchups/${currentWeek}`);
+    const matchups = await response.json();
+
     const targetMatchup = matchups.find(m => m.roster_id === targetRosterId);
 
     if (!targetMatchup) {
       console.log('No matchup found for roster', targetRosterId);
+      // During playoffs with no matchup data, use bracket info
+      if (isPlayoffs && bracketMatchup) {
+        // We have bracket info but no matchup - might be awaiting opponent
+        const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
+        if (opponentRosterIdFromBracket === null) {
+          matchupContent.innerHTML = generateByeWeekCard(targetRoster, targetUser, layoutSize, isPlayoffs, playoffRound);
+        } else {
+          // We have an opponent from bracket but no matchup scores yet - game hasn't started
+          // Continue to show the matchup card with 0 scores
+        }
+      } else if (isPlayoffs) {
+        const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
+        matchupContent.innerHTML = generateEliminatedCard(targetRoster, targetUser, layoutSize);
+      }
       return;
     }
 
-    // Update week number in VS divider and title bar
+    // Update week/round number in VS divider and title bar
     const weekElements = document.querySelectorAll('[data-field="week"]');
-    weekElements.forEach(el => el.textContent = currentWeek);
-    
-    // Update week in title bar if it exists (quadrant layout shows week in title bar)
+    weekElements.forEach(el => el.textContent = isPlayoffs ? playoffRound : currentWeek);
+
+    // Update bracket type (Winners/Losers) in VS divider during playoffs
+    if (isPlayoffs) {
+      const bracketTypeElements = document.querySelectorAll('[data-field="bracket-type"]');
+      const bracketLabel = isLosersBracket ? 'Losers' : 'Winners';
+      bracketTypeElements.forEach(el => el.textContent = bracketLabel);
+    }
+
+    // Update week/round in title bar if it exists (quadrant layout shows week in title bar)
     const titleWeek = document.querySelector('[data-field="title-week"]');
     if (titleWeek) {
-      titleWeek.textContent = `Week ${currentWeek}`;
+      if (isPlayoffs) {
+        const bracketPrefix = isLosersBracket ? 'Losers ' : 'Winners ';
+        titleWeek.textContent = `${bracketPrefix}Round ${playoffRound}`;
+      } else {
+        titleWeek.textContent = `Week ${currentWeek}`;
+      }
     }
 
     // Update team 1's score
@@ -631,10 +822,17 @@ Parameters:
       }
     }
 
-    // Find opponent
-    const opponentMatchup = matchups.find(m => 
-      m.matchup_id === targetMatchup.matchup_id && m.roster_id !== targetRosterId
-                                         );
+    // Find opponent - use bracket data during playoffs, matchup_id otherwise
+    let opponentMatchup = null;
+    if (isPlayoffs && opponentRosterIdFromBracket !== null) {
+      // During playoffs, use the opponent from bracket data
+      opponentMatchup = matchups.find(m => m.roster_id === opponentRosterIdFromBracket);
+    } else {
+      // Regular season or fallback - use matchup_id pairing
+      opponentMatchup = matchups.find(m =>
+        m.matchup_id === targetMatchup.matchup_id && m.roster_id !== targetRosterId
+      );
+    }
 
     if (opponentMatchup) {
       // There's an opponent - update team 2 card
@@ -706,9 +904,9 @@ Parameters:
         document.getElementById(`vs-divider-${pluginId}`).style.display = '';
       }
     } else {
-      // No opponent - convert to bye week
+      // No opponent - convert to bye week (playoff bye or regular bye)
       const matchupContent = document.getElementById(`matchup-content-${pluginId}`);
-      matchupContent.innerHTML = generateByeWeekCard(targetRoster, users.find(u => u.user_id === targetRoster.owner_id), layoutSize);
+      matchupContent.innerHTML = generateByeWeekCard(targetRoster, users.find(u => u.user_id === targetRoster.owner_id), layoutSize, isPlayoffs, playoffRound);
     }
 
   } catch (error) {
@@ -730,11 +928,51 @@ Parameters:
   }
 
 
-  // Generate bye week card
-  function generateByeWeekCard(roster, user, layoutSize) {
+  // Generate bye week card (handles both regular bye and playoff bye)
+  function generateByeWeekCard(roster, user, layoutSize, isPlayoffs = false, playoffRound = 0) {
     const teamName = user?.metadata?.team_name || user?.display_name || 'Team';
     const byeTitleSize = layoutSize === 'quadrant' ? 'small' : 'large';
     const teamLabelSize = layoutSize === 'quadrant' ? 'xsmall' : 'small';
+    let padding;
+
+    switch(layoutSize) {
+      case 'quadrant':
+        padding = 'p--2';
+        break;
+      case 'half-horizontal':
+      case 'half-vertical':
+        padding = 'p--3';
+        break;
+      default:
+        padding = 'p--4';
+    }
+
+    // During playoffs, a bye in round 1 means first-round bye (good thing)
+    // In later rounds, it would be unusual but could happen
+    let byeText = 'BYE WEEK';
+    if (isPlayoffs && playoffRound === 1) {
+      byeText = 'FIRST ROUND BYE';
+    } else if (isPlayoffs && playoffRound > 1) {
+      byeText = 'AWAITING OPPONENT';
+    }
+
+    return `
+    <div class="bg--white rounded ${padding} stretch-x">
+      <div class="flex flex--col flex--center-x flex--center-y h--full">
+        <div class="text--center">
+          <div class="label label--${teamLabelSize} dim mb--2">${teamName}</div>
+          <div class="title title--${byeTitleSize}">${byeText}</div>
+        </div>
+      </div>
+    </div>
+  `;
+  }
+
+  // Generate eliminated/not in playoffs card
+  function generateEliminatedCard(roster, user, layoutSize) {
+    const teamName = user?.metadata?.team_name || user?.display_name || 'Team';
+    const titleSize = layoutSize === 'quadrant' ? 'small' : 'large';
+    const labelSize = layoutSize === 'quadrant' ? 'xsmall' : 'small';
     let padding;
 
     switch(layoutSize) {
@@ -753,8 +991,8 @@ Parameters:
     <div class="bg--white rounded ${padding} stretch-x">
       <div class="flex flex--col flex--center-x flex--center-y h--full">
         <div class="text--center">
-          <div class="label label--${teamLabelSize} dim mb--2">${teamName}</div>
-          <div class="title title--${byeTitleSize}">BYE WEEK</div>
+          <div class="label label--${labelSize} dim mb--2">${teamName}</div>
+          <div class="title title--${titleSize}">SEASON OVER</div>
         </div>
       </div>
     </div>
@@ -868,12 +1106,22 @@ Parameters:
 {% assign effective_status = status | default: trmnl.plugin_settings.custom_fields_values.test_status | default: league_data.status %}
 {% assign effective_week = week | default: trmnl.plugin_settings.custom_fields_values.test_week | default: nfl_state.week | default: league_data.settings.leg %}
 
+{% comment %} Playoff detection and round calculation {% endcomment %}
+{% assign playoff_week_start = league_data.settings.playoff_week_start | default: 15 %}
+{% if effective_week >= playoff_week_start %}
+{% assign is_playoffs = true %}
+{% assign playoff_round = effective_week | minus: playoff_week_start | plus: 1 %}
+{% else %}
+{% assign is_playoffs = false %}
+{% assign playoff_round = 0 %}
+{% endif %}
+
 {% if effective_status == "pre_draft" %}
 {% render "pre_season_draft_card",
 league_data: league_data,
 nfl_state: nfl_state,
 layout_size: layout_size %}
-{% elsif effective_status == "in_season" %}
+{% elsif effective_status == "in_season" or effective_status == "post_season" %}
 {% render "matchup_display",
 league_data: league_data,
 users_data: users_data,
@@ -881,7 +1129,9 @@ rosters_data: rosters_data,
 nfl_state: nfl_state,
 trmnl: trmnl,
 layout_size: layout_size,
-week: effective_week %}
+week: effective_week,
+is_playoffs: is_playoffs,
+playoff_round: playoff_round %}
 {% elsif effective_status == "complete" %}
 {% render "season_complete_card",
 league_data: league_data,

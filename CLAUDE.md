@@ -43,7 +43,7 @@ The TRMNL system automatically prepends `shared.liquid` to whichever layout file
 ```json
 {
   "name": "League Name",
-  "status": "pre_draft" | "in_season" | "complete",
+  "status": "pre_draft" | "in_season" | "post_season" | "complete",
   "season": "2025",
   "draft_id": "...",
   "settings": {
@@ -107,14 +107,26 @@ The templates now use semantic variable names mapped from the IDX data:
 - Shows centered message: "{League Name} is in pre-season"
 - Full-screen card with centered text
 
-### 2. In-Season Mode (`status: "in_season"`)
+### 2. In-Season Mode (`status: "in_season"` or `"post_season"`)
+- `in_season`: Regular season games (weeks 1 through playoff_week_start - 1)
+- `post_season`: Playoff games (Sleeper changes status to this when playoffs begin)
+- Both statuses use the same matchup display logic
 - Fetches live matchup data from the Sleeper matchups endpoint
 - Displays a simplified matchup view with:
   - Team header (avatar, name, @username with record e.g. "7-3")
   - Win/loss record pills (full history)
   - Current score only (no projected score/win probability)
-  - VS divider with week number
+  - VS divider with week number (regular season) or round number (playoffs)
   - BYE WEEK card when no opponent is scheduled
+
+#### Playoff Mode (automatic when `week >= playoff_week_start`)
+- Detects playoffs automatically by comparing current week to `league_data.settings.playoff_week_start`
+- Calculates playoff round: `playoff_round = current_week - playoff_week_start + 1`
+- Shows "Round X" instead of "Week X" in title bar and VS divider
+- Special handling for playoff scenarios:
+  - **First Round Bye**: Top seeds with no opponent in Round 1 see "FIRST ROUND BYE"
+  - **Eliminated Teams**: Teams not in playoffs (no matchup data) see "SEASON OVER"
+  - **Awaiting Opponent**: Teams with no opponent in Round 2+ see "AWAITING OPPONENT"
 
 ### 3. Season Complete Mode (`status: "complete"`)
 - Shows season winner with trophy emoji
@@ -194,9 +206,48 @@ Client-side script that fetches matchups, determines the target roster (selected
 ## JavaScript Integration
 
 The `shared.liquid` file includes client-side JavaScript that:
+
+### Regular Season
 1. Fetches current week matchups from: `https://api.sleeper.app/v1/league/{league_id}/matchups/{week}`
 2. Finds the user's team matchup (or a random team if not specified)
 3. Renders a simplified matchup view (no projected scores/win probability) using framework v2 classes
+
+### Playoffs
+During playoffs (when `week >= playoff_week_start`), the JavaScript:
+1. Fetches both brackets in parallel:
+   - Winners bracket: `https://api.sleeper.app/v1/league/{league_id}/winners_bracket`
+   - Losers bracket (consolation): `https://api.sleeper.app/v1/league/{league_id}/losers_bracket`
+2. Checks winners bracket first, then losers bracket if team not found
+3. Parses bracket structure to find:
+   - Which teams are in the current playoff round
+   - Who each team's opponent is (using bracket `t1`/`t2` fields)
+   - Whether a team has a first-round bye or is eliminated
+4. Also fetches matchups endpoint for live scores: `https://api.sleeper.app/v1/league/{league_id}/matchups/{week}`
+5. Combines bracket data (opponent pairing) with matchups data (scores)
+
+**Note:** Teams eliminated from the winners bracket play in the losers (consolation) bracket. The code tracks which bracket a team is in via `isLosersBracket` flag.
+
+### Bracket Response Structure
+The `winners_bracket` endpoint returns:
+```json
+[
+  {"r": 1, "m": 1, "t1": 3, "t2": 6, "w": null, "l": null},
+  {"r": 2, "m": 3, "t1": 1, "t2": null, "t2_from": {"w": 1}, "w": null, "l": null}
+]
+```
+
+**Field definitions:**
+- `r`: Round number (1, 2, 3...)
+- `m`: Match ID (unique identifier for this matchup)
+- `t1`/`t2`: Direct roster IDs when team is seeded directly, OR `null` when determined by bracket progression
+- `t1_from`/`t2_from`: Bracket progression reference (e.g., `{w: 1}` = winner of match 1, `{l: 1}` = loser of match 1)
+- `w`/`l`: Winner and loser roster IDs once the match is decided
+
+**Important:** When `t1` or `t2` is `null`, check `t1_from` or `t2_from` to find where the team comes from. The actual roster ID is found by resolving the reference: look up the match by `m` and get the `w` (winner) or `l` (loser) field.
+
+**Example:** In `{"r": 2, "m": 3, "t1": 1, "t2": null, "t2_from": {"w": 1}}`:
+- Team 1 (roster_id: 1) has a first-round bye and is directly seeded
+- Team 2 is the winner of match 1 (resolved via `t2_from.w`)
 
 ## Configuration
 
@@ -218,12 +269,20 @@ Plugin settings (via `trmnl.plugin_settings.custom_fields_values`):
 
 To simulate different league states during development:
 - At the top of `shared.liquid`, set overrides:
-  - `status`: set to `in_season` or `complete` to force the display mode
+  - `status`: set to `in_season`, `post_season`, or `complete` to force the display mode
   - `week`: set to a numeric week (e.g., `8`) to control the matchup fetch
 - Example (temporary during testing):
   - `{% assign status = 'in_season' %}`
   - `{% assign week = 8 %}`
 - Remove or comment out these lines to return to normal behavior.
+- Note: `in_season` and `post_season` both render the matchup display; the difference is cosmetic (Sleeper API uses `post_season` during playoffs).
+
+### Testing Playoffs
+To simulate playoff mode:
+- Set `test_week` in your TRMNL plugin settings to a value >= `playoff_week_start`
+- For example, if `playoff_week_start` is 15, set `test_week` to 15 for Round 1, 16 for Round 2, etc.
+- Alternatively, add at the top of `shared.liquid`:
+  - `{% assign force_week = 15 %}` (where 15 >= your league's playoff_week_start)
 
 ## Development Tips
 
