@@ -167,8 +167,9 @@ Parameters:
   {% endif %}
 
   <div class="{{ text_align_class }}">
-    <div class="title title--medium">{{ team_name }}</div>
-    <div class="label label--small dim">@{{ username }}</div>
+    {% comment %} Unconditional lg: is safe here — only used in season_complete_card for short centered text {% endcomment %}
+    <div class="title title--medium lg:title--large">{{ team_name }}</div>
+    <div class="label label--small lg:label--base dim">@{{ username }}</div>
   </div>
 </div>
 {% endif %}
@@ -214,6 +215,7 @@ Parameters:
 {% endcomment %}
 
 {% assign size = size | default: 'small' %}
+{% assign lg_size = lg_size | default: '' %}
 {% assign alignment = alignment | default: 'left' %}
 
 {% if record and record != '' %}
@@ -221,9 +223,9 @@ Parameters:
   {% assign record_chars = record | split: '' %}
   {% for char in record_chars %}
   {% if char == 'W' %}
-  <span class="label label--{{ size }} label--outline">W</span>
+  <span class="label label--{{ size }}{% if lg_size != '' %} lg:label--{{ lg_size }}{% endif %} label--outline">W</span>
   {% elsif char == 'L' %}
-  <span class="label label--{{ size }} label--inverted">L</span>
+  <span class="label label--{{ size }}{% if lg_size != '' %} lg:label--{{ lg_size }}{% endif %} label--inverted">L</span>
   {% endif %}
   {% endfor %}
 </div>
@@ -243,13 +245,22 @@ Parameters passed via render:
 - nfl_state: NFL state data with season start date
 {% endcomment %}
 
+{% case layout_size %}
+{% when 'quadrant' %}
+{% assign lg_pre_title = '' %}
+{% when 'half-horizontal', 'half-vertical' %}
+{% assign lg_pre_title = ' lg:title--base' %}
+{% else %}
+{% assign lg_pre_title = ' lg:title--large' %}
+{% endcase %}
+
 <div class="flex flex--center-x flex--center-y w--full h--full">
   <div class="text--center">
     {% if nfl_state.season_start_date %}
       {% assign start_date = nfl_state.season_start_date | date: "%B %-d, %Y" %}
-      <span class="title title--small">Week 1 of the NFL season starts {{ start_date }}</span>
+      <span class="title title--small{{ lg_pre_title }}">Week 1 of the NFL season starts {{ start_date }}</span>
     {% else %}
-      <span class="title title--small">{{ league_data.name }} is in pre-season</span>
+      <span class="title title--small{{ lg_pre_title }}">{{ league_data.name }} is in pre-season</span>
     {% endif %}
   </div>
 </div>
@@ -281,7 +292,7 @@ Parameters:
 - plugin_id: Unique plugin ID for Mashup compatibility
 {% endcomment %}
 
-{% comment %} Set size configuration based on layout_size {% endcomment %}
+{% comment %} Set size configuration based on layout_size (with lg: responsive bump for TRMNL X) {% endcomment %}
 {% assign layout_size = layout_size | default: 'full' %}
 {% assign plugin_id = plugin_id | default: '' %}
 {% case layout_size %}
@@ -290,16 +301,28 @@ Parameters:
 {% assign value_size = 'small' %}
 {% assign label_size = 'xsmall' %}
 {% assign padding = 'p--2' %}
+{% assign lg_title_size = '' %}
+{% assign lg_value_size = '' %}
+{% assign lg_label_size = '' %}
+{% assign lg_padding = '' %}
 {% when 'half-horizontal', 'half-vertical' %}
 {% assign title_size = 'small' %}
 {% assign value_size = 'small' %}
 {% assign label_size = 'small' %}
 {% assign padding = 'p--3' %}
+{% assign lg_title_size = 'base' %}
+{% assign lg_value_size = 'medium' %}
+{% assign lg_label_size = 'base' %}
+{% assign lg_padding = 'lg:p--4' %}
 {% else %}
 {% assign title_size = 'medium' %}
 {% assign value_size = 'medium' %}
 {% assign label_size = 'small' %}
 {% assign padding = 'p--4' %}
+{% assign lg_title_size = 'large' %}
+{% assign lg_value_size = 'large' %}
+{% assign lg_label_size = 'base' %}
+{% assign lg_padding = 'lg:p--6' %}
 {% endcase %}
 
 {% assign alignment = alignment | default: 'left' %}
@@ -322,7 +345,7 @@ Parameters:
 {% assign score_align = 'flex--start' %}
 {% endif %}
 
-<div id="{{ card_id }}" class="bg--white rounded {{ padding }} stretch-x" data-roster-id="{{ roster_id }}">
+<div id="{{ card_id }}" class="bg--white rounded {{ padding }} {{ lg_padding }} stretch-x" data-roster-id="{{ roster_id }}">
   {% if layout_size == 'quadrant' %}
     <div class="{{ text_align }}">
       <div class="title title--{{ title_size }}" data-field="team-name">{{ team_name }}</div>
@@ -333,8 +356,8 @@ Parameters:
     {% comment %} Header with avatar {% endcomment %}
     <div class="flex flex--space-between flex--center-y {{ flex_dir }} mb--4">
       <div class="stretch-x {{ text_align }}">
-        <div class="title title--{{ title_size }}" data-field="team-name">{{ team_name }}</div>
-        <div class="label label--{{ label_size }} dim" data-field="username">@{{ username }} {% if wins %}<span class="label label--{{ label_size }} label--outline ml--1">{{ wins }}-{{ losses }}</span>{% endif %}</div>
+        <div class="title title--{{ title_size }}{% if lg_title_size != '' %} lg:title--{{ lg_title_size }}{% endif %}" data-field="team-name">{{ team_name }}</div>
+        <div class="label label--{{ label_size }}{% if lg_label_size != '' %} lg:label--{{ lg_label_size }}{% endif %} dim" data-field="username">@{{ username }} {% if wins %}<span class="label label--{{ label_size }}{% if lg_label_size != '' %} lg:label--{{ lg_label_size }}{% endif %} label--outline ml--1">{{ wins }}-{{ losses }}</span>{% endif %}</div>
       </div>
       {% render 'render_avatar', avatar_url: avatar_url, title_bar: false, plugin_id: plugin_id %}
     </div>
@@ -342,14 +365,14 @@ Parameters:
     {% comment %} Win/Loss Record {% endcomment %}
     <div class="flex flex--row gap--xsmall {{ flex_align }} mb--4" data-field="record">
       {% if record and record != '' %}
-      {% render 'record_pills', record: record, size: label_size, alignment: alignment %}
+      {% render 'record_pills', record: record, size: label_size, lg_size: lg_label_size, alignment: alignment %}
       {% endif %}
     </div>
 
     {% comment %} Score {% endcomment %}
     <div class="flex flex--row {{ score_align }} gap--medium">
-      <span class="label label--{{ label_size }} {{ order_class }}">Score</span>
-      <span class="value value--{{ value_size }} {{ order_class_inv }}" data-field="score">{{ score }}</span>
+      <span class="label label--{{ label_size }}{% if lg_label_size != '' %} lg:label--{{ lg_label_size }}{% endif %} {{ order_class }}">Score</span>
+      <span class="value value--{{ value_size }}{% if lg_value_size != '' %} lg:value--{{ lg_value_size }}{% endif %} {{ order_class_inv }}" data-field="score">{{ score }}</span>
     </div>
   {% endif %}
 </div>
@@ -365,15 +388,18 @@ Parameters:
 - layout_size: Layout size
 {% endcomment %}
 
-{% comment %} Set size configuration based on layout_size {% endcomment %}
+{% comment %} Set size configuration based on layout_size (with lg: responsive bump for TRMNL X) {% endcomment %}
 {% assign layout_size = layout_size | default: 'full' %}
 {% case layout_size %}
 {% when 'quadrant' %}
 {% assign padding = 'p--2' %}
+{% assign lg_padding = '' %}
 {% when 'half-horizontal', 'half-vertical' %}
 {% assign padding = 'p--3' %}
+{% assign lg_padding = 'lg:p--4' %}
 {% else %}
 {% assign padding = 'p--4' %}
+{% assign lg_padding = 'lg:p--6' %}
 {% endcase %}
 
 {% assign team_name = user.metadata.team_name | default: user.display_name %}
@@ -382,16 +408,20 @@ Parameters:
 {% when 'quadrant' %}
 {% assign bye_title_size = 'small' %}
 {% assign bye_label_size = 'xsmall' %}
+{% assign lg_bye_title_size = '' %}
+{% assign lg_bye_label_size = '' %}
 {% else %}
 {% assign bye_title_size = 'large' %}
 {% assign bye_label_size = 'small' %}
+{% assign lg_bye_title_size = 'xlarge' %}
+{% assign lg_bye_label_size = 'base' %}
 {% endcase %}
 
-<div class="bg--white rounded {{ padding }} stretch-x">
+<div class="bg--white rounded {{ padding }} {{ lg_padding }} stretch-x">
   <div class="flex flex--col flex--center-x flex--center-y h--full">
     <div class="text--center">
-      <div class="label label--{{ bye_label_size }} dim mb--2">{{ team_name }}</div>
-      <div class="title title--{{ bye_title_size }}">BYE WEEK</div>
+      <div class="label label--{{ bye_label_size }}{% if lg_bye_label_size != '' %} lg:label--{{ lg_bye_label_size }}{% endif %} dim mb--2">{{ team_name }}</div>
+      <div class="title title--{{ bye_title_size }}{% if lg_bye_title_size != '' %} lg:title--{{ lg_bye_title_size }}{% endif %}">BYE WEEK</div>
     </div>
   </div>
 </div>
@@ -414,18 +444,24 @@ Parameters:
 {% comment %} Set unique plugin ID for Mashup compatibility {% endcomment %}
 {% assign plugin_id = trmnl.plugin_settings.custom_fields_values.league_id %}
 
-{% comment %} Set size configuration based on layout_size {% endcomment %}
+{% comment %} Set size configuration based on layout_size (with lg: responsive bump for TRMNL X) {% endcomment %}
 {% assign layout_size = layout_size | default: 'full' %}
 {% case layout_size %}
 {% when 'quadrant' %}
 {% assign padding = 'p--2' %}
 {% assign gap_size = 'small' %}
+{% assign lg_padding = '' %}
+{% assign lg_gap_size = '' %}
 {% when 'half-horizontal', 'half-vertical' %}
 {% assign padding = 'p--3' %}
 {% assign gap_size = 'medium' %}
+{% assign lg_padding = 'lg:p--4' %}
+{% assign lg_gap_size = '' %}
 {% else %}
 {% assign padding = 'p--4' %}
 {% assign gap_size = 'medium' %}
+{% assign lg_padding = 'lg:p--6' %}
+{% assign lg_gap_size = 'lg:gap--large' %}
 {% endcase %}
 
 {% comment %} Find the target roster {% endcomment %}
@@ -462,10 +498,10 @@ Parameters:
 {% endunless %}
 
 {% comment %} Container structure based on layout {% endcomment %}
-<div id="matchup-container-{{ plugin_id }}" class="layout {% if layout_size == 'quadrant' %}layout--row{% elsif layout_size == 'half-vertical' %}layout--col{% else %}layout--row{% endif %} layout--stretch-y bg--gray-65 {{ padding }} rounded--medium">
+<div id="matchup-container-{{ plugin_id }}" class="layout {% if layout_size == 'quadrant' %}layout--row{% elsif layout_size == 'half-vertical' %}layout--col{% else %}layout--row{% endif %} layout--stretch-y bg--gray-65 {{ padding }} {{ lg_padding }} rounded--medium">
 
   {% comment %} This will be populated by JavaScript with actual matchup pairing {% endcomment %}
-  <div class="flex {% if layout_size == 'quadrant' %}flex--row{% elsif layout_size == 'half-vertical' %}flex--col{% else %}flex--row{% endif %} gap--{{ gap_size }} w--full" id="matchup-content-{{ plugin_id }}">
+  <div class="flex {% if layout_size == 'quadrant' %}flex--row{% elsif layout_size == 'half-vertical' %}flex--col{% else %}flex--row{% endif %} gap--{{ gap_size }} {{ lg_gap_size }} w--full" id="matchup-content-{{ plugin_id }}">
 
     {% comment %} Team 1 card - always rendered {% endcomment %}
     {% if target_user %}
@@ -591,15 +627,18 @@ Parameters:
 {% comment %} Set unique plugin ID for Mashup compatibility {% endcomment %}
 {% assign plugin_id = trmnl.plugin_settings.custom_fields_values.league_id %}
 
-{% comment %} Set size configuration based on layout_size {% endcomment %}
+{% comment %} Set size configuration based on layout_size (with lg: responsive for TRMNL X) {% endcomment %}
 {% assign layout_size = layout_size | default: 'full' %}
 {% case layout_size %}
 {% when 'quadrant' %}
 {% assign label_size = 'xsmall' %}
+{% assign lg_label_size = '' %}
 {% when 'half-horizontal', 'half-vertical' %}
 {% assign label_size = 'small' %}
+{% assign lg_label_size = 'base' %}
 {% else %}
 {% assign label_size = 'small' %}
+{% assign lg_label_size = 'base' %}
 {% endcase %}
 
 <script>
@@ -614,6 +653,7 @@ Parameters:
     const currentWeek = {{ week }};
     const layoutSize = '{{ layout_size }}';
     const labelSize = '{{ label_size }}';
+    const lgLabelSize = '{{ lg_label_size }}';
     const isPlayoffs = {{ is_playoffs | default: false }};
     const playoffRound = {{ playoff_round | default: 0 }};
 
@@ -819,7 +859,7 @@ Parameters:
     if (layoutSize !== 'quadrant') {
       const team1RecordContainer = team1Card.querySelector('[data-field="record"]');
       if (team1RecordContainer && targetRoster.metadata?.record) {
-        const recordHtml = generateRecordPills(targetRoster.metadata.record, labelSize, 'left');
+        const recordHtml = generateRecordPills(targetRoster.metadata.record, labelSize, 'left', lgLabelSize);
         if (recordHtml) {
           team1RecordContainer.innerHTML = recordHtml;
         }
@@ -883,7 +923,7 @@ Parameters:
         if (team2Username) {
           let usernameHtml = '@' + opponentUser.display_name;
           if (opponentRoster.settings) {
-             usernameHtml += ` <span class="label label--${labelSize} label--outline ml--1">${opponentRoster.settings.wins}-${opponentRoster.settings.losses}</span>`;
+             usernameHtml += ` <span class="label label--${labelSize}${lgLabelSize ? ` lg:label--${lgLabelSize}` : ''} label--outline ml--1">${opponentRoster.settings.wins}-${opponentRoster.settings.losses}</span>`;
           }
           team2Username.innerHTML = usernameHtml;
         }
@@ -898,7 +938,7 @@ Parameters:
         if (layoutSize !== 'quadrant') {
           const team2RecordContainer = team2Card.querySelector('[data-field="record"]');
           if (team2RecordContainer && opponentRoster.metadata?.record) {
-            const recordHtml = generateRecordPills(opponentRoster.metadata.record, labelSize, 'right');
+            const recordHtml = generateRecordPills(opponentRoster.metadata.record, labelSize, 'right', lgLabelSize);
             team2RecordContainer.innerHTML = recordHtml;
           }
         }
@@ -919,12 +959,13 @@ Parameters:
   });
 
   // Helper function to generate record pills HTML
-  function generateRecordPills(record, labelSize, alignment) {
+  function generateRecordPills(record, labelSize, alignment, lgLabelSize) {
     if (!record) return '';
+    const lgClass = lgLabelSize ? ` lg:label--${lgLabelSize}` : '';
 
     const pills = record.split('').map(char => {
-      if (char === 'W') return `<span class="label label--${labelSize} label--outline">W</span>`;
-      if (char === 'L') return `<span class="label label--${labelSize} label--inverted">L</span>`;
+      if (char === 'W') return `<span class="label label--${labelSize}${lgClass} label--outline">W</span>`;
+      if (char === 'L') return `<span class="label label--${labelSize}${lgClass} label--inverted">L</span>`;
       return '';
     }).join('');
 
@@ -935,9 +976,13 @@ Parameters:
   // Generate bye week card (handles both regular bye and playoff bye)
   function generateByeWeekCard(roster, user, layoutSize, isPlayoffs = false, playoffRound = 0) {
     const teamName = user?.metadata?.team_name || user?.display_name || 'Team';
-    const byeTitleSize = layoutSize === 'quadrant' ? 'small' : 'large';
-    const teamLabelSize = layoutSize === 'quadrant' ? 'xsmall' : 'small';
+    const isQuadrant = layoutSize === 'quadrant';
+    const byeTitleSize = isQuadrant ? 'small' : 'large';
+    const teamLabelSize = isQuadrant ? 'xsmall' : 'small';
+    const lgByeTitleClass = isQuadrant ? '' : ' lg:title--xlarge';
+    const lgTeamLabelClass = isQuadrant ? '' : ' lg:label--base';
     let padding;
+    let lgPadding = '';
 
     switch(layoutSize) {
       case 'quadrant':
@@ -946,9 +991,11 @@ Parameters:
       case 'half-horizontal':
       case 'half-vertical':
         padding = 'p--3';
+        lgPadding = ' lg:p--4';
         break;
       default:
         padding = 'p--4';
+        lgPadding = ' lg:p--6';
     }
 
     // During playoffs, a bye in round 1 means first-round bye (good thing)
@@ -961,11 +1008,11 @@ Parameters:
     }
 
     return `
-    <div class="bg--white rounded ${padding} stretch-x">
+    <div class="bg--white rounded ${padding}${lgPadding} stretch-x">
       <div class="flex flex--col flex--center-x flex--center-y h--full">
         <div class="text--center">
-          <div class="label label--${teamLabelSize} dim mb--2">${teamName}</div>
-          <div class="title title--${byeTitleSize}">${byeText}</div>
+          <div class="label label--${teamLabelSize}${lgTeamLabelClass} dim mb--2">${teamName}</div>
+          <div class="title title--${byeTitleSize}${lgByeTitleClass}">${byeText}</div>
         </div>
       </div>
     </div>
@@ -975,9 +1022,13 @@ Parameters:
   // Generate eliminated/not in playoffs card
   function generateEliminatedCard(roster, user, layoutSize) {
     const teamName = user?.metadata?.team_name || user?.display_name || 'Team';
-    const titleSize = layoutSize === 'quadrant' ? 'small' : 'large';
-    const labelSize = layoutSize === 'quadrant' ? 'xsmall' : 'small';
+    const isQuadrant = layoutSize === 'quadrant';
+    const titleSize = isQuadrant ? 'small' : 'large';
+    const elLabelSize = isQuadrant ? 'xsmall' : 'small';
+    const lgTitleClass = isQuadrant ? '' : ' lg:title--xlarge';
+    const lgLabelClass = isQuadrant ? '' : ' lg:label--base';
     let padding;
+    let lgPadding = '';
 
     switch(layoutSize) {
       case 'quadrant':
@@ -986,17 +1037,19 @@ Parameters:
       case 'half-horizontal':
       case 'half-vertical':
         padding = 'p--3';
+        lgPadding = ' lg:p--4';
         break;
       default:
         padding = 'p--4';
+        lgPadding = ' lg:p--6';
     }
 
     return `
-    <div class="bg--white rounded ${padding} stretch-x">
+    <div class="bg--white rounded ${padding}${lgPadding} stretch-x">
       <div class="flex flex--col flex--center-x flex--center-y h--full">
         <div class="text--center">
-          <div class="label label--${labelSize} dim mb--2">${teamName}</div>
-          <div class="title title--${titleSize}">SEASON OVER</div>
+          <div class="label label--${elLabelSize}${lgLabelClass} dim mb--2">${teamName}</div>
+          <div class="title title--${titleSize}${lgTitleClass}">SEASON OVER</div>
         </div>
       </div>
     </div>
@@ -1028,12 +1081,18 @@ Parameters passed via render:
 {% when 'quadrant' %}
 {% assign trophy_title_size = 'large' %}
 {% assign spacing_class = 'mb--2' %}
+{% assign lg_trophy_title_size = '' %}
+{% assign lg_winner_title_size = '' %}
 {% when 'half-horizontal' %}
 {% assign trophy_title_size = 'large' %}
 {% assign spacing_class = 'mb--4' %}
+{% assign lg_trophy_title_size = 'xlarge' %}
+{% assign lg_winner_title_size = 'base' %}
 {% else %}
 {% assign trophy_title_size = 'xlarge' %}
 {% assign spacing_class = 'mb--8' %}
+{% assign lg_trophy_title_size = 'xxlarge' %}
+{% assign lg_winner_title_size = 'base' %}
 {% endcase %}
 
 {% comment %} Get winner roster ID from league metadata {% endcomment %}
@@ -1066,11 +1125,11 @@ Parameters passed via render:
   <div class="text--center">
     {% comment %} Trophy and title {% endcomment %}
     <div class="{{ spacing_class }}">
-      <span class="title title--{{ trophy_title_size }}">🏆</span>
+      <span class="title title--{{ trophy_title_size }}{% if lg_trophy_title_size != '' %} lg:title--{{ lg_trophy_title_size }}{% endif %}">🏆</span>
     </div>
 
     <div class="{{ spacing_class }}">
-      <span class="title title--small">The {{ league_data.season }} winner of {{ league_data.name }} is</span>
+      <span class="title title--small{% if lg_winner_title_size != '' %} lg:title--{{ lg_winner_title_size }}{% endif %}">The {{ league_data.season }} winner of {{ league_data.name }} is</span>
     </div>
 
     {% comment %} Winner team header {% endcomment %}
