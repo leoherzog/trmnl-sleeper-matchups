@@ -3,12 +3,9 @@ GLOBAL VARIABLES & UTILITIES
 Used across all templates and layouts
 ================================================================ {% endcomment %}
 
-{% comment %} Set unique plugin ID for Mashup compatibility {% endcomment %}
-{% assign plugin_id = trmnl.plugin_settings.custom_fields_values.league_id %}
-
 {% comment %} Global sleeper logo SVG template - available to all templates {% endcomment %}
 {% template sleeper_logo %}
-<svg class="image image-stroke image--dither" width="33.333" height="33.333" fill="none" version="1.1" viewBox="0 0 33.333 40" xmlns="http://www.w3.org/2000/svg">
+<svg class="image image-stroke" width="33.333" height="33.333" fill="none" version="1.1" viewBox="0 0 33.333 40" xmlns="http://www.w3.org/2000/svg">
 <g transform="translate(-5.8333 -4)" clip-path="url(#fahpw200aa)">
 <path d="m11.363 4a8.863 8.863 0 0 0-8.863 8.863v22.274a8.863 8.863 0 0 0 8.863 8.863h22.274a8.863 8.863 0 0 0 8.863-8.863v-22.274a8.863 8.863 0 0 0-8.863-8.863z" fill="url(#7gf0pys8xb)"/>
 <path d="m23.281 12.946a2.657 2.657 0 0 0-0.781-5.196 2.656 2.656 0 0 0-0.781 5.196v2.403a14.317 14.317 0 0 0-8.785 3.624c-2.681 2.451-3.637 5.824-3.637 9.324 0 4.772 1.97 9.488 7.032 10.953 1.995 0.4 4.058 0.61 6.171 0.61s4.176-0.21 6.171-0.61c5.061-1.465 7.032-6.18 7.032-10.953 0-3.5-0.956-6.873-3.637-9.324a14.318 14.318 0 0 0-8.785-3.624z" clip-rule="evenodd" fill="#022047" fill-rule="evenodd"/>
@@ -47,6 +44,12 @@ Used across all templates and layouts
 </svg>
 {% endtemplate %}
 
+{% comment %} Global trophy icon (FontAwesome) - sized via trophy_class param {% endcomment %}
+{% template trophy_icon %}
+{% assign trophy_class = trophy_class | default: 'w--6 h--6' %}
+<svg class="image {{ trophy_class }}" viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg"><path d="M432 64L208 64C181.5 64 159.9 85.8 160.9 112.2C161.1 117.5 161.3 122.8 161.6 128L88 128C74.7 128 64 138.7 64 152C64 265.7 111.9 329.7 168.2 363.8C189.8 376.9 212.2 385.3 232.7 390.6C252.1 416.9 272.1 431.2 288 438.9L288 512L224 512C206.3 512 192 526.3 192 544C192 561.7 206.3 576 224 576L416 576C433.7 576 448 561.7 448 544C448 526.3 433.7 512 416 512L352 512L352 438.9C368.6 430.9 389.7 415.7 409.9 387.1C427.5 381.9 446 374.7 464 364.6C493.3 348.2 521.6 324 542.5 288.9C563.4 253.7 576 208.8 576 152.1C576 138.8 565.3 128.1 552 128.1L478.4 128.1C478.7 122.9 478.9 117.7 479.1 112.3C480.1 85.8 458.5 64.1 432 64.1zM112.8 176L165.2 176C171.7 239.6 183.5 288.3 198 325.6C196.3 324.7 194.7 323.7 193 322.7C155.1 299.8 118.7 257.7 112.8 176zM501.1 264.4C486 289.9 465.7 308 443.7 320.9C457.3 284.2 468.5 237 474.7 176.1L527 176.1C524.1 213.5 514.3 242.2 501.1 264.5zM330.8 149.8L348.3 185.2L387.3 190.9C397.1 192.3 401.1 204.4 393.9 211.4L365.7 238.9L372.4 277.8C374.1 287.6 363.8 295.1 355 290.5L320 272L285.1 290.4C276.3 295 266 287.6 267.7 277.7L274.4 238.8L246.2 211.3C239.1 204.4 243 192.3 252.9 190.8L291.9 185.1L309.4 149.7C313.8 140.8 326.5 140.8 330.9 149.7z"/></svg>
+{% endtemplate %}
+
 {% comment %}
 Optional local test overrides. For production, prefer setting
 custom fields `test_status` and `test_week` in TRMNL plugin settings.
@@ -77,7 +80,7 @@ Parameters:
 {% assign my_avatar_url = nil %}
 
 {% assign effective_status = trmnl.plugin_settings.custom_fields_values.test_status | default: league_data.status %}
-{% assign effective_week = trmnl.plugin_settings.custom_fields_values.test_week | default: nfl_state.display_week | default: league_data.settings.leg %}
+{% assign effective_week = trmnl.plugin_settings.custom_fields_values.test_week | default: nfl_state.week | default: league_data.settings.leg %}
 
 {% comment %} Playoff detection and round calculation {% endcomment %}
 {% assign playoff_week_start = league_data.settings.playoff_week_start | default: 15 %}
@@ -103,7 +106,7 @@ Parameters:
 <div class="title_bar">
   {% comment %} League avatar {% endcomment %}
   {% if league_data.avatar %}
-  <img class="image image-stroke image--dither rounded--full" src="https://sleepercdn.com/uploads/{{ league_data.avatar }}" />
+  <img class="image image-stroke rounded--full" src="https://sleepercdn.com/uploads/{{ league_data.avatar }}" />
   {% else %}
   {% render 'sleeper_logo' %}
   {% endif %}
@@ -198,9 +201,9 @@ Parameters:
 {% else %}
 {% comment %} Has avatar - show image {% endcomment %}
 {% if title_bar %}
-<img class="image image-stroke image--dither rounded--full" src="{{ avatar_url }}" />
+<img class="image image-stroke rounded--full" src="{{ avatar_url }}" />
 {% else %}
-<img class="image image-stroke image--dither rounded--full w--12 h--12" src="{{ avatar_url }}" />
+<img class="image image-stroke image-dither rounded--full w--12 h--12" src="{{ avatar_url }}" />
 {% endif %}
 {% endif %}
 {% endtemplate %}
@@ -529,18 +532,18 @@ Parameters:
     {% endif %}
 
     {% comment %} VS divider - Hidden initially, shown by JS if there's an opponent {% endcomment %}
-    <div id="vs-divider-{{ plugin_id }}" class="flex flex--center-x flex--center-y {% if layout_size == 'quadrant' %}{% elsif layout_size == 'half-vertical' %}{% else %}flex--col flex--no-shrink{% endif %}" style="display: none;" data-is-playoffs="{{ is_playoffs }}" data-playoff-round="{{ playoff_round }}">
+    <div id="vs-divider-{{ plugin_id }}" class="hidden flex flex--center-x flex--center-y {% if layout_size == 'quadrant' %}{% elsif layout_size == 'half-vertical' %}{% else %}flex--col no-shrink{% endif %}" data-is-playoffs="{{ is_playoffs }}" data-playoff-round="{{ playoff_round }}">
       {% if layout_size == 'quadrant' %}
-      <span class="label label--xsmall dim">{% if is_playoffs %}🏆{% else %}vs.{% endif %}</span>
+      <span class="label label--xsmall dim flex flex--center-y gap--xsmall">{% if is_playoffs %}{% render 'trophy_icon', trophy_class: 'w--4 h--4' %}{% else %}vs.{% endif %}</span>
       {% elsif layout_size == 'half-vertical' %}
       {% if is_playoffs %}
-      <span class="label label--small dim">🏆 <span data-field="bracket-type"></span>Round <span data-field="week">{{ playoff_round }}</span></span>
+      <span class="label label--small dim flex flex--center-y gap--xsmall">{% render 'trophy_icon', trophy_class: 'w--4 h--4' %}<span data-field="bracket-type"></span>Round <span data-field="week">{{ playoff_round }}</span></span>
       {% else %}
       <span class="label label--small dim">vs • Week <span data-field="week">1</span></span>
       {% endif %}
       {% else %}
       {% if is_playoffs %}
-      <div class="title title--small">🏆</div>
+      <div class="title title--small">{% render 'trophy_icon', trophy_class: 'w--8 h--8' %}</div>
       {% else %}
       <div class="label label--small dim">vs</div>
       {% endif %}
@@ -555,7 +558,7 @@ Parameters:
 
     {% comment %} Team 2 card - hidden initially, will be shown/populated by JS if there's an opponent {% endcomment %}
     {% capture team2_card_id %}team2-card-{{ plugin_id }}{% endcapture %}
-    <div id="team2-container-{{ plugin_id }}" class="stretch-x" style="display: none;">
+    <div id="team2-container-{{ plugin_id }}" class="stretch-x hidden">
         {% render 'matchup_card',
         card_id: team2_card_id,
         roster_id: '',
@@ -904,7 +907,7 @@ Parameters:
               } else {
                 // Replace SVG with IMG
                 const newImg = document.createElement('img');
-                newImg.className = 'image image-stroke image--dither rounded--full w--12 h--12';
+                newImg.className = 'image image-stroke image-dither rounded--full w--12 h--12';
                 newImg.src = avatarUrl;
                 team2Avatar.parentNode.replaceChild(newImg, team2Avatar);
               }
@@ -944,8 +947,8 @@ Parameters:
         }
 
         // Show team 2 container and VS divider
-        team2Container.style.display = '';
-        document.getElementById(`vs-divider-${pluginId}`).style.display = '';
+        team2Container.classList.remove('hidden');
+        document.getElementById(`vs-divider-${pluginId}`).classList.remove('hidden');
       }
     } else {
       // No opponent - convert to bye week (playoff bye or regular bye)
@@ -1079,19 +1082,16 @@ Parameters passed via render:
 {% comment %} Adjust sizes/margins for smaller layouts {% endcomment %}
 {% case layout_size %}
 {% when 'quadrant' %}
-{% assign trophy_title_size = 'large' %}
+{% assign trophy_svg_size = 'w--10 h--10' %}
 {% assign spacing_class = 'mb--2' %}
-{% assign lg_trophy_title_size = '' %}
 {% assign lg_winner_title_size = '' %}
 {% when 'half-horizontal' %}
-{% assign trophy_title_size = 'large' %}
+{% assign trophy_svg_size = 'w--12 h--12' %}
 {% assign spacing_class = 'mb--4' %}
-{% assign lg_trophy_title_size = 'xlarge' %}
 {% assign lg_winner_title_size = 'base' %}
 {% else %}
-{% assign trophy_title_size = 'xlarge' %}
+{% assign trophy_svg_size = 'w--16 h--16' %}
 {% assign spacing_class = 'mb--8' %}
-{% assign lg_trophy_title_size = 'xxlarge' %}
 {% assign lg_winner_title_size = 'base' %}
 {% endcase %}
 
@@ -1124,8 +1124,8 @@ Parameters passed via render:
 <div class="flex flex--center-x flex--center-y w--full h--full">
   <div class="text--center">
     {% comment %} Trophy and title {% endcomment %}
-    <div class="{{ spacing_class }}">
-      <span class="title title--{{ trophy_title_size }}{% if lg_trophy_title_size != '' %} lg:title--{{ lg_trophy_title_size }}{% endif %}">🏆</span>
+    <div class="{{ spacing_class }} flex flex--center-x">
+      {% render 'trophy_icon', trophy_class: trophy_svg_size %}
     </div>
 
     <div class="{{ spacing_class }}">

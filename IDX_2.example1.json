@@ -1,392 +1,165 @@
 {
   "data": [
     {
-      "taxi": [],
-      "keepers": [],
-      "players": [],
-      "reserve": [],
+      "avatar": "nfl_det",
+      "is_bot": null,
+      "user_id": "76441732065411072",
+      "is_owner": true,
       "metadata": {
-        "allow_pn_scoring": "on",
-        "allow_pn_inactive_starters": "on",
-        "allow_pn_player_injury_status": "on",
-        "restrict_pn_scoring_starters_only": "on"
+        "avatar": "https://sleepercdn.com/uploads/c885f712a834866d8f03523fb0008df4",
+        "allow_pn": "on",
+        "team_name": "Kneecap Nibblers",
+        "mention_pn": "on",
+        "mascot_message": "on",
+        "player_like_pn": "on",
+        "trade_block_pn": "on",
+        "user_message_pn": "on",
+        "team_name_update": "on",
+        "transaction_trade": "on",
+        "transaction_waiver": "on",
+        "player_nickname_update": "off",
+        "transaction_free_agent": "on",
+        "transaction_commissioner": "on"
       },
-      "owner_id": "76441732065411072",
-      "settings": {
-        "fpts": 0,
-        "ties": 0,
-        "wins": 0,
-        "losses": 0,
-        "total_moves": 0,
-        "waiver_position": 10,
-        "waiver_budget_used": 0
-      },
-      "starters": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "co_owners": null,
+      "settings": null,
       "league_id": "1257477907467485184",
-      "roster_id": 1,
-      "player_map": null
+      "display_name": "bbtancakes"
     },
     {
-      "taxi": [],
-      "keepers": [],
-      "players": [],
-      "reserve": [],
-      "metadata": null,
-      "owner_id": "995707483266023424",
-      "settings": {
-        "fpts": 0,
-        "ties": 0,
-        "wins": 0,
-        "losses": 0,
-        "total_moves": 0,
-        "waiver_position": 8,
-        "waiver_budget_used": 0
-      },
-      "starters": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "co_owners": null,
-      "league_id": "1257477907467485184",
-      "roster_id": 2,
-      "player_map": null
-    },
-    {
-      "taxi": [],
-      "keepers": [],
-      "players": [],
-      "reserve": [],
-      "metadata": null,
-      "owner_id": "999025462699438080",
-      "settings": {
-        "fpts": 0,
-        "ties": 0,
-        "wins": 0,
-        "losses": 0,
-        "total_moves": 0,
-        "waiver_position": 6,
-        "waiver_budget_used": 0
-      },
-      "starters": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "co_owners": null,
-      "league_id": "1257477907467485184",
-      "roster_id": 3,
-      "player_map": null
-    },
-    {
-      "taxi": [],
-      "keepers": [],
-      "players": [],
-      "reserve": [],
+      "avatar": "dce8e54b2da529bdab4b15dbc6678259",
+      "is_bot": false,
+      "user_id": "995707483266023424",
+      "is_owner": false,
       "metadata": {
-        "p_nick_3294": "Dak GetsCut",
-        "p_nick_5967": "Big Tony",
-        "p_nick_7594": "BIG Chub"
+        "avatar": "https://sleepercdn.com/uploads/57f5f50c3f9f9b5ebdf345e5b4fea6e1",
+        "allow_pn": "on",
+        "allow_sms": "on",
+        "team_name": "Illegal Use of Hands",
+        "mention_pn": "on"
       },
-      "owner_id": "999027098914299904",
-      "settings": {
-        "fpts": 0,
-        "ties": 0,
-        "wins": 0,
-        "losses": 0,
-        "total_moves": 0,
-        "waiver_position": 9,
-        "waiver_budget_used": 0
-      },
-      "starters": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "co_owners": null,
+      "settings": null,
       "league_id": "1257477907467485184",
-      "roster_id": 4,
-      "player_map": null
+      "display_name": "leoherzog"
     },
     {
-      "taxi": [],
-      "keepers": [],
-      "players": [],
-      "reserve": [],
-      "metadata": null,
-      "owner_id": "999158577984192512",
-      "settings": {
-        "fpts": 0,
-        "ties": 0,
-        "wins": 0,
-        "losses": 0,
-        "total_moves": 0,
-        "waiver_position": 1,
-        "waiver_budget_used": 0
-      },
-      "starters": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "co_owners": null,
-      "league_id": "1257477907467485184",
-      "roster_id": 5,
-      "player_map": null
-    },
-    {
-      "taxi": [],
-      "keepers": [],
-      "players": [],
-      "reserve": [],
-      "metadata": null,
-      "owner_id": "1001231241355603968",
-      "settings": {
-        "fpts": 0,
-        "ties": 0,
-        "wins": 0,
-        "losses": 0,
-        "total_moves": 0,
-        "waiver_position": 2,
-        "waiver_budget_used": 0
-      },
-      "starters": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "co_owners": null,
-      "league_id": "1257477907467485184",
-      "roster_id": 6,
-      "player_map": null
-    },
-    {
-      "taxi": [],
-      "keepers": [],
-      "players": [],
-      "reserve": [],
+      "avatar": "142abf1d16de8cbaa26325e3d0775468",
+      "is_bot": false,
+      "user_id": "999025462699438080",
+      "is_owner": false,
       "metadata": {
-        "p_nick_CLE": "Seeing Browns",
-        "p_nick_MIA": "Miami Derrières",
-        "p_nick_1373": "Genoteus Maxismith",
-        "p_nick_2197": "Brand-my Caboose",
-        "p_nick_3225": "Ty-my Booty",
-        "p_nick_4033": "Njo-poo",
-        "p_nick_4034": "ButtCrackrey",
-        "p_nick_4111": "",
-        "p_nick_4981": "Keister RideMe",
-        "p_nick_4985": "Roundshaped Phenny",
-        "p_nick_6803": "Mybutt is-yuk",
-        "p_nick_6806": "J.K. Do-It-In-My-Butt-ins",
-        "p_nick_6904": "Booty Hurts",
-        "p_nick_7525": "De-U-Vonta MyButta",
-        "p_nick_7839": "McPhanny"
+        "avatar": "https://sleepercdn.com/uploads/de2f65cdef81713bebd620383268b187.jpg",
+        "allow_pn": "on",
+        "allow_sms": "on",
+        "team_name": "Phil Dunphy",
+        "mention_pn": "on"
       },
-      "owner_id": "1001300810166276096",
-      "settings": {
-        "fpts": 0,
-        "ties": 0,
-        "wins": 0,
-        "losses": 0,
-        "total_moves": 0,
-        "waiver_position": 4,
-        "waiver_budget_used": 0
-      },
-      "starters": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "co_owners": null,
+      "settings": null,
       "league_id": "1257477907467485184",
-      "roster_id": 7,
-      "player_map": null
+      "display_name": "PhilDunphy8410"
     },
     {
-      "taxi": [],
-      "keepers": [],
-      "players": [],
-      "reserve": [],
-      "metadata": null,
-      "owner_id": "1001605098226659328",
-      "settings": {
-        "fpts": 0,
-        "ties": 0,
-        "wins": 0,
-        "losses": 0,
-        "total_moves": 0,
-        "waiver_position": 3,
-        "waiver_budget_used": 0
-      },
-      "starters": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "co_owners": null,
-      "league_id": "1257477907467485184",
-      "roster_id": 8,
-      "player_map": null
-    },
-    {
-      "taxi": [],
-      "keepers": [],
-      "players": [],
-      "reserve": [],
+      "avatar": "8eb8f8bf999945d523f2c4033f70473e",
+      "is_bot": false,
+      "user_id": "999027098914299904",
+      "is_owner": false,
       "metadata": {
-        "p_nick_BAL": "",
-        "p_nick_SEA": "See Asshole See Cocks",
-        "p_nick_1689": "Adam's Skeetin'",
-        "p_nick_2374": "Stop, Drop, & Lockett",
-        "p_nick_4066": "Heaven Stink Cum",
-        "p_nick_4988": "Half Chubb",
-        "p_nick_5846": "DK Wetshaft",
-        "p_nick_5859": "Browntown",
-        "p_nick_5927": "",
-        "p_nick_6011": "Garden Her Fu Manchu",
-        "p_nick_6151": "My Holes And Hers",
-        "p_nick_6770": "Ho Churro",
-        "p_nick_6828": "Gay Jay Drillin'",
-        "p_nick_6943": "Babe Gay Bish",
-        "p_nick_8151": "Kenny Cock Blocker",
-        "p_nick_8154": "Giant Throbbinson",
-        "p_nick_8155": "",
-        "p_nick_8183": "Cock Hurty",
-        "p_nick_9488": "Njigba Please",
-        "p_nick_9502": "Stank Smell",
-        "p_nick_9508": "",
-        "p_nick_10859": "LaPorta Potty",
-        "p_nick_10937": "Cake Booty",
-        "p_nick_11604": "Cock Towers"
+        "avatar": "https://sleepercdn.com/uploads/bc43b12fae629fc1cee31df2779656f8",
+        "allow_pn": "on",
+        "team_name": "Troublesome Tailors",
+        "mention_pn": "on"
       },
-      "owner_id": "1002388535137267712",
-      "settings": {
-        "fpts": 0,
-        "ties": 0,
-        "wins": 0,
-        "losses": 0,
-        "total_moves": 0,
-        "waiver_position": 5,
-        "waiver_budget_used": 0
-      },
-      "starters": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "co_owners": null,
+      "settings": null,
       "league_id": "1257477907467485184",
-      "roster_id": 9,
-      "player_map": null
+      "display_name": "chairwolf"
     },
     {
-      "taxi": [],
-      "keepers": [],
-      "players": [],
-      "reserve": [],
+      "avatar": "b3338675f635c2c1f42b469621d38ec6",
+      "is_bot": false,
+      "user_id": "999158577984192512",
+      "is_owner": false,
       "metadata": {
-        "p_nick_96": "A-A-Ron Busted",
-        "p_nick_NE": "Bush Did Deflate-Gate",
-        "p_nick_BUF": "Billfalo Bulls",
-        "p_nick_3198": "Bama Henny",
-        "p_nick_3321": "Tyreek Valley",
-        "p_nick_4195": "Jack It",
-        "p_nick_4217": "Engorged Kettle",
-        "p_nick_4227": "Harry Buttker",
-        "p_nick_5872": "Doobee Sam You L",
-        "p_nick_6768": "Tua T",
-        "p_nick_6801": "Tea Hoggin",
-        "p_nick_6826": "Cle Komet",
-        "p_nick_7561": "Elijah Hellmitch",
-        "p_nick_8129": "Dameon Pierced Me",
-        "p_nick_8148": "Jameson Gambliams",
-        "p_nick_9754": "Que Es Johnson",
-        "p_nick_10229": "Wash E. Rice"
+        "allow_pn": "on",
+        "allow_sms": "on",
+        "team_name": "Appletree",
+        "mention_pn": "on"
       },
-      "owner_id": "1002843493154308096",
-      "settings": {
-        "fpts": 0,
-        "ties": 0,
-        "wins": 0,
-        "losses": 0,
-        "total_moves": 0,
-        "waiver_position": 7,
-        "waiver_budget_used": 0
-      },
-      "starters": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "co_owners": null,
+      "settings": null,
       "league_id": "1257477907467485184",
-      "roster_id": 10,
-      "player_map": null
+      "display_name": "Shearluck"
+    },
+    {
+      "avatar": "8eb8f8bf999945d523f2c4033f70473e",
+      "is_bot": false,
+      "user_id": "1001231241355603968",
+      "is_owner": false,
+      "metadata": {
+        "allow_pn": "on",
+        "team_name": "DINKelberg",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "RampagingMilk"
+    },
+    {
+      "avatar": "056c1905152e27df51b920d4bfb74c38",
+      "is_bot": false,
+      "user_id": "1001300810166276096",
+      "is_owner": false,
+      "metadata": {
+        "avatar": "https://sleepercdn.com/uploads/19293ef8d83d2d442edbee86dd9738c0",
+        "allow_pn": "on",
+        "allow_sms": "on",
+        "team_name": "Dicker, Kelce",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "russellfyfe"
+    },
+    {
+      "avatar": "d8348f03a7012b2dd00afbddb7273b03",
+      "is_bot": false,
+      "user_id": "1001605098226659328",
+      "is_owner": false,
+      "metadata": {
+        "allow_pn": "on",
+        "allow_sms": "on",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "Cratty"
+    },
+    {
+      "avatar": "f0edbf4278f53f9425db175073df6584",
+      "is_bot": false,
+      "user_id": "1002388535137267712",
+      "is_owner": false,
+      "metadata": {
+        "avatar": "https://sleepercdn.com/uploads/430b8a587bf6934cb6825b6395698cad.jpg",
+        "allow_pn": "on",
+        "allow_sms": "on",
+        "team_name": "Streets Ahead",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "slkiefer"
+    },
+    {
+      "avatar": "82aec8e811b839b8ec25d7b458afd57b",
+      "is_bot": false,
+      "user_id": "1002843493154308096",
+      "is_owner": false,
+      "metadata": {
+        "allow_pn": "on",
+        "team_name": "Tua Infinity and Beyond",
+        "mention_pn": "on"
+      },
+      "settings": null,
+      "league_id": "1257477907467485184",
+      "display_name": "hallambae"
     }
   ]
 }
