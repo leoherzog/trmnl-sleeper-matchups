@@ -171,8 +171,8 @@ Parameters:
 
   <div class="{{ text_align_class }}">
     {% comment %} Unconditional lg: is safe here — only used in season_complete_card for short centered text {% endcomment %}
-    <div class="title title--medium lg:title--large">{{ team_name }}</div>
-    <div class="label label--small lg:label--base dim">@{{ username }}</div>
+    <div class="title title--base lg:title--large">{{ team_name }}</div>
+    <div class="label label--small lg:label--base">@{{ username }}</div>
   </div>
 </div>
 {% endif %}
@@ -194,7 +194,7 @@ Parameters:
 {% if avatar_url == nil or avatar_url == '' or avatar_url == blank or avatar_url == 'undefined' %}
 {% comment %} No avatar - show Sleeper logo {% endcomment %}
 {% if title_bar %}
-<div class="circle hidden sm:inline">{% render "sleeper_logo" %}</div>
+<div class="hidden sm:inline">{% render "sleeper_logo" %}</div>
 {% else %}
 <div class="rounded--full w--12 h--12">{% render "sleeper_logo" %}</div>
 {% endif %}
@@ -300,9 +300,9 @@ Parameters:
 {% assign plugin_id = plugin_id | default: '' %}
 {% case layout_size %}
 {% when 'quadrant' %}
-{% assign title_size = 'xsmall' %}
+{% assign title_size = 'small' %}
 {% assign value_size = 'small' %}
-{% assign label_size = 'xsmall' %}
+{% assign label_size = 'small' %}
 {% assign padding = 'p--2' %}
 {% assign lg_title_size = '' %}
 {% assign lg_value_size = '' %}
@@ -314,12 +314,12 @@ Parameters:
 {% assign label_size = 'small' %}
 {% assign padding = 'p--3' %}
 {% assign lg_title_size = 'base' %}
-{% assign lg_value_size = 'medium' %}
+{% assign lg_value_size = 'base' %}
 {% assign lg_label_size = 'base' %}
 {% assign lg_padding = 'lg:p--4' %}
 {% else %}
-{% assign title_size = 'medium' %}
-{% assign value_size = 'medium' %}
+{% assign title_size = 'base' %}
+{% assign value_size = 'base' %}
 {% assign label_size = 'small' %}
 {% assign padding = 'p--4' %}
 {% assign lg_title_size = 'large' %}
@@ -352,15 +352,15 @@ Parameters:
   {% if layout_size == 'quadrant' %}
     <div class="{{ text_align }}">
       <div class="title title--{{ title_size }}" data-field="team-name">{{ team_name }}</div>
-      <div class="label label--{{ label_size }} dim" data-field="username">@{{ username }}</div>
+      <div class="label label--{{ label_size }}" data-field="username">@{{ username }}</div>
       <div class="value value--{{ value_size }} mt--2" data-field="score">{{ score }}</div>
     </div>
   {% else %}
     {% comment %} Header with avatar {% endcomment %}
-    <div class="flex flex--space-between flex--center-y {{ flex_dir }} mb--4">
+    <div class="flex flex--between flex--center-y {{ flex_dir }} mb--4">
       <div class="stretch-x {{ text_align }}">
         <div class="title title--{{ title_size }}{% if lg_title_size != '' %} lg:title--{{ lg_title_size }}{% endif %}" data-field="team-name">{{ team_name }}</div>
-        <div class="label label--{{ label_size }}{% if lg_label_size != '' %} lg:label--{{ lg_label_size }}{% endif %} dim" data-field="username">@{{ username }} {% if wins %}<span class="label label--{{ label_size }}{% if lg_label_size != '' %} lg:label--{{ lg_label_size }}{% endif %} label--outline ml--1">{{ wins }}-{{ losses }}</span>{% endif %}</div>
+        <div class="label label--{{ label_size }}{% if lg_label_size != '' %} lg:label--{{ lg_label_size }}{% endif %}" data-field="username">@{{ username }} {% if wins %}<span class="label label--{{ label_size }}{% if lg_label_size != '' %} lg:label--{{ lg_label_size }}{% endif %} label--outline ml--1">{{ wins }}-{{ losses }}</span>{% endif %}</div>
       </div>
       {% render 'render_avatar', avatar_url: avatar_url, title_bar: false, plugin_id: plugin_id %}
     </div>
@@ -410,7 +410,7 @@ Parameters:
 {% case layout_size %}
 {% when 'quadrant' %}
 {% assign bye_title_size = 'small' %}
-{% assign bye_label_size = 'xsmall' %}
+{% assign bye_label_size = 'small' %}
 {% assign lg_bye_title_size = '' %}
 {% assign lg_bye_label_size = '' %}
 {% else %}
@@ -423,7 +423,7 @@ Parameters:
 <div class="bg--white rounded {{ padding }} {{ lg_padding }} stretch-x">
   <div class="flex flex--col flex--center-x flex--center-y h--full">
     <div class="text--center">
-      <div class="label label--{{ bye_label_size }}{% if lg_bye_label_size != '' %} lg:label--{{ lg_bye_label_size }}{% endif %} dim mb--2">{{ team_name }}</div>
+      <div class="label label--{{ bye_label_size }}{% if lg_bye_label_size != '' %} lg:label--{{ lg_bye_label_size }}{% endif %} mb--2">{{ team_name }}</div>
       <div class="title title--{{ bye_title_size }}{% if lg_bye_title_size != '' %} lg:title--{{ lg_bye_title_size }}{% endif %}">BYE WEEK</div>
     </div>
   </div>
@@ -464,7 +464,7 @@ Parameters:
 {% assign padding = 'p--4' %}
 {% assign gap_size = 'medium' %}
 {% assign lg_padding = 'lg:p--6' %}
-{% assign lg_gap_size = 'lg:gap--large' %}
+{% assign lg_gap_size = '' %}
 {% endcase %}
 
 {% comment %} Find the target roster {% endcomment %}
@@ -534,24 +534,24 @@ Parameters:
     {% comment %} VS divider - Hidden initially, shown by JS if there's an opponent {% endcomment %}
     <div id="vs-divider-{{ plugin_id }}" class="hidden flex flex--center-x flex--center-y {% if layout_size == 'quadrant' %}{% elsif layout_size == 'half-vertical' %}{% else %}flex--col no-shrink{% endif %}" data-is-playoffs="{{ is_playoffs }}" data-playoff-round="{{ playoff_round }}">
       {% if layout_size == 'quadrant' %}
-      <span class="label label--xsmall dim flex flex--center-y gap--xsmall">{% if is_playoffs %}{% render 'trophy_icon', trophy_class: 'w--4 h--4' %}{% else %}vs.{% endif %}</span>
+      <span class="label label--small flex flex--center-y gap--xsmall">{% if is_playoffs %}{% render 'trophy_icon', trophy_class: 'w--4 h--4' %}{% else %}vs.{% endif %}</span>
       {% elsif layout_size == 'half-vertical' %}
       {% if is_playoffs %}
-      <span class="label label--small dim flex flex--center-y gap--xsmall">{% render 'trophy_icon', trophy_class: 'w--4 h--4' %}<span data-field="bracket-type"></span>Round <span data-field="week">{{ playoff_round }}</span></span>
+      <span class="label label--small flex flex--center-y gap--xsmall">{% render 'trophy_icon', trophy_class: 'w--4 h--4' %}<span data-field="bracket-type"></span>Round <span data-field="week">{{ playoff_round }}</span></span>
       {% else %}
-      <span class="label label--small dim">vs • Week <span data-field="week">1</span></span>
+      <span class="label label--small">vs • Week <span data-field="week">1</span></span>
       {% endif %}
       {% else %}
       {% if is_playoffs %}
       <div class="title title--small">{% render 'trophy_icon', trophy_class: 'w--8 h--8' %}</div>
       {% else %}
-      <div class="label label--small dim">vs</div>
+      <div class="label label--small">vs</div>
       {% endif %}
       {% if is_playoffs %}
-      <div class="label label--small dim" data-field="bracket-type"></div>
-      <div class="label label--small dim">Round <span data-field="week">{{ playoff_round }}</span></div>
+      <div class="label label--small" data-field="bracket-type"></div>
+      <div class="label label--small">Round <span data-field="week">{{ playoff_round }}</span></div>
       {% else %}
-      <div class="label label--small dim">Week <span data-field="week">1</span></div>
+      <div class="label label--small">Week <span data-field="week">1</span></div>
       {% endif %}
       {% endif %}
     </div>
@@ -634,7 +634,7 @@ Parameters:
 {% assign layout_size = layout_size | default: 'full' %}
 {% case layout_size %}
 {% when 'quadrant' %}
-{% assign label_size = 'xsmall' %}
+{% assign label_size = 'small' %}
 {% assign lg_label_size = '' %}
 {% when 'half-horizontal', 'half-vertical' %}
 {% assign label_size = 'small' %}
@@ -895,7 +895,7 @@ Parameters:
 
         // Only update avatar if not quadrant layout
         if (layoutSize !== 'quadrant') {
-          const avatarContainer = team2Card.querySelector('.flex--space-between.flex--center-y');
+          const avatarContainer = team2Card.querySelector('.flex--between.flex--center-y');
           const team2Avatar = avatarContainer ? avatarContainer.querySelector('.image, svg') : null;
           const avatarUrl = opponentUser.metadata?.avatar;
 
@@ -981,7 +981,7 @@ Parameters:
     const teamName = user?.metadata?.team_name || user?.display_name || 'Team';
     const isQuadrant = layoutSize === 'quadrant';
     const byeTitleSize = isQuadrant ? 'small' : 'large';
-    const teamLabelSize = isQuadrant ? 'xsmall' : 'small';
+    const teamLabelSize = 'small';
     const lgByeTitleClass = isQuadrant ? '' : ' lg:title--xlarge';
     const lgTeamLabelClass = isQuadrant ? '' : ' lg:label--base';
     let padding;
@@ -1014,7 +1014,7 @@ Parameters:
     <div class="bg--white rounded ${padding}${lgPadding} stretch-x">
       <div class="flex flex--col flex--center-x flex--center-y h--full">
         <div class="text--center">
-          <div class="label label--${teamLabelSize}${lgTeamLabelClass} dim mb--2">${teamName}</div>
+          <div class="label label--${teamLabelSize}${lgTeamLabelClass} mb--2">${teamName}</div>
           <div class="title title--${byeTitleSize}${lgByeTitleClass}">${byeText}</div>
         </div>
       </div>
@@ -1027,7 +1027,7 @@ Parameters:
     const teamName = user?.metadata?.team_name || user?.display_name || 'Team';
     const isQuadrant = layoutSize === 'quadrant';
     const titleSize = isQuadrant ? 'small' : 'large';
-    const elLabelSize = isQuadrant ? 'xsmall' : 'small';
+    const elLabelSize = 'small';
     const lgTitleClass = isQuadrant ? '' : ' lg:title--xlarge';
     const lgLabelClass = isQuadrant ? '' : ' lg:label--base';
     let padding;
@@ -1051,7 +1051,7 @@ Parameters:
     <div class="bg--white rounded ${padding}${lgPadding} stretch-x">
       <div class="flex flex--col flex--center-x flex--center-y h--full">
         <div class="text--center">
-          <div class="label label--${elLabelSize}${lgLabelClass} dim mb--2">${teamName}</div>
+          <div class="label label--${elLabelSize}${lgLabelClass} mb--2">${teamName}</div>
           <div class="title title--${titleSize}${lgTitleClass}">SEASON OVER</div>
         </div>
       </div>
@@ -1143,7 +1143,7 @@ Parameters passed via render:
 {% else %}
 <div class="flex flex--center-x flex--center-y w--full h--full">
   <div class="text--center">
-    <span class="label label--small dim">Winner data unavailable</span>
+    <span class="label label--small">Winner data unavailable</span>
   </div>
 </div>
 {% endif %}
