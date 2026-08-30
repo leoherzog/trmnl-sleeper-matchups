@@ -33,12 +33,17 @@ function teamName(user) {
   return (user && ((user.metadata && user.metadata.team_name) || user.display_name)) || 'Team';
 }
 
-function team(user, roster, points) {
+function profile(user) {
   return {
-    roster_id: roster ? roster.roster_id : null,
     team_name: teamName(user),
     username: (user && user.display_name) || '',
     avatar: (user && user.metadata && user.metadata.avatar) || null,
+  };
+}
+
+function team(user, roster, points) {
+  return {
+    ...profile(user),
     record: (roster && roster.metadata && roster.metadata.record) || '',
     wins: roster && roster.settings ? roster.settings.wins : null,
     losses: roster && roster.settings ? roster.settings.losses : null,
@@ -178,7 +183,7 @@ async function run(input) {
     out.season_start_date = nfl.season_start_date || null;
 
     const myUser = findUser(users, fields.user_team);
-    out.my_team = myUser ? team(myUser, null) : null;
+    out.my_team = myUser ? profile(myUser) : null;
 
     if (status === 'pre_draft' || status === 'drafting') {
       out.view = 'pre_season';
@@ -188,7 +193,7 @@ async function run(input) {
       const winnerId = String((league.metadata && league.metadata.latest_league_winner_roster_id) || '');
       const roster = rosters.find(r => String(r.roster_id) === winnerId);
       const user = roster && users.find(u => u.user_id === roster.owner_id);
-      out.winner = user ? team(user, roster) : null;
+      out.winner = user ? profile(user) : null;
       out.view = 'winner';
     }
 

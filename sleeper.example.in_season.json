@@ -12,18 +12,12 @@
     },
     "season_start_date": "2026-09-09",
     "my_team": {
-      "roster_id": null,
       "team_name": "The Happy Foxes",
       "username": "leoherzog",
-      "avatar": "https://sleepercdn.com/uploads/cdb16a08d8937d016a6eab06cd2935f0.jpg",
-      "record": "",
-      "wins": null,
-      "losses": null,
-      "score": "0.00"
+      "avatar": "https://sleepercdn.com/uploads/cdb16a08d8937d016a6eab06cd2935f0.jpg"
     },
     "view": "matchup",
     "team1": {
-      "roster_id": 4,
       "team_name": "The Happy Foxes",
       "username": "leoherzog",
       "avatar": "https://sleepercdn.com/uploads/cdb16a08d8937d016a6eab06cd2935f0.jpg",
@@ -33,7 +27,6 @@
       "score": "0.00"
     },
     "team2": {
-      "roster_id": 3,
       "team_name": "Actually Paying Attention",
       "username": "AgentSmith630",
       "avatar": null,
