@@ -44,10 +44,10 @@ Used across all templates and layouts
 </svg>
 {% endtemplate %}
 
-{% comment %} Global trophy icon (FontAwesome) - sized via trophy_class param {% endcomment %}
+{% comment %} Global trophy icon (FontAwesome) - sized via trophy_class param; image--adaptive repaints for dark mode/themes {% endcomment %}
 {% template trophy_icon %}
 {% assign trophy_class = trophy_class | default: 'w--6 h--6' %}
-<svg class="image {{ trophy_class }}" viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg"><path d="M432 64L208 64C181.5 64 159.9 85.8 160.9 112.2C161.1 117.5 161.3 122.8 161.6 128L88 128C74.7 128 64 138.7 64 152C64 265.7 111.9 329.7 168.2 363.8C189.8 376.9 212.2 385.3 232.7 390.6C252.1 416.9 272.1 431.2 288 438.9L288 512L224 512C206.3 512 192 526.3 192 544C192 561.7 206.3 576 224 576L416 576C433.7 576 448 561.7 448 544C448 526.3 433.7 512 416 512L352 512L352 438.9C368.6 430.9 389.7 415.7 409.9 387.1C427.5 381.9 446 374.7 464 364.6C493.3 348.2 521.6 324 542.5 288.9C563.4 253.7 576 208.8 576 152.1C576 138.8 565.3 128.1 552 128.1L478.4 128.1C478.7 122.9 478.9 117.7 479.1 112.3C480.1 85.8 458.5 64.1 432 64.1zM112.8 176L165.2 176C171.7 239.6 183.5 288.3 198 325.6C196.3 324.7 194.7 323.7 193 322.7C155.1 299.8 118.7 257.7 112.8 176zM501.1 264.4C486 289.9 465.7 308 443.7 320.9C457.3 284.2 468.5 237 474.7 176.1L527 176.1C524.1 213.5 514.3 242.2 501.1 264.5zM330.8 149.8L348.3 185.2L387.3 190.9C397.1 192.3 401.1 204.4 393.9 211.4L365.7 238.9L372.4 277.8C374.1 287.6 363.8 295.1 355 290.5L320 272L285.1 290.4C276.3 295 266 287.6 267.7 277.7L274.4 238.8L246.2 211.3C239.1 204.4 243 192.3 252.9 190.8L291.9 185.1L309.4 149.7C313.8 140.8 326.5 140.8 330.9 149.7z"/></svg>
+<img class="image image--adaptive {{ trophy_class }}" src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjQwIDY0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNDMyIDY0TDIwOCA2NEMxODEuNSA2NCAxNTkuOSA4NS44IDE2MC45IDExMi4yQzE2MS4xIDExNy41IDE2MS4zIDEyMi44IDE2MS42IDEyOEw4OCAxMjhDNzQuNyAxMjggNjQgMTM4LjcgNjQgMTUyQzY0IDI2NS43IDExMS45IDMyOS43IDE2OC4yIDM2My44QzE4OS44IDM3Ni45IDIxMi4yIDM4NS4zIDIzMi43IDM5MC42QzI1Mi4xIDQxNi45IDI3Mi4xIDQzMS4yIDI4OCA0MzguOUwyODggNTEyTDIyNCA1MTJDMjA2LjMgNTEyIDE5MiA1MjYuMyAxOTIgNTQ0QzE5MiA1NjEuNyAyMDYuMyA1NzYgMjI0IDU3Nkw0MTYgNTc2QzQzMy43IDU3NiA0NDggNTYxLjcgNDQ4IDU0NEM0NDggNTI2LjMgNDMzLjcgNTEyIDQxNiA1MTJMMzUyIDUxMkwzNTIgNDM4LjlDMzY4LjYgNDMwLjkgMzg5LjcgNDE1LjcgNDA5LjkgMzg3LjFDNDI3LjUgMzgxLjkgNDQ2IDM3NC43IDQ2NCAzNjQuNkM0OTMuMyAzNDguMiA1MjEuNiAzMjQgNTQyLjUgMjg4LjlDNTYzLjQgMjUzLjcgNTc2IDIwOC44IDU3NiAxNTIuMUM1NzYgMTM4LjggNTY1LjMgMTI4LjEgNTUyIDEyOC4xTDQ3OC40IDEyOC4xQzQ3OC43IDEyMi45IDQ3OC45IDExNy43IDQ3OS4xIDExMi4zQzQ4MC4xIDg1LjggNDU4LjUgNjQuMSA0MzIgNjQuMXpNMTEyLjggMTc2TDE2NS4yIDE3NkMxNzEuNyAyMzkuNiAxODMuNSAyODguMyAxOTggMzI1LjZDMTk2LjMgMzI0LjcgMTk0LjcgMzIzLjcgMTkzIDMyMi43QzE1NS4xIDI5OS44IDExOC43IDI1Ny43IDExMi44IDE3NnpNNTAxLjEgMjY0LjRDNDg2IDI4OS45IDQ2NS43IDMwOCA0NDMuNyAzMjAuOUM0NTcuMyAyODQuMiA0NjguNSAyMzcgNDc0LjcgMTc2LjFMNTI3IDE3Ni4xQzUyNC4xIDIxMy41IDUxNC4zIDI0Mi4yIDUwMS4xIDI2NC41ek0zMzAuOCAxNDkuOEwzNDguMyAxODUuMkwzODcuMyAxOTAuOUMzOTcuMSAxOTIuMyA0MDEuMSAyMDQuNCAzOTMuOSAyMTEuNEwzNjUuNyAyMzguOUwzNzIuNCAyNzcuOEMzNzQuMSAyODcuNiAzNjMuOCAyOTUuMSAzNTUgMjkwLjVMMzIwIDI3MkwyODUuMSAyOTAuNEMyNzYuMyAyOTUgMjY2IDI4Ny42IDI2Ny43IDI3Ny43TDI3NC40IDIzOC44TDI0Ni4yIDIxMS4zQzIzOS4xIDIwNC40IDI0MyAxOTIuMyAyNTIuOSAxOTAuOEwyOTEuOSAxODUuMUwzMDkuNCAxNDkuN0MzMTMuOCAxNDAuOCAzMjYuNSAxNDAuOCAzMzAuOSAxNDkuN3oiLz48L3N2Zz4=" />
 {% endtemplate %}
 
 {% comment %}
@@ -246,6 +246,7 @@ Template for displaying pre-season draft status
 Parameters passed via render:
 - league_data: League data
 - nfl_state: NFL state data with season start date
+- trmnl: TRMNL configuration (for user locale via l_date)
 {% endcomment %}
 
 {% case layout_size %}
@@ -260,8 +261,7 @@ Parameters passed via render:
 <div class="flex flex--center-x flex--center-y w--full h--full">
   <div class="text--center">
     {% if nfl_state.season_start_date %}
-      {% assign start_date = nfl_state.season_start_date | date: "%B %-d, %Y" %}
-      <span class="title title--small{{ lg_pre_title }}">Week 1 of the NFL season starts {{ start_date }}</span>
+      <span class="title title--small{{ lg_pre_title }}">Week 1 of the NFL season starts {{ nfl_state.season_start_date | l_date: '%B %-d, %Y', trmnl.user.locale }}</span>
     {% else %}
       <span class="title title--small{{ lg_pre_title }}">{{ league_data.name }} is in pre-season</span>
     {% endif %}
@@ -383,53 +383,6 @@ Parameters:
 
 
 
-{% template bye_week_skeleton %}
-{% comment %}
-Renders a BYE WEEK card skeleton
-Parameters:
-- user: User data
-- layout_size: Layout size
-{% endcomment %}
-
-{% comment %} Set size configuration based on layout_size (with lg: responsive bump for TRMNL X) {% endcomment %}
-{% assign layout_size = layout_size | default: 'full' %}
-{% case layout_size %}
-{% when 'quadrant' %}
-{% assign padding = 'p--2' %}
-{% assign lg_padding = '' %}
-{% when 'half-horizontal', 'half-vertical' %}
-{% assign padding = 'p--3' %}
-{% assign lg_padding = 'lg:p--4' %}
-{% else %}
-{% assign padding = 'p--4' %}
-{% assign lg_padding = 'lg:p--6' %}
-{% endcase %}
-
-{% assign team_name = user.metadata.team_name | default: user.display_name %}
-
-{% case layout_size %}
-{% when 'quadrant' %}
-{% assign bye_title_size = 'small' %}
-{% assign bye_label_size = 'small' %}
-{% assign lg_bye_title_size = '' %}
-{% assign lg_bye_label_size = '' %}
-{% else %}
-{% assign bye_title_size = 'large' %}
-{% assign bye_label_size = 'small' %}
-{% assign lg_bye_title_size = 'xlarge' %}
-{% assign lg_bye_label_size = 'base' %}
-{% endcase %}
-
-<div class="bg--white rounded {{ padding }} {{ lg_padding }} stretch-x">
-  <div class="flex flex--col flex--center-x flex--center-y h--full">
-    <div class="text--center">
-      <div class="label label--{{ bye_label_size }}{% if lg_bye_label_size != '' %} lg:label--{{ lg_bye_label_size }}{% endif %} mb--2">{{ team_name }}</div>
-      <div class="title title--{{ bye_title_size }}{% if lg_bye_title_size != '' %} lg:title--{{ lg_bye_title_size }}{% endif %}">BYE WEEK</div>
-    </div>
-  </div>
-</div>
-{% endtemplate %}
-
 {% template in_season_matchup_skeleton %}
 {% comment %}
 Renders the full matchup skeleton structure
@@ -501,7 +454,7 @@ Parameters:
 {% endunless %}
 
 {% comment %} Container structure based on layout {% endcomment %}
-<div id="matchup-container-{{ plugin_id }}" class="layout {% if layout_size == 'quadrant' %}layout--row{% elsif layout_size == 'half-vertical' %}layout--col{% else %}layout--row{% endif %} layout--stretch-y bg--gray-65 {{ padding }} {{ lg_padding }} rounded--medium">
+<div id="matchup-container-{{ plugin_id }}" class="layout {% if layout_size == 'quadrant' %}layout--row{% elsif layout_size == 'half-vertical' %}layout--col{% else %}layout--row{% endif %} layout--stretch-y bg--gray-70 {{ padding }} {{ lg_padding }} rounded--medium">
 
   {% comment %} This will be populated by JavaScript with actual matchup pairing {% endcomment %}
   <div class="flex {% if layout_size == 'quadrant' %}flex--row{% elsif layout_size == 'half-vertical' %}flex--col{% else %}flex--row{% endif %} gap--{{ gap_size }} {{ lg_gap_size }} w--full" id="matchup-content-{{ plugin_id }}">
@@ -648,21 +601,27 @@ Parameters:
   // Sleeper logo SVG fallback - escape for JavaScript
   const sleeperLogoFallback = {{ sleeper_logo | replace: 'hidden sm:inline', 'rounded--full w--12 h--12' | json }};
 
-  document.addEventListener('DOMContentLoaded', async function() {
-    const pluginId = '{{ plugin_id }}';
-    const mode = '{{ trmnl.plugin_settings.custom_fields_values.mode | default: "all_teams" }}';
-    const userTeamName = '{{ trmnl.plugin_settings.custom_fields_values.user_team | default: "" }}';
-    const leagueId = '{{ trmnl.plugin_settings.custom_fields_values.league_id }}';
-    const currentWeek = {{ week }};
-    const layoutSize = '{{ layout_size }}';
-    const labelSize = '{{ label_size }}';
-    const lgLabelSize = '{{ lg_label_size }}';
-    const isPlayoffs = {{ is_playoffs | default: false }};
-    const playoffRound = {{ playoff_round | default: 0 }};
+  const pluginId = '{{ plugin_id }}';
+  const mode = '{{ trmnl.plugin_settings.custom_fields_values.mode | default: "all_teams" }}';
+  const userTeamName = '{{ trmnl.plugin_settings.custom_fields_values.user_team | default: "" }}';
+  const leagueId = '{{ trmnl.plugin_settings.custom_fields_values.league_id }}';
+  const currentWeek = {{ week }};
+  const layoutSize = '{{ layout_size }}';
+  const labelSize = '{{ label_size }}';
+  const lgLabelSize = '{{ lg_label_size }}';
+  const isPlayoffs = {{ is_playoffs | default: false }};
+  const playoffRound = {{ playoff_round | default: 0 }};
 
-    const rosters = {{ rosters_data.data | json }};
+  const rosters = {{ rosters_data.data | json }};
   const users = {{ users_data.data | json }};
 
+  // Kick off network requests immediately so they're in flight before the renderer
+  // captures; DOM mutations are deferred to DOMContentLoaded per TRMNL docs.
+  const sleeperJson = (path) => fetch(`https://api.sleeper.app/v1/league/${leagueId}/${path}`).then(r => r.json());
+  const matchupsPromise = sleeperJson(`matchups/${currentWeek}`);
+  const bracketsPromise = isPlayoffs ? Promise.all([sleeperJson('winners_bracket'), sleeperJson('losers_bracket')]) : null;
+
+  async function hydrateMatchup() {
   try {
     // Get team 1 card
     const team1Card = document.getElementById(`team1-card-${pluginId}`);
@@ -682,13 +641,8 @@ Parameters:
     let isLosersBracket = false;
 
     if (isPlayoffs) {
-      // Fetch both brackets in parallel
-      const [winnersResponse, losersResponse] = await Promise.all([
-        fetch(`https://api.sleeper.app/v1/league/${leagueId}/winners_bracket`),
-        fetch(`https://api.sleeper.app/v1/league/${leagueId}/losers_bracket`)
-      ]);
-      const winnersBracket = await winnersResponse.json();
-      const losersBracket = await losersResponse.json();
+      // Both brackets were requested up front, in parallel
+      const [winnersBracket, losersBracket] = await bracketsPromise;
 
       // Helper factory: creates resolveFromRef for a specific bracket
       function createResolveFromRef(bracketData) {
@@ -806,8 +760,7 @@ Parameters:
     }
 
     // Fetch matchups for scores (works for both regular season and playoffs)
-    const response = await fetch(`https://api.sleeper.app/v1/league/${leagueId}/matchups/${currentWeek}`);
-    const matchups = await response.json();
+    const matchups = await matchupsPromise;
 
     const targetMatchup = matchups.find(m => m.roster_id === targetRosterId);
 
@@ -959,7 +912,12 @@ Parameters:
   } catch (error) {
     console.error('Error fetching matchup data:', error);
   }
-  });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', hydrateMatchup);
+  } else {
+    hydrateMatchup();
+  }
 
   // Helper function to generate record pills HTML
   function generateRecordPills(record, labelSize, alignment, lgLabelSize) {
@@ -976,87 +934,37 @@ Parameters:
   }
 
 
-  // Generate bye week card (handles both regular bye and playoff bye)
-  function generateByeWeekCard(roster, user, layoutSize, isPlayoffs = false, playoffRound = 0) {
+  // Shared centered status card (bye / awaiting / eliminated)
+  function generateStatusCard(user, layoutSize, text) {
     const teamName = user?.metadata?.team_name || user?.display_name || 'Team';
     const isQuadrant = layoutSize === 'quadrant';
-    const byeTitleSize = isQuadrant ? 'small' : 'large';
-    const teamLabelSize = 'small';
-    const lgByeTitleClass = isQuadrant ? '' : ' lg:title--xlarge';
-    const lgTeamLabelClass = isQuadrant ? '' : ' lg:label--base';
-    let padding;
-    let lgPadding = '';
-
-    switch(layoutSize) {
-      case 'quadrant':
-        padding = 'p--2';
-        break;
-      case 'half-horizontal':
-      case 'half-vertical':
-        padding = 'p--3';
-        lgPadding = ' lg:p--4';
-        break;
-      default:
-        padding = 'p--4';
-        lgPadding = ' lg:p--6';
-    }
-
-    // During playoffs, a bye in round 1 means first-round bye (good thing)
-    // In later rounds, it would be unusual but could happen
-    let byeText = 'BYE WEEK';
-    if (isPlayoffs && playoffRound === 1) {
-      byeText = 'FIRST ROUND BYE';
-    } else if (isPlayoffs && playoffRound > 1) {
-      byeText = 'AWAITING OPPONENT';
-    }
+    const titleClass = isQuadrant ? 'title--small' : 'title--large lg:title--xlarge';
+    const labelClass = isQuadrant ? 'label--small' : 'label--small lg:label--base';
+    const padding = { quadrant: 'p--2', 'half-horizontal': 'p--3 lg:p--4', 'half-vertical': 'p--3 lg:p--4' }[layoutSize] || 'p--4 lg:p--6';
 
     return `
-    <div class="bg--white rounded ${padding}${lgPadding} stretch-x">
+    <div class="bg--white rounded ${padding} stretch-x">
       <div class="flex flex--col flex--center-x flex--center-y h--full">
         <div class="text--center">
-          <div class="label label--${teamLabelSize}${lgTeamLabelClass} mb--2">${teamName}</div>
-          <div class="title title--${byeTitleSize}${lgByeTitleClass}">${byeText}</div>
+          <div class="label ${labelClass} mb--2">${teamName}</div>
+          <div class="title ${titleClass}">${text}</div>
         </div>
       </div>
     </div>
   `;
   }
 
-  // Generate eliminated/not in playoffs card
+  // Bye week card (regular bye, first-round playoff bye, or awaiting opponent)
+  function generateByeWeekCard(roster, user, layoutSize, isPlayoffs = false, playoffRound = 0) {
+    let text = 'BYE WEEK';
+    if (isPlayoffs && playoffRound === 1) text = 'FIRST ROUND BYE';
+    else if (isPlayoffs && playoffRound > 1) text = 'AWAITING OPPONENT';
+    return generateStatusCard(user, layoutSize, text);
+  }
+
+  // Eliminated / not in playoffs card
   function generateEliminatedCard(roster, user, layoutSize) {
-    const teamName = user?.metadata?.team_name || user?.display_name || 'Team';
-    const isQuadrant = layoutSize === 'quadrant';
-    const titleSize = isQuadrant ? 'small' : 'large';
-    const elLabelSize = 'small';
-    const lgTitleClass = isQuadrant ? '' : ' lg:title--xlarge';
-    const lgLabelClass = isQuadrant ? '' : ' lg:label--base';
-    let padding;
-    let lgPadding = '';
-
-    switch(layoutSize) {
-      case 'quadrant':
-        padding = 'p--2';
-        break;
-      case 'half-horizontal':
-      case 'half-vertical':
-        padding = 'p--3';
-        lgPadding = ' lg:p--4';
-        break;
-      default:
-        padding = 'p--4';
-        lgPadding = ' lg:p--6';
-    }
-
-    return `
-    <div class="bg--white rounded ${padding}${lgPadding} stretch-x">
-      <div class="flex flex--col flex--center-x flex--center-y h--full">
-        <div class="text--center">
-          <div class="label label--${elLabelSize}${lgLabelClass} mb--2">${teamName}</div>
-          <div class="title title--${titleSize}${lgTitleClass}">SEASON OVER</div>
-        </div>
-      </div>
-    </div>
-  `;
+    return generateStatusCard(user, layoutSize, 'SEASON OVER');
   }
 
 </script>
@@ -1183,6 +1091,7 @@ Parameters:
 {% render "pre_season_draft_card",
 league_data: league_data,
 nfl_state: nfl_state,
+trmnl: trmnl,
 layout_size: layout_size %}
 {% elsif effective_status == "in_season" or effective_status == "post_season" %}
 {% render "matchup_display",
