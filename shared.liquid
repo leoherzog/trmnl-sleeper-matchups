@@ -1,9 +1,19 @@
 {% comment %} ================================================================
-GLOBAL VARIABLES & UTILITIES
-Used across all templates and layouts
+Sleeper One-on-One Matchups — shared templates
+
+All data arrives pre-resolved from serverless.js as the `sleeper` merge variable:
+  sleeper.view        pre_season | matchup | status | winner | none
+  sleeper.status      Sleeper league status (after test_status override)
+  sleeper.week / is_playoffs / playoff_round / bracket_type
+  sleeper.league      { name, avatar, season }
+  sleeper.my_team     configured user's team for the title bar (or null)
+  sleeper.team1/2     { team_name, username, avatar, record, wins, losses, score }
+  sleeper.status_text BYE WEEK | FIRST ROUND BYE | AWAITING OPPONENT | SEASON OVER
+  sleeper.winner      { team_name, username, avatar }
+  sleeper.error       message if the serverless function failed
 ================================================================ {% endcomment %}
 
-{% comment %} Global sleeper logo SVG template - available to all templates {% endcomment %}
+{% comment %} Sleeper logo SVG - used as the avatar fallback {% endcomment %}
 {% template sleeper_logo %}
 <svg class="image image-stroke" width="33.333" height="33.333" fill="none" version="1.1" viewBox="0 0 33.333 40" xmlns="http://www.w3.org/2000/svg">
 <g transform="translate(-5.8333 -4)" clip-path="url(#fahpw200aa)">
@@ -50,177 +60,76 @@ Used across all templates and layouts
 <img class="image image--adaptive {{ trophy_class }}" src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjQwIDY0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNDMyIDY0TDIwOCA2NEMxODEuNSA2NCAxNTkuOSA4NS44IDE2MC45IDExMi4yQzE2MS4xIDExNy41IDE2MS4zIDEyMi44IDE2MS42IDEyOEw4OCAxMjhDNzQuNyAxMjggNjQgMTM4LjcgNjQgMTUyQzY0IDI2NS43IDExMS45IDMyOS43IDE2OC4yIDM2My44QzE4OS44IDM3Ni45IDIxMi4yIDM4NS4zIDIzMi43IDM5MC42QzI1Mi4xIDQxNi45IDI3Mi4xIDQzMS4yIDI4OCA0MzguOUwyODggNTEyTDIyNCA1MTJDMjA2LjMgNTEyIDE5MiA1MjYuMyAxOTIgNTQ0QzE5MiA1NjEuNyAyMDYuMyA1NzYgMjI0IDU3Nkw0MTYgNTc2QzQzMy43IDU3NiA0NDggNTYxLjcgNDQ4IDU0NEM0NDggNTI2LjMgNDMzLjcgNTEyIDQxNiA1MTJMMzUyIDUxMkwzNTIgNDM4LjlDMzY4LjYgNDMwLjkgMzg5LjcgNDE1LjcgNDA5LjkgMzg3LjFDNDI3LjUgMzgxLjkgNDQ2IDM3NC43IDQ2NCAzNjQuNkM0OTMuMyAzNDguMiA1MjEuNiAzMjQgNTQyLjUgMjg4LjlDNTYzLjQgMjUzLjcgNTc2IDIwOC44IDU3NiAxNTIuMUM1NzYgMTM4LjggNTY1LjMgMTI4LjEgNTUyIDEyOC4xTDQ3OC40IDEyOC4xQzQ3OC43IDEyMi45IDQ3OC45IDExNy43IDQ3OS4xIDExMi4zQzQ4MC4xIDg1LjggNDU4LjUgNjQuMSA0MzIgNjQuMXpNMTEyLjggMTc2TDE2NS4yIDE3NkMxNzEuNyAyMzkuNiAxODMuNSAyODguMyAxOTggMzI1LjZDMTk2LjMgMzI0LjcgMTk0LjcgMzIzLjcgMTkzIDMyMi43QzE1NS4xIDI5OS44IDExOC43IDI1Ny43IDExMi44IDE3NnpNNTAxLjEgMjY0LjRDNDg2IDI4OS45IDQ2NS43IDMwOCA0NDMuNyAzMjAuOUM0NTcuMyAyODQuMiA0NjguNSAyMzcgNDc0LjcgMTc2LjFMNTI3IDE3Ni4xQzUyNC4xIDIxMy41IDUxNC4zIDI0Mi4yIDUwMS4xIDI2NC41ek0zMzAuOCAxNDkuOEwzNDguMyAxODUuMkwzODcuMyAxOTAuOUMzOTcuMSAxOTIuMyA0MDEuMSAyMDQuNCAzOTMuOSAyMTEuNEwzNjUuNyAyMzguOUwzNzIuNCAyNzcuOEMzNzQuMSAyODcuNiAzNjMuOCAyOTUuMSAzNTUgMjkwLjVMMzIwIDI3MkwyODUuMSAyOTAuNEMyNzYuMyAyOTUgMjY2IDI4Ny42IDI2Ny43IDI3Ny43TDI3NC40IDIzOC44TDI0Ni4yIDIxMS4zQzIzOS4xIDIwNC40IDI0MyAxOTIuMyAyNTIuOSAxOTAuOEwyOTEuOSAxODUuMUwzMDkuNCAxNDkuN0MzMTMuOCAxNDAuOCAzMjYuNSAxNDAuOCAzMzAuOSAxNDkuN3oiLz48L3N2Zz4=" />
 {% endtemplate %}
 
-{% comment %}
-Optional local test overrides. For production, prefer setting
-custom fields `test_status` and `test_week` in TRMNL plugin settings.
-Uncomment the two lines below to force locally while developing:
-{% endcomment %}
-{% comment %}
-{% assign force_status = 'in_season' %}
-{% assign force_week = 5 %}
-{% endcomment %}
+{% comment %} ================================================================
+SHARED COMPONENTS
+================================================================ {% endcomment %}
 
 {% template title_bar %}
 {% comment %}
-Title Bar Template
-Displays league avatar, name, and contextual info (week/team) based on layout size.
-
 Parameters:
-- layout_size: 'team' (shows team info), 'week' (shows week number), or 'empty' (shows nothing)
-- nfl_state: NFL state data (for week)
-- league_data: League data (for status/name)
-- users_data: Users data (for team lookup)
-- trmnl: TRMNL configuration
+- sleeper: resolved data
+- layout_size: 'team' (shows configured team) or 'week' (shows week/round)
 {% endcomment %}
-
 {% assign layout_size = layout_size | default: 'team' %}
-{% assign plugin_id = trmnl.plugin_settings.custom_fields_values.league_id %}
-{% assign user_team = trmnl.plugin_settings.custom_fields_values.user_team %}
-{% assign my_team_name = nil %}
-{% assign my_avatar_url = nil %}
-
-{% assign effective_status = trmnl.plugin_settings.custom_fields_values.test_status | default: league_data.status %}
-{% assign effective_week = trmnl.plugin_settings.custom_fields_values.test_week | default: nfl_state.week | default: league_data.settings.leg %}
-
-{% comment %} Playoff detection and round calculation {% endcomment %}
-{% assign playoff_week_start = league_data.settings.playoff_week_start | default: 15 %}
-{% if effective_week >= playoff_week_start %}
-{% assign is_playoffs = true %}
-{% assign playoff_round = effective_week | minus: playoff_week_start | plus: 1 %}
-{% else %}
-{% assign is_playoffs = false %}
-{% assign playoff_round = 0 %}
-{% endif %}
-
-{% comment %} Find user's team if specified (only for team layout) {% endcomment %}
-{% if layout_size == 'team' and user_team and user_team != '' %}
-{% for user in users_data.data %}
-{% if user.display_name == user_team or user.metadata.team_name == user_team %}
-{% assign my_team_name = user.metadata.team_name | default: user.display_name %}
-{% assign my_avatar_url = user.metadata.avatar %}
-{% break %}
-{% endif %}
-{% endfor %}
-{% endif %}
 
 <div class="title_bar">
-  {% comment %} League avatar {% endcomment %}
-  {% if league_data.avatar %}
-  <img class="image image-stroke rounded--full" src="https://sleepercdn.com/uploads/{{ league_data.avatar }}" />
+  {% if sleeper.league.avatar %}
+  <img class="image image-stroke rounded--full" src="https://sleepercdn.com/uploads/{{ sleeper.league.avatar }}" />
   {% else %}
   {% render 'sleeper_logo' %}
   {% endif %}
 
-  {% comment %} League name {% endcomment %}
-  <span class="title">{{ league_data.name }}</span>
+  <span class="title">{{ sleeper.league.name }}</span>
 
-  {% comment %} Bottom right content based on layout_size and status {% endcomment %}
   {% if layout_size == 'week' %}
-    {% if effective_status == 'complete' %}
-      {% comment %} Show nothing for completed season {% endcomment %}
-    {% elsif effective_status == 'pre_draft' %}
-      <span class="instance" data-field="title-week">Pre-Season</span>
-    {% elsif is_playoffs %}
-      <span class="instance" data-field="title-week" data-is-playoffs="true" data-playoff-round="{{ playoff_round }}">Round {{ playoff_round }}</span>
-    {% elsif effective_week %}
-      <span class="instance" data-field="title-week" data-is-playoffs="false">Week {{ effective_week }}</span>
+    {% if sleeper.view == 'pre_season' %}
+      <span class="instance">Pre-Season</span>
+    {% elsif sleeper.view == 'matchup' or sleeper.view == 'status' %}
+      {% if sleeper.is_playoffs %}
+      <span class="instance">{% if sleeper.bracket_type %}{{ sleeper.bracket_type }} {% endif %}Round {{ sleeper.playoff_round }}</span>
+      {% else %}
+      <span class="instance">Week {{ sleeper.week }}</span>
+      {% endif %}
     {% endif %}
-  {% elsif layout_size == 'team' and my_team_name %}
-    <span class="instance">{{ my_team_name }}</span>
-    {% render 'render_avatar', avatar_url: my_avatar_url, title_bar: true, plugin_id: plugin_id %}
+  {% elsif layout_size == 'team' and sleeper.my_team %}
+    <span class="instance">{{ sleeper.my_team.team_name }}</span>
+    {% render 'render_avatar', avatar_url: sleeper.my_team.avatar, title_bar: true %}
   {% endif %}
-  {% comment %} layout_size == 'empty' shows nothing in bottom right {% endcomment %}
 </div>
-{% endtemplate %}
-
-{% template team_header %}
-{% comment %}
-Reusable team header component with avatar, team name, and username
-Parameters:
-- user: User object from users_data.data
-- alignment: 'left', 'right', or 'center' (default: 'left')
-- show_avatar: true/false to show avatar (default: true)
-- plugin_id: Unique plugin ID for Mashup compatibility
-{% endcomment %}
-
-{% assign alignment = alignment | default: 'left' %}
-{% assign show_avatar = show_avatar | default: true %}
-{% assign plugin_id = plugin_id | default: '' %}
-
-{% if user %}
-{% assign team_name = user.metadata.team_name | default: user.display_name %}
-{% assign username = user.display_name %}
-{% assign avatar_url = user.metadata.avatar %}
-
-{% comment %} Determine flex direction and text alignment based on alignment parameter {% endcomment %}
-{% if alignment == 'right' %}
-{% assign flex_class = 'flex flex--row-reverse gap--medium' %}
-{% assign text_align_class = 'text--right' %}
-{% elsif alignment == 'center' %}
-{% assign flex_class = 'flex flex--col flex--center-x flex--center-y gap--medium' %}
-{% assign text_align_class = 'text--center' %}
-{% else %}
-{% assign flex_class = 'flex gap--medium' %}
-{% assign text_align_class = 'text--left' %}
-{% endif %}
-
-<div class="{{ flex_class }}">
-  {% if show_avatar %}
-  {% render 'render_avatar', avatar_url: avatar_url, title_bar: false, plugin_id: plugin_id %}
-  {% endif %}
-
-  <div class="{{ text_align_class }}">
-    {% comment %} Unconditional lg: is safe here — only used in season_complete_card for short centered text {% endcomment %}
-    <div class="title title--base lg:title--large">{{ team_name }}</div>
-    <div class="label label--small lg:label--base">@{{ username }}</div>
-  </div>
-</div>
-{% endif %}
 {% endtemplate %}
 
 {% template render_avatar %}
 {% comment %}
-Renders avatar with fallback to Sleeper logo
-Parameters:
-- avatar_url: URL of the avatar
-- title_bar: true if this is for the title bar (uses default size), false for w--12 h--12
-- plugin_id: Unique plugin ID for Mashup compatibility
+Avatar image with Sleeper-logo fallback
+- avatar_url: image URL (may be null)
+- title_bar: true for the title bar (default size), false for w--12 h--12
 {% endcomment %}
-
 {% assign title_bar = title_bar | default: false %}
-{% assign plugin_id = plugin_id | default: '' %}
-
-{% comment %} Determine if we should show the avatar or fallback {% endcomment %}
-{% if avatar_url == nil or avatar_url == '' or avatar_url == blank or avatar_url == 'undefined' %}
-{% comment %} No avatar - show Sleeper logo {% endcomment %}
-{% if title_bar %}
-<div class="hidden sm:inline">{% render "sleeper_logo" %}</div>
+{% if avatar_url == nil or avatar_url == '' or avatar_url == blank %}
+  {% if title_bar %}
+  <div class="hidden sm:inline">{% render 'sleeper_logo' %}</div>
+  {% else %}
+  <div class="rounded--full w--12 h--12">{% render 'sleeper_logo' %}</div>
+  {% endif %}
 {% else %}
-<div class="rounded--full w--12 h--12">{% render "sleeper_logo" %}</div>
-{% endif %}
-{% else %}
-{% comment %} Has avatar - show image {% endcomment %}
-{% if title_bar %}
-<img class="image image-stroke rounded--full" src="{{ avatar_url }}" />
-{% else %}
-<img class="image image-stroke image-dither rounded--full w--12 h--12" src="{{ avatar_url }}" />
-{% endif %}
+  {% if title_bar %}
+  <img class="image image-stroke rounded--full" src="{{ avatar_url }}" />
+  {% else %}
+  <img class="image image-stroke image-dither rounded--full w--12 h--12" src="{{ avatar_url }}" />
+  {% endif %}
 {% endif %}
 {% endtemplate %}
 
 {% template record_pills %}
 {% comment %}
-Renders win/loss record as pills
-Parameters:
-- record: String of W/L characters
-- size: Size of pills (small, xsmall)
+Win/loss record as pills
+- record: string of W/L characters
+- size / lg_size: label sizes
 - alignment: left or right
 {% endcomment %}
-
 {% assign size = size | default: 'small' %}
 {% assign lg_size = lg_size | default: '' %}
 {% assign alignment = alignment | default: 'left' %}
-
 {% if record and record != '' %}
 <div class="flex gap--xsmall {% if alignment == 'right' %}flex--right{% endif %}">
   {% assign record_chars = record | split: '' %}
@@ -235,20 +144,18 @@ Parameters:
 {% endif %}
 {% endtemplate %}
 
-{% comment %} ================================================================
-PRE-SEASON TEMPLATES
-Templates for pre-draft/pre-season status
-================================================================ {% endcomment %}
-
-{% template pre_season_draft_card %}
 {% comment %}
-Template for displaying pre-season draft status
-Parameters passed via render:
-- league_data: League data
-- nfl_state: NFL state data with season start date
-- trmnl: TRMNL configuration (for user locale via l_date)
+Size table used the per-layout size table used by the templates below:
+  quadrant:        p--2, title/value/label small, no lg: bump
+  half-*:          p--3 lg:p--4, small → lg: base
+  full (default):  p--4 lg:p--6, base/base/small → lg: large/large/base
 {% endcomment %}
 
+{% comment %} ================================================================
+PRE-SEASON
+================================================================ {% endcomment %}
+
+{% template pre_season_card %}
 {% case layout_size %}
 {% when 'quadrant' %}
 {% assign lg_pre_title = '' %}
@@ -260,856 +167,267 @@ Parameters passed via render:
 
 <div class="flex flex--center-x flex--center-y w--full h--full">
   <div class="text--center">
-    {% if nfl_state.season_start_date %}
-      <span class="title title--small{{ lg_pre_title }}">Week 1 of the NFL season starts {{ nfl_state.season_start_date | l_date: '%B %-d, %Y', trmnl.user.locale }}</span>
+    {% if sleeper.season_start_date %}
+      <span class="title title--small{{ lg_pre_title }}">Week 1 of the NFL season starts {{ sleeper.season_start_date | l_date: '%B %-d, %Y', trmnl.user.locale }}</span>
     {% else %}
-      <span class="title title--small{{ lg_pre_title }}">{{ league_data.name }} is in pre-season</span>
+      <span class="title title--small{{ lg_pre_title }}">{{ sleeper.league.name }} is in pre-season</span>
     {% endif %}
   </div>
 </div>
 {% endtemplate %}
 
 {% comment %} ================================================================
-IN-SEASON TEMPLATES
-Templates for active season matchups and displays
+IN-SEASON
 ================================================================ {% endcomment %}
-
-
-
 
 {% template matchup_card %}
 {% comment %}
-Unified template for rendering matchup cards (both team 1 and team 2)
-Parameters:
-- card_id: Unique ID for the card element
-- roster_id: Roster ID for data attribute
-- team_name: Team name to display
-- username: Username to display
-- avatar_url: Avatar URL
-- record: Win/loss record string
-- wins: Number of wins
-- losses: Number of losses
-- score: Current score (default: 0.00)
+One team's card
+- team: { team_name, username, avatar, record, wins, losses, score }
 - alignment: 'left' or 'right'
-- layout_size: Layout size for responsive adjustments
-- plugin_id: Unique plugin ID for Mashup compatibility
+- layout_size
 {% endcomment %}
-
-{% comment %} Set size configuration based on layout_size (with lg: responsive bump for TRMNL X) {% endcomment %}
 {% assign layout_size = layout_size | default: 'full' %}
-{% assign plugin_id = plugin_id | default: '' %}
 {% case layout_size %}
 {% when 'quadrant' %}
 {% assign title_size = 'small' %}
 {% assign value_size = 'small' %}
 {% assign label_size = 'small' %}
 {% assign padding = 'p--2' %}
-{% assign lg_title_size = '' %}
-{% assign lg_value_size = '' %}
-{% assign lg_label_size = '' %}
-{% assign lg_padding = '' %}
+{% assign lg_title = '' %}
+{% assign lg_value = '' %}
+{% assign lg_label = '' %}
 {% when 'half-horizontal', 'half-vertical' %}
 {% assign title_size = 'small' %}
 {% assign value_size = 'small' %}
 {% assign label_size = 'small' %}
-{% assign padding = 'p--3' %}
-{% assign lg_title_size = 'base' %}
-{% assign lg_value_size = 'base' %}
-{% assign lg_label_size = 'base' %}
-{% assign lg_padding = 'lg:p--4' %}
+{% assign padding = 'p--3 lg:p--4' %}
+{% assign lg_title = ' lg:title--base' %}
+{% assign lg_value = ' lg:value--base' %}
+{% assign lg_label = ' lg:label--base' %}
 {% else %}
 {% assign title_size = 'base' %}
 {% assign value_size = 'base' %}
 {% assign label_size = 'small' %}
-{% assign padding = 'p--4' %}
-{% assign lg_title_size = 'large' %}
-{% assign lg_value_size = 'large' %}
-{% assign lg_label_size = 'base' %}
-{% assign lg_padding = 'lg:p--6' %}
+{% assign padding = 'p--4 lg:p--6' %}
+{% assign lg_title = ' lg:title--large' %}
+{% assign lg_value = ' lg:value--large' %}
+{% assign lg_label = ' lg:label--base' %}
 {% endcase %}
+{% assign lg_label_size = lg_label | replace: ' lg:label--', '' %}
 
 {% assign alignment = alignment | default: 'left' %}
-{% assign score = score | default: '0.00' %}
-
-{% comment %} Alignment classes {% endcomment %}
 {% if alignment == 'right' %}
 {% assign text_align = 'text--right' %}
 {% assign flex_dir = 'flex--row-reverse' %}
-{% assign order_class = 'order--2' %}
-{% assign order_class_inv = 'order--1' %}
+{% assign order_label = 'order--2' %}
+{% assign order_value = 'order--1' %}
 {% assign flex_align = 'flex--right' %}
 {% assign score_align = 'flex--end' %}
 {% else %}
 {% assign text_align = 'text--left' %}
 {% assign flex_dir = '' %}
-{% assign order_class = '' %}
-{% assign order_class_inv = '' %}
+{% assign order_label = '' %}
+{% assign order_value = '' %}
 {% assign flex_align = 'flex--start' %}
 {% assign score_align = 'flex--start' %}
 {% endif %}
 
-<div id="{{ card_id }}" class="bg--white rounded {{ padding }} {{ lg_padding }} stretch-x" data-roster-id="{{ roster_id }}">
+<div class="bg--white rounded {{ padding }} stretch-x">
   {% if layout_size == 'quadrant' %}
     <div class="{{ text_align }}">
-      <div class="title title--{{ title_size }}" data-field="team-name">{{ team_name }}</div>
-      <div class="label label--{{ label_size }}" data-field="username">@{{ username }}</div>
-      <div class="value value--{{ value_size }} mt--2" data-field="score">{{ score }}</div>
+      <div class="title title--{{ title_size }}">{{ team.team_name }}</div>
+      <div class="label label--{{ label_size }}">@{{ team.username }}</div>
+      <div class="value value--{{ value_size }} mt--2">{{ team.score }}</div>
     </div>
   {% else %}
-    {% comment %} Header with avatar {% endcomment %}
     <div class="flex flex--between flex--center-y {{ flex_dir }} mb--4">
       <div class="stretch-x {{ text_align }}">
-        <div class="title title--{{ title_size }}{% if lg_title_size != '' %} lg:title--{{ lg_title_size }}{% endif %}" data-field="team-name">{{ team_name }}</div>
-        <div class="label label--{{ label_size }}{% if lg_label_size != '' %} lg:label--{{ lg_label_size }}{% endif %}" data-field="username">@{{ username }} {% if wins %}<span class="label label--{{ label_size }}{% if lg_label_size != '' %} lg:label--{{ lg_label_size }}{% endif %} label--outline ml--1">{{ wins }}-{{ losses }}</span>{% endif %}</div>
+        <div class="title title--{{ title_size }}{{ lg_title }}">{{ team.team_name }}</div>
+        <div class="label label--{{ label_size }}{{ lg_label }}">@{{ team.username }}{% if team.wins != nil %} <span class="label label--{{ label_size }}{{ lg_label }} label--outline ml--1">{{ team.wins }}-{{ team.losses }}</span>{% endif %}</div>
       </div>
-      {% render 'render_avatar', avatar_url: avatar_url, title_bar: false, plugin_id: plugin_id %}
+      {% render 'render_avatar', avatar_url: team.avatar, title_bar: false %}
     </div>
 
-    {% comment %} Win/Loss Record {% endcomment %}
-    <div class="flex flex--row gap--xsmall {{ flex_align }} mb--4" data-field="record">
-      {% if record and record != '' %}
-      {% render 'record_pills', record: record, size: label_size, lg_size: lg_label_size, alignment: alignment %}
-      {% endif %}
+    <div class="flex flex--row gap--xsmall {{ flex_align }} mb--4">
+      {% render 'record_pills', record: team.record, size: label_size, lg_size: lg_label_size, alignment: alignment %}
     </div>
 
-    {% comment %} Score {% endcomment %}
     <div class="flex flex--row {{ score_align }} gap--medium">
-      <span class="label label--{{ label_size }}{% if lg_label_size != '' %} lg:label--{{ lg_label_size }}{% endif %} {{ order_class }}">Score</span>
-      <span class="value value--{{ value_size }}{% if lg_value_size != '' %} lg:value--{{ lg_value_size }}{% endif %} {{ order_class_inv }}" data-field="score">{{ score }}</span>
+      <span class="label label--{{ label_size }}{{ lg_label }} {{ order_label }}">Score</span>
+      <span class="value value--{{ value_size }}{{ lg_value }} {{ order_value }}">{{ team.score }}</span>
     </div>
   {% endif %}
 </div>
 {% endtemplate %}
 
-
-
-{% template in_season_matchup_skeleton %}
+{% template status_card %}
 {% comment %}
-Renders the full matchup skeleton structure
-Parameters:
-- users_data: Users data
-- rosters_data: Rosters data
-- layout_size: Layout size
-- user_team: Selected user team name
-- mode: 'my_team' or 'all_teams'
-- trmnl: TRMNL configuration (for plugin_id)
-- is_playoffs: Boolean indicating if we're in playoffs
-- playoff_round: Current playoff round number
+Centered card for bye / awaiting opponent / eliminated
+- team_name, text, layout_size
 {% endcomment %}
+{% case layout_size %}
+{% when 'quadrant' %}
+{% assign padding = 'p--2' %}
+{% assign title_class = 'title--small' %}
+{% assign label_class = 'label--small' %}
+{% when 'half-horizontal', 'half-vertical' %}
+{% assign padding = 'p--3 lg:p--4' %}
+{% assign title_class = 'title--large lg:title--xlarge' %}
+{% assign label_class = 'label--small lg:label--base' %}
+{% else %}
+{% assign padding = 'p--4 lg:p--6' %}
+{% assign title_class = 'title--large lg:title--xlarge' %}
+{% assign label_class = 'label--small lg:label--base' %}
+{% endcase %}
 
-{% comment %} Set unique plugin ID for Mashup compatibility {% endcomment %}
-{% assign plugin_id = trmnl.plugin_settings.custom_fields_values.league_id %}
+<div class="bg--white rounded {{ padding }} stretch-x">
+  <div class="flex flex--col flex--center-x flex--center-y h--full">
+    <div class="text--center">
+      <div class="label {{ label_class }} mb--2">{{ team_name }}</div>
+      <div class="title {{ title_class }}">{{ text }}</div>
+    </div>
+  </div>
+</div>
+{% endtemplate %}
 
-{% comment %} Set size configuration based on layout_size (with lg: responsive bump for TRMNL X) {% endcomment %}
+{% template vs_divider %}
+{% comment %}
+Divider between the two cards: "vs" + week, or trophy + bracket/round in playoffs
+- sleeper, layout_size
+{% endcomment %}
+{% if layout_size == 'quadrant' %}
+<div class="flex flex--center-x flex--center-y">
+  <span class="label label--small flex flex--center-y gap--xsmall">{% if sleeper.is_playoffs %}{% render 'trophy_icon', trophy_class: 'w--4 h--4' %}{% else %}vs.{% endif %}</span>
+</div>
+{% elsif layout_size == 'half-vertical' %}
+<div class="flex flex--center-x flex--center-y">
+  {% if sleeper.is_playoffs %}
+  <span class="label label--small flex flex--center-y gap--xsmall">{% render 'trophy_icon', trophy_class: 'w--4 h--4' %}<span>{% if sleeper.bracket_type %}{{ sleeper.bracket_type }} {% endif %}Round {{ sleeper.playoff_round }}</span></span>
+  {% else %}
+  <span class="label label--small">vs • Week {{ sleeper.week }}</span>
+  {% endif %}
+</div>
+{% else %}
+<div class="flex flex--col flex--center-x flex--center-y no-shrink">
+  {% if sleeper.is_playoffs %}
+  <div class="title title--small">{% render 'trophy_icon', trophy_class: 'w--8 h--8' %}</div>
+  {% if sleeper.bracket_type %}<div class="label label--small">{{ sleeper.bracket_type }}</div>{% endif %}
+  <div class="label label--small">Round {{ sleeper.playoff_round }}</div>
+  {% else %}
+  <div class="label label--small">vs</div>
+  <div class="label label--small">Week {{ sleeper.week }}</div>
+  {% endif %}
+</div>
+{% endif %}
+{% endtemplate %}
+
+{% template matchup_display %}
+{% comment %}
+Gray panel holding the matchup (or status) cards
+- sleeper, layout_size
+{% endcomment %}
 {% assign layout_size = layout_size | default: 'full' %}
 {% case layout_size %}
 {% when 'quadrant' %}
 {% assign padding = 'p--2' %}
 {% assign gap_size = 'small' %}
-{% assign lg_padding = '' %}
-{% assign lg_gap_size = '' %}
 {% when 'half-horizontal', 'half-vertical' %}
-{% assign padding = 'p--3' %}
+{% assign padding = 'p--3 lg:p--4' %}
 {% assign gap_size = 'medium' %}
-{% assign lg_padding = 'lg:p--4' %}
-{% assign lg_gap_size = '' %}
 {% else %}
-{% assign padding = 'p--4' %}
+{% assign padding = 'p--4 lg:p--6' %}
 {% assign gap_size = 'medium' %}
-{% assign lg_padding = 'lg:p--6' %}
-{% assign lg_gap_size = '' %}
 {% endcase %}
-
-{% comment %} Find the target roster {% endcomment %}
-{% assign target_roster = nil %}
-{% assign target_user = nil %}
-
-{% if mode == 'my_team' and user_team and user_team != '' %}
-{% for user in users_data.data %}
-{% if user.display_name == user_team or user.metadata.team_name == user_team %}
-{% assign target_user = user %}
-{% for roster in rosters_data.data %}
-{% if roster.owner_id == user.user_id %}
-{% assign target_roster = roster %}
-{% break %}
-{% endif %}
-{% endfor %}
-{% break %}
-{% endif %}
-{% endfor %}
+{% if layout_size == 'half-vertical' %}
+{% assign direction = 'col' %}
+{% else %}
+{% assign direction = 'row' %}
 {% endif %}
 
-{% comment %} Fall back to pseudo-random selection if no target found {% endcomment %}
-{% unless target_roster %}
-{% comment %} Use current timestamp for pseudo-randomization {% endcomment %}
-{% assign current_time = 'now' | date: '%s' %}
-{% assign random_index = current_time | modulo: rosters_data.data.size %}
-{% assign target_roster = rosters_data.data[random_index] %}
-{% for user in users_data.data %}
-{% if user.user_id == target_roster.owner_id %}
-{% assign target_user = user %}
-{% break %}
-{% endif %}
-{% endfor %}
-{% endunless %}
-
-{% comment %} Container structure based on layout {% endcomment %}
-<div id="matchup-container-{{ plugin_id }}" class="layout {% if layout_size == 'quadrant' %}layout--row{% elsif layout_size == 'half-vertical' %}layout--col{% else %}layout--row{% endif %} layout--stretch-y bg--gray-70 {{ padding }} {{ lg_padding }} rounded--medium">
-
-  {% comment %} This will be populated by JavaScript with actual matchup pairing {% endcomment %}
-  <div class="flex {% if layout_size == 'quadrant' %}flex--row{% elsif layout_size == 'half-vertical' %}flex--col{% else %}flex--row{% endif %} gap--{{ gap_size }} {{ lg_gap_size }} w--full" id="matchup-content-{{ plugin_id }}">
-
-    {% comment %} Team 1 card - always rendered {% endcomment %}
-    {% if target_user %}
-    {% assign team1_name = target_user.metadata.team_name | default: target_user.display_name %}
-    {% assign team1_username = target_user.display_name %}
-    {% assign team1_avatar = target_user.metadata.avatar %}
-    {% assign team1_record = target_roster.metadata.record | default: '' %}
-    {% assign team1_wins = target_roster.settings.wins %}
-    {% assign team1_losses = target_roster.settings.losses %}
-    {% capture team1_card_id %}team1-card-{{ plugin_id }}{% endcapture %}
-
-      {% render 'matchup_card',
-      card_id: team1_card_id,
-      roster_id: target_roster.roster_id,
-      team_name: team1_name,
-      username: team1_username,
-      avatar_url: team1_avatar,
-      record: team1_record,
-      wins: team1_wins,
-      losses: team1_losses,
-      score: '0.00',
-      alignment: 'left',
-      layout_size: layout_size,
-      plugin_id: plugin_id %}
+<div class="layout layout--{{ direction }} layout--stretch-y bg--gray-70 {{ padding }} rounded--medium">
+  <div class="flex flex--{{ direction }} gap--{{ gap_size }} w--full">
+    {% if sleeper.view == 'status' %}
+      {% render 'status_card', team_name: sleeper.team1.team_name, text: sleeper.status_text, layout_size: layout_size %}
+    {% else %}
+      {% render 'matchup_card', team: sleeper.team1, alignment: 'left', layout_size: layout_size %}
+      {% if sleeper.team2 %}
+        {% render 'vs_divider', sleeper: sleeper, layout_size: layout_size %}
+        {% render 'matchup_card', team: sleeper.team2, alignment: 'right', layout_size: layout_size %}
+      {% endif %}
     {% endif %}
-
-    {% comment %} VS divider - Hidden initially, shown by JS if there's an opponent {% endcomment %}
-    <div id="vs-divider-{{ plugin_id }}" class="hidden flex flex--center-x flex--center-y {% if layout_size == 'quadrant' %}{% elsif layout_size == 'half-vertical' %}{% else %}flex--col no-shrink{% endif %}" data-is-playoffs="{{ is_playoffs }}" data-playoff-round="{{ playoff_round }}">
-      {% if layout_size == 'quadrant' %}
-      <span class="label label--small flex flex--center-y gap--xsmall">{% if is_playoffs %}{% render 'trophy_icon', trophy_class: 'w--4 h--4' %}{% else %}vs.{% endif %}</span>
-      {% elsif layout_size == 'half-vertical' %}
-      {% if is_playoffs %}
-      <span class="label label--small flex flex--center-y gap--xsmall">{% render 'trophy_icon', trophy_class: 'w--4 h--4' %}<span data-field="bracket-type"></span>Round <span data-field="week">{{ playoff_round }}</span></span>
-      {% else %}
-      <span class="label label--small">vs • Week <span data-field="week">1</span></span>
-      {% endif %}
-      {% else %}
-      {% if is_playoffs %}
-      <div class="title title--small">{% render 'trophy_icon', trophy_class: 'w--8 h--8' %}</div>
-      {% else %}
-      <div class="label label--small">vs</div>
-      {% endif %}
-      {% if is_playoffs %}
-      <div class="label label--small" data-field="bracket-type"></div>
-      <div class="label label--small">Round <span data-field="week">{{ playoff_round }}</span></div>
-      {% else %}
-      <div class="label label--small">Week <span data-field="week">1</span></div>
-      {% endif %}
-      {% endif %}
-    </div>
-
-    {% comment %} Team 2 card - hidden initially, will be shown/populated by JS if there's an opponent {% endcomment %}
-    {% capture team2_card_id %}team2-card-{{ plugin_id }}{% endcapture %}
-    <div id="team2-container-{{ plugin_id }}" class="stretch-x hidden">
-        {% render 'matchup_card',
-        card_id: team2_card_id,
-        roster_id: '',
-        team_name: '',
-        username: '',
-        avatar_url: nil,
-        record: '',
-        wins: nil,
-        losses: nil,
-        score: '0.00',
-        alignment: 'right',
-        layout_size: layout_size,
-        plugin_id: plugin_id %}
-    </div>
-
   </div>
 </div>
 {% endtemplate %}
 
-{% template matchup_display %}
-{% comment %}
-Complete matchup display with skeleton and hydration
-Parameters:
-- nfl_state, league_data, users_data, rosters_data: Data from Sleeper API
-- trmnl: TRMNL configuration
-- layout_size: Layout size for responsive adjustments
-- week: Week number to fetch
-- is_playoffs: Boolean indicating if we're in playoffs
-- playoff_round: Current playoff round number (1, 2, 3, etc.)
-{% endcomment %}
-
-{% assign mode = trmnl.plugin_settings.custom_fields_values.mode | default: 'all_teams' %}
-{% assign user_team = trmnl.plugin_settings.custom_fields_values.user_team | default: '' %}
-
-{% render "in_season_matchup_skeleton",
-users_data: users_data,
-rosters_data: rosters_data,
-layout_size: layout_size,
-user_team: user_team,
-mode: mode,
-trmnl: trmnl,
-is_playoffs: is_playoffs,
-playoff_round: playoff_round %}
-
-{% render "matchup_hydration_script",
-league_data: league_data,
-users_data: users_data,
-rosters_data: rosters_data,
-nfl_state: nfl_state,
-trmnl: trmnl,
-layout_size: layout_size,
-week: week,
-is_playoffs: is_playoffs,
-playoff_round: playoff_round %}
-{% endtemplate %}
-
-{% template matchup_hydration_script %}
-{% comment %}
-JavaScript for hydrating the matchup skeleton with live data
-Parameters:
-- nfl_state, league_data, users_data, rosters_data: Data from Sleeper API
-- trmnl: TRMNL configuration
-- layout_size: Layout size for adjustments
-- week: Week number to fetch
-- is_playoffs: Boolean indicating if we're in playoffs
-- playoff_round: Current playoff round number
-{% endcomment %}
-
-{% comment %} Set unique plugin ID for Mashup compatibility {% endcomment %}
-{% assign plugin_id = trmnl.plugin_settings.custom_fields_values.league_id %}
-
-{% comment %} Set size configuration based on layout_size (with lg: responsive for TRMNL X) {% endcomment %}
-{% assign layout_size = layout_size | default: 'full' %}
-{% case layout_size %}
-{% when 'quadrant' %}
-{% assign label_size = 'small' %}
-{% assign lg_label_size = '' %}
-{% when 'half-horizontal', 'half-vertical' %}
-{% assign label_size = 'small' %}
-{% assign lg_label_size = 'base' %}
-{% else %}
-{% assign label_size = 'small' %}
-{% assign lg_label_size = 'base' %}
-{% endcase %}
-
-<script>
-  // Sleeper logo SVG fallback - escape for JavaScript
-  const sleeperLogoFallback = {{ sleeper_logo | replace: 'hidden sm:inline', 'rounded--full w--12 h--12' | json }};
-
-  const pluginId = '{{ plugin_id }}';
-  const mode = '{{ trmnl.plugin_settings.custom_fields_values.mode | default: "all_teams" }}';
-  const userTeamName = '{{ trmnl.plugin_settings.custom_fields_values.user_team | default: "" }}';
-  const leagueId = '{{ trmnl.plugin_settings.custom_fields_values.league_id }}';
-  const currentWeek = {{ week }};
-  const layoutSize = '{{ layout_size }}';
-  const labelSize = '{{ label_size }}';
-  const lgLabelSize = '{{ lg_label_size }}';
-  const isPlayoffs = {{ is_playoffs | default: false }};
-  const playoffRound = {{ playoff_round | default: 0 }};
-
-  const rosters = {{ rosters_data.data | json }};
-  const users = {{ users_data.data | json }};
-
-  // Kick off network requests immediately so they're in flight before the renderer
-  // captures; DOM mutations are deferred to DOMContentLoaded per TRMNL docs.
-  const sleeperJson = (path) => fetch(`https://api.sleeper.app/v1/league/${leagueId}/${path}`).then(r => r.json());
-  const matchupsPromise = sleeperJson(`matchups/${currentWeek}`);
-  const bracketsPromise = isPlayoffs ? Promise.all([sleeperJson('winners_bracket'), sleeperJson('losers_bracket')]) : null;
-
-  async function hydrateMatchup() {
-  try {
-    // Get team 1 card
-    const team1Card = document.getElementById(`team1-card-${pluginId}`);
-    if (!team1Card) {
-      console.error('No team1 card found');
-      return;
-    }
-
-    const targetRosterId = parseInt(team1Card.dataset.rosterId);
-    const targetRoster = rosters.find(r => r.roster_id === targetRosterId);
-    const matchupContent = document.getElementById(`matchup-content-${pluginId}`);
-
-    // During playoffs, fetch both winners and losers brackets
-    let bracket = null;
-    let bracketMatchup = null;
-    let opponentRosterIdFromBracket = null;
-    let isLosersBracket = false;
-
-    if (isPlayoffs) {
-      // Both brackets were requested up front, in parallel
-      const [winnersBracket, losersBracket] = await bracketsPromise;
-
-      // Helper factory: creates resolveFromRef for a specific bracket
-      function createResolveFromRef(bracketData) {
-        return function(fromRef) {
-          if (!fromRef) return null;
-          const prevMatchId = fromRef.w ?? fromRef.l;
-          const prevMatch = bracketData.find(m => m.m === prevMatchId);
-          if (!prevMatch) return null;
-          return fromRef.w !== undefined ? prevMatch.w : prevMatch.l;
-        };
-      }
-
-      // Helper factory: creates matchInvolvesRoster for a specific bracket
-      function createMatchInvolvesRoster(resolveFromRef) {
-        return function(match, rosterId) {
-          if (match.t1 === rosterId || match.t2 === rosterId) return true;
-          if (resolveFromRef(match.t1_from) === rosterId) return true;
-          if (resolveFromRef(match.t2_from) === rosterId) return true;
-          return false;
-        };
-      }
-
-      // Helper factory: creates getOpponentFromMatch for a specific bracket
-      function createGetOpponentFromMatch(resolveFromRef) {
-        return function(match, rosterId) {
-          const t1Resolved = match.t1 ?? resolveFromRef(match.t1_from);
-          const t2Resolved = match.t2 ?? resolveFromRef(match.t2_from);
-          if (t1Resolved === rosterId) return t2Resolved;
-          if (t2Resolved === rosterId) return t1Resolved;
-          return null;
-        };
-      }
-
-      // Try winners bracket first
-      let resolveFromRef = createResolveFromRef(winnersBracket);
-      let matchInvolvesRoster = createMatchInvolvesRoster(resolveFromRef);
-      let getOpponentFromMatch = createGetOpponentFromMatch(resolveFromRef);
-
-      bracket = winnersBracket;
-      bracketMatchup = winnersBracket.find(m =>
-        m.r === playoffRound && matchInvolvesRoster(m, targetRosterId)
-      );
-
-      // If not in winners bracket for this round, check losers bracket
-      if (!bracketMatchup) {
-        resolveFromRef = createResolveFromRef(losersBracket);
-        matchInvolvesRoster = createMatchInvolvesRoster(resolveFromRef);
-        getOpponentFromMatch = createGetOpponentFromMatch(resolveFromRef);
-
-        bracket = losersBracket;
-        bracketMatchup = losersBracket.find(m =>
-          m.r === playoffRound && matchInvolvesRoster(m, targetRosterId)
-        );
-
-        if (bracketMatchup) {
-          isLosersBracket = true;
-        }
-      }
-
-      if (!bracketMatchup) {
-        // Team not found in current round of either bracket - determine why
-
-        // Check if team was eliminated from losers bracket (appears as loser 'l' in losers bracket)
-        const eliminatedFromLosers = losersBracket.some(m => m.l === targetRosterId);
-        if (eliminatedFromLosers) {
-          const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
-          matchupContent.innerHTML = generateEliminatedCard(targetRoster, targetUser, layoutSize);
-          return;
-        }
-
-        // Check if team appears in any round of either bracket
-        const winnersResolve = createResolveFromRef(winnersBracket);
-        const losersResolve = createResolveFromRef(losersBracket);
-        const winnersInvolves = createMatchInvolvesRoster(winnersResolve);
-        const losersInvolves = createMatchInvolvesRoster(losersResolve);
-
-        const inWinners = winnersBracket.some(m => winnersInvolves(m, targetRosterId));
-        const inLosers = losersBracket.some(m => losersInvolves(m, targetRosterId));
-
-        if (!inWinners && !inLosers) {
-          // Team not in any bracket at all
-          const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
-          matchupContent.innerHTML = generateEliminatedCard(targetRoster, targetUser, layoutSize);
-          return;
-        }
-
-        // Team is in a bracket but not in current round - show awaiting
-        const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
-        matchupContent.innerHTML = generateByeWeekCard(targetRoster, targetUser, layoutSize, isPlayoffs, playoffRound);
-        return;
-      }
-
-      // Get opponent from bracket
-      opponentRosterIdFromBracket = getOpponentFromMatch(bracketMatchup, targetRosterId);
-
-      // Check for true bye (opponent slot is null with no t*_from to resolve it)
-      if (opponentRosterIdFromBracket === null) {
-        const t1Resolved = bracketMatchup.t1 ?? resolveFromRef(bracketMatchup.t1_from);
-        const t2Resolved = bracketMatchup.t2 ?? resolveFromRef(bracketMatchup.t2_from);
-
-        const isT1Bye = t1Resolved === targetRosterId && bracketMatchup.t2 === null && !bracketMatchup.t2_from;
-        const isT2Bye = t2Resolved === targetRosterId && bracketMatchup.t1 === null && !bracketMatchup.t1_from;
-
-        if (isT1Bye || isT2Bye) {
-          const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
-          matchupContent.innerHTML = generateByeWeekCard(targetRoster, targetUser, layoutSize, isPlayoffs, playoffRound);
-          return;
-        }
-
-        // Opponent exists via t*_from but previous match not decided yet - awaiting opponent
-        const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
-        matchupContent.innerHTML = generateByeWeekCard(targetRoster, targetUser, layoutSize, isPlayoffs, playoffRound);
-        return;
-      }
-    }
-
-    // Fetch matchups for scores (works for both regular season and playoffs)
-    const matchups = await matchupsPromise;
-
-    const targetMatchup = matchups.find(m => m.roster_id === targetRosterId);
-
-    if (!targetMatchup) {
-      console.log('No matchup found for roster', targetRosterId);
-      // During playoffs with no matchup data, use bracket info
-      if (isPlayoffs && bracketMatchup) {
-        // We have bracket info but no matchup - might be awaiting opponent
-        const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
-        if (opponentRosterIdFromBracket === null) {
-          matchupContent.innerHTML = generateByeWeekCard(targetRoster, targetUser, layoutSize, isPlayoffs, playoffRound);
-        } else {
-          // We have an opponent from bracket but no matchup scores yet - game hasn't started
-          // Continue to show the matchup card with 0 scores
-        }
-      } else if (isPlayoffs) {
-        const targetUser = users.find(u => u.user_id === targetRoster?.owner_id);
-        matchupContent.innerHTML = generateEliminatedCard(targetRoster, targetUser, layoutSize);
-      }
-      return;
-    }
-
-    // Update week/round number in VS divider and title bar
-    const weekElements = document.querySelectorAll('[data-field="week"]');
-    weekElements.forEach(el => el.textContent = isPlayoffs ? playoffRound : currentWeek);
-
-    // Update bracket type (Winners/Losers) in VS divider during playoffs
-    if (isPlayoffs) {
-      const bracketTypeElements = document.querySelectorAll('[data-field="bracket-type"]');
-      const bracketLabel = isLosersBracket ? 'Losers' : 'Winners';
-      bracketTypeElements.forEach(el => el.textContent = bracketLabel);
-    }
-
-    // Update week/round in title bar if it exists (quadrant layout shows week in title bar)
-    const titleWeek = document.querySelector('[data-field="title-week"]');
-    if (titleWeek) {
-      if (isPlayoffs) {
-        const bracketPrefix = isLosersBracket ? 'Losers ' : 'Winners ';
-        titleWeek.textContent = `${bracketPrefix}Round ${playoffRound}`;
-      } else {
-        titleWeek.textContent = `Week ${currentWeek}`;
-      }
-    }
-
-    // Update team 1's score
-    const team1Score = team1Card.querySelector('[data-field="score"]');
-    if (team1Score) {
-      team1Score.textContent = (targetMatchup.points || 0).toFixed(2);
-    }
-
-    // Only update record if not quadrant layout
-    if (layoutSize !== 'quadrant') {
-      const team1RecordContainer = team1Card.querySelector('[data-field="record"]');
-      if (team1RecordContainer && targetRoster.metadata?.record) {
-        const recordHtml = generateRecordPills(targetRoster.metadata.record, labelSize, 'left', lgLabelSize);
-        if (recordHtml) {
-          team1RecordContainer.innerHTML = recordHtml;
-        }
-      }
-    }
-
-    // Find opponent - use bracket data during playoffs, matchup_id otherwise
-    let opponentMatchup = null;
-    if (isPlayoffs && opponentRosterIdFromBracket !== null) {
-      // During playoffs, use the opponent from bracket data
-      opponentMatchup = matchups.find(m => m.roster_id === opponentRosterIdFromBracket);
-    } else {
-      // Regular season or fallback - use matchup_id pairing
-      opponentMatchup = matchups.find(m =>
-        m.matchup_id === targetMatchup.matchup_id && m.roster_id !== targetRosterId
-      );
-    }
-
-    if (opponentMatchup) {
-      // There's an opponent - update team 2 card
-      const opponentRoster = rosters.find(r => r.roster_id === opponentMatchup.roster_id);
-      const opponentUser = users.find(u => u.user_id === opponentRoster?.owner_id);
-
-      if (opponentRoster && opponentUser) {
-        const team2Container = document.getElementById(`team2-container-${pluginId}`);
-        const team2Card = document.getElementById(`team2-card-${pluginId}`);
-
-        // Update team 2 data
-        team2Card.dataset.rosterId = opponentRoster.roster_id;
-
-        // Only update avatar if not quadrant layout
-        if (layoutSize !== 'quadrant') {
-          const avatarContainer = team2Card.querySelector('.flex--between.flex--center-y');
-          const team2Avatar = avatarContainer ? avatarContainer.querySelector('.image, svg') : null;
-          const avatarUrl = opponentUser.metadata?.avatar;
-
-          if (team2Avatar) {
-            if (avatarUrl && avatarUrl !== '' && avatarUrl !== 'undefined') {
-              // User has avatar - replace with IMG if needed
-              if (team2Avatar.tagName === 'IMG') {
-                team2Avatar.src = avatarUrl;
-              } else {
-                // Replace SVG with IMG
-                const newImg = document.createElement('img');
-                newImg.className = 'image image-stroke image-dither rounded--full w--12 h--12';
-                newImg.src = avatarUrl;
-                team2Avatar.parentNode.replaceChild(newImg, team2Avatar);
-              }
-            }
-            // If no avatar URL, keep the existing Sleeper logo SVG
-          }
-        }
-
-        // Update team name and username
-        const team2Name = team2Card.querySelector('[data-field="team-name"]');
-        if (team2Name) {
-          team2Name.textContent = opponentUser.metadata?.team_name || opponentUser.display_name;
-        }
-
-        const team2Username = team2Card.querySelector('[data-field="username"]');
-        if (team2Username) {
-          let usernameHtml = '@' + opponentUser.display_name;
-          if (opponentRoster.settings) {
-             usernameHtml += ` <span class="label label--${labelSize}${lgLabelSize ? ` lg:label--${lgLabelSize}` : ''} label--outline ml--1">${opponentRoster.settings.wins}-${opponentRoster.settings.losses}</span>`;
-          }
-          team2Username.innerHTML = usernameHtml;
-        }
-
-        // Update score
-        const team2Score = team2Card.querySelector('[data-field="score"]');
-        if (team2Score) {
-          team2Score.textContent = (opponentMatchup.points || 0).toFixed(2);
-        }
-
-        // Only update record if not quadrant layout
-        if (layoutSize !== 'quadrant') {
-          const team2RecordContainer = team2Card.querySelector('[data-field="record"]');
-          if (team2RecordContainer && opponentRoster.metadata?.record) {
-            const recordHtml = generateRecordPills(opponentRoster.metadata.record, labelSize, 'right', lgLabelSize);
-            team2RecordContainer.innerHTML = recordHtml;
-          }
-        }
-
-        // Show team 2 container and VS divider
-        team2Container.classList.remove('hidden');
-        document.getElementById(`vs-divider-${pluginId}`).classList.remove('hidden');
-      }
-    } else {
-      // No opponent - convert to bye week (playoff bye or regular bye)
-      const matchupContent = document.getElementById(`matchup-content-${pluginId}`);
-      matchupContent.innerHTML = generateByeWeekCard(targetRoster, users.find(u => u.user_id === targetRoster.owner_id), layoutSize, isPlayoffs, playoffRound);
-    }
-
-  } catch (error) {
-    console.error('Error fetching matchup data:', error);
-  }
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', hydrateMatchup);
-  } else {
-    hydrateMatchup();
-  }
-
-  // Helper function to generate record pills HTML
-  function generateRecordPills(record, labelSize, alignment, lgLabelSize) {
-    if (!record) return '';
-    const lgClass = lgLabelSize ? ` lg:label--${lgLabelSize}` : '';
-
-    const pills = record.split('').map(char => {
-      if (char === 'W') return `<span class="label label--${labelSize}${lgClass} label--outline">W</span>`;
-      if (char === 'L') return `<span class="label label--${labelSize}${lgClass} label--inverted">L</span>`;
-      return '';
-    }).join('');
-
-    return pills;
-  }
-
-
-  // Shared centered status card (bye / awaiting / eliminated)
-  function generateStatusCard(user, layoutSize, text) {
-    const teamName = user?.metadata?.team_name || user?.display_name || 'Team';
-    const isQuadrant = layoutSize === 'quadrant';
-    const titleClass = isQuadrant ? 'title--small' : 'title--large lg:title--xlarge';
-    const labelClass = isQuadrant ? 'label--small' : 'label--small lg:label--base';
-    const padding = { quadrant: 'p--2', 'half-horizontal': 'p--3 lg:p--4', 'half-vertical': 'p--3 lg:p--4' }[layoutSize] || 'p--4 lg:p--6';
-
-    return `
-    <div class="bg--white rounded ${padding} stretch-x">
-      <div class="flex flex--col flex--center-x flex--center-y h--full">
-        <div class="text--center">
-          <div class="label ${labelClass} mb--2">${teamName}</div>
-          <div class="title ${titleClass}">${text}</div>
-        </div>
-      </div>
-    </div>
-  `;
-  }
-
-  // Bye week card (regular bye, first-round playoff bye, or awaiting opponent)
-  function generateByeWeekCard(roster, user, layoutSize, isPlayoffs = false, playoffRound = 0) {
-    let text = 'BYE WEEK';
-    if (isPlayoffs && playoffRound === 1) text = 'FIRST ROUND BYE';
-    else if (isPlayoffs && playoffRound > 1) text = 'AWAITING OPPONENT';
-    return generateStatusCard(user, layoutSize, text);
-  }
-
-  // Eliminated / not in playoffs card
-  function generateEliminatedCard(roster, user, layoutSize) {
-    return generateStatusCard(user, layoutSize, 'SEASON OVER');
-  }
-
-</script>
-{% endtemplate %}
-
 {% comment %} ================================================================
-SEASON COMPLETE TEMPLATES
-Templates for completed season / winner display
+SEASON COMPLETE
 ================================================================ {% endcomment %}
 
 {% template season_complete_card %}
-{% comment %}
-Template for displaying season winner
-Parameters passed via render:
-- league_data: League data
-- users_data: Users data
-- rosters_data: Rosters data
-- trmnl: TRMNL configuration (for plugin_id)
-{% endcomment %}
-
-{% assign plugin_id = trmnl.plugin_settings.custom_fields_values.league_id %}
 {% assign layout_size = layout_size | default: 'full' %}
-{% comment %} Adjust sizes/margins for smaller layouts {% endcomment %}
 {% case layout_size %}
 {% when 'quadrant' %}
 {% assign trophy_svg_size = 'w--10 h--10' %}
 {% assign spacing_class = 'mb--2' %}
-{% assign lg_winner_title_size = '' %}
+{% assign lg_winner_title = '' %}
 {% when 'half-horizontal' %}
 {% assign trophy_svg_size = 'w--12 h--12' %}
 {% assign spacing_class = 'mb--4' %}
-{% assign lg_winner_title_size = 'base' %}
+{% assign lg_winner_title = ' lg:title--base' %}
 {% else %}
 {% assign trophy_svg_size = 'w--16 h--16' %}
 {% assign spacing_class = 'mb--8' %}
-{% assign lg_winner_title_size = 'base' %}
+{% assign lg_winner_title = ' lg:title--base' %}
 {% endcase %}
 
-{% comment %} Get winner roster ID from league metadata {% endcomment %}
-{% assign winner_roster_id = league_data.metadata.latest_league_winner_roster_id %}
-{% assign winner_roster_id_str = winner_roster_id | append: '' %}
-
-{% comment %} Find the winning roster (coerce types for reliable comparison) {% endcomment %}
-{% assign winner_roster = nil %}
-{% for roster in rosters_data.data %}
-{% assign rid = roster.roster_id | append: '' %}
-{% if rid == winner_roster_id_str %}
-{% assign winner_roster = roster %}
-{% break %}
-{% endif %}
-{% endfor %}
-
-{% comment %} Find the user for the winning roster {% endcomment %}
-{% assign winner_user = nil %}
-{% if winner_roster %}
-{% for user in users_data.data %}
-{% if user.user_id == winner_roster.owner_id %}
-{% assign winner_user = user %}
-{% break %}
-{% endif %}
-{% endfor %}
-{% endif %}
-
-{% if winner_user %}
 <div class="flex flex--center-x flex--center-y w--full h--full">
   <div class="text--center">
-    {% comment %} Trophy and title {% endcomment %}
+    {% if sleeper.winner %}
     <div class="{{ spacing_class }} flex flex--center-x">
       {% render 'trophy_icon', trophy_class: trophy_svg_size %}
     </div>
-
     <div class="{{ spacing_class }}">
-      <span class="title title--small{% if lg_winner_title_size != '' %} lg:title--{{ lg_winner_title_size }}{% endif %}">The {{ league_data.season }} winner of {{ league_data.name }} is</span>
+      <span class="title title--small{{ lg_winner_title }}">The {{ sleeper.league.season }} winner of {{ sleeper.league.name }} is</span>
     </div>
-
-    {% comment %} Winner team header {% endcomment %}
-    {% render 'team_header',
-    user: winner_user,
-    alignment: 'center',
-    show_avatar: true,
-    plugin_id: plugin_id %}
-  </div>
-</div>
-{% else %}
-<div class="flex flex--center-x flex--center-y w--full h--full">
-  <div class="text--center">
+    <div class="flex flex--col flex--center-x flex--center-y gap--medium">
+      {% render 'render_avatar', avatar_url: sleeper.winner.avatar, title_bar: false %}
+      <div class="text--center">
+        <div class="title title--base lg:title--large">{{ sleeper.winner.team_name }}</div>
+        <div class="label label--small lg:label--base">@{{ sleeper.winner.username }}</div>
+      </div>
+    </div>
+    {% else %}
     <span class="label label--small">Winner data unavailable</span>
+    {% endif %}
   </div>
 </div>
-{% endif %}
 {% endtemplate %}
 
 {% comment %} ================================================================
-MAIN CONTENT ORCHESTRATOR
-Routes to appropriate template based on league status
+MAIN CONTENT — routes on sleeper.view
 ================================================================ {% endcomment %}
 
 {% template main_content %}
 {% comment %}
-Main content orchestrator that determines what to display based on league status
-Parameters:
-- nfl_state, league_data, users_data, rosters_data: Data from Sleeper API
-- trmnl: TRMNL configuration
+- sleeper: resolved data from serverless.js
+- trmnl: TRMNL globals (user locale)
 - layout_size: 'full', 'half-horizontal', 'half-vertical', or 'quadrant'
-- status: Optional status override (pre_draft, in_season, complete)
-- week: Optional week override
 {% endcomment %}
-
 {% assign layout_size = layout_size | default: 'full' %}
-{% assign effective_status = status | default: trmnl.plugin_settings.custom_fields_values.test_status | default: league_data.status %}
-{% assign effective_week = week | default: trmnl.plugin_settings.custom_fields_values.test_week | default: nfl_state.week | default: league_data.settings.leg %}
 
-{% comment %} Playoff detection and round calculation {% endcomment %}
-{% assign playoff_week_start = league_data.settings.playoff_week_start | default: 15 %}
-{% if effective_week >= playoff_week_start %}
-{% assign is_playoffs = true %}
-{% assign playoff_round = effective_week | minus: playoff_week_start | plus: 1 %}
+{% case sleeper.view %}
+{% when 'pre_season' %}
+  {% render 'pre_season_card', sleeper: sleeper, trmnl: trmnl, layout_size: layout_size %}
+{% when 'matchup', 'status' %}
+  {% render 'matchup_display', sleeper: sleeper, layout_size: layout_size %}
+{% when 'winner' %}
+  {% render 'season_complete_card', sleeper: sleeper, layout_size: layout_size %}
 {% else %}
-{% assign is_playoffs = false %}
-{% assign playoff_round = 0 %}
-{% endif %}
-
-{% if effective_status == "pre_draft" %}
-{% render "pre_season_draft_card",
-league_data: league_data,
-nfl_state: nfl_state,
-trmnl: trmnl,
-layout_size: layout_size %}
-{% elsif effective_status == "in_season" or effective_status == "post_season" %}
-{% render "matchup_display",
-league_data: league_data,
-users_data: users_data,
-rosters_data: rosters_data,
-nfl_state: nfl_state,
-trmnl: trmnl,
-layout_size: layout_size,
-week: effective_week,
-is_playoffs: is_playoffs,
-playoff_round: playoff_round %}
-{% elsif effective_status == "complete" %}
-{% render "season_complete_card",
-league_data: league_data,
-users_data: users_data,
-rosters_data: rosters_data,
-trmnl: trmnl,
-layout_size: layout_size %}
-{% endif %}
+  <div class="flex flex--center-x flex--center-y w--full h--full">
+    <div class="text--center">
+      <span class="label label--small">{% if sleeper.error %}Sleeper data unavailable: {{ sleeper.error }}{% else %}No Sleeper data yet — check the plugin's League ID{% endif %}</span>
+    </div>
+  </div>
+{% endcase %}
 {% endtemplate %}

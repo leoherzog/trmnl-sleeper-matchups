@@ -1,0 +1,40 @@
+{
+  "sleeper": {
+    "status": "complete",
+    "week": 1,
+    "is_playoffs": false,
+    "playoff_round": 0,
+    "bracket_type": null,
+    "league": {
+      "name": "Hope Gang League",
+      "avatar": "0936133c65afac68a1c5330d1d7cde39",
+      "season": "2025"
+    },
+    "season_start_date": "2026-09-09",
+    "my_team": {
+      "roster_id": null,
+      "team_name": "Illegal Use of Hands",
+      "username": "leoherzog",
+      "avatar": "https://sleepercdn.com/uploads/57f5f50c3f9f9b5ebdf345e5b4fea6e1",
+      "record": "",
+      "wins": null,
+      "losses": null,
+      "score": "0.00"
+    },
+    "view": "winner",
+    "team1": null,
+    "team2": null,
+    "status_text": null,
+    "winner": {
+      "roster_id": 8,
+      "team_name": "Fields of Dreams",
+      "username": "OnlyIndianaJetsFan",
+      "avatar": null,
+      "record": "WLWWWWLWWLWWLLW",
+      "wins": 10,
+      "losses": 5,
+      "score": "0.00"
+    },
+    "error": null
+  }
+}

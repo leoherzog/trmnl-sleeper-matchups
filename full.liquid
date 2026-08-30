@@ -1,14 +1,3 @@
-{% render "main_content", 
-    nfl_state: IDX_0,
-    league_data: IDX_1,
-    users_data: IDX_2,
-    rosters_data: IDX_3,
-    trmnl: trmnl,
-    layout_size: "full" %}
+{% render "main_content", sleeper: sleeper, trmnl: trmnl, layout_size: "full" %}
 
-{% render "title_bar",
-    nfl_state: IDX_0,
-    league_data: IDX_1,
-    users_data: IDX_2,
-    trmnl: trmnl,
-    layout_size: "team" %}
+{% render "title_bar", sleeper: sleeper, layout_size: "team" %}

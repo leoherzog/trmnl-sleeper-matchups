@@ -1,0 +1,49 @@
+{
+  "sleeper": {
+    "status": "in_season",
+    "week": 1,
+    "is_playoffs": false,
+    "playoff_round": 0,
+    "bracket_type": null,
+    "league": {
+      "name": "CITFL (Taylor's Version)",
+      "avatar": "c3a889c4942c4ece9e5d9129286ef3fe",
+      "season": "2026"
+    },
+    "season_start_date": "2026-09-09",
+    "my_team": {
+      "roster_id": null,
+      "team_name": "The Happy Foxes",
+      "username": "leoherzog",
+      "avatar": "https://sleepercdn.com/uploads/cdb16a08d8937d016a6eab06cd2935f0.jpg",
+      "record": "",
+      "wins": null,
+      "losses": null,
+      "score": "0.00"
+    },
+    "view": "matchup",
+    "team1": {
+      "roster_id": 4,
+      "team_name": "The Happy Foxes",
+      "username": "leoherzog",
+      "avatar": "https://sleepercdn.com/uploads/cdb16a08d8937d016a6eab06cd2935f0.jpg",
+      "record": "",
+      "wins": 0,
+      "losses": 0,
+      "score": "0.00"
+    },
+    "team2": {
+      "roster_id": 3,
+      "team_name": "Actually Paying Attention",
+      "username": "AgentSmith630",
+      "avatar": null,
+      "record": "",
+      "wins": 0,
+      "losses": 0,
+      "score": "0.00"
+    },
+    "status_text": null,
+    "winner": null,
+    "error": null
+  }
+}
