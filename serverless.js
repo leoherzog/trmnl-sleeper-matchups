@@ -41,14 +41,40 @@ function profile(user) {
   };
 }
 
-function team(user, roster, points) {
+function team(user, roster, points, projected) {
   return {
     ...profile(user),
     record: (roster && roster.metadata && roster.metadata.record) || '',
     wins: roster && roster.settings ? roster.settings.wins : null,
     losses: roster && roster.settings ? roster.settings.losses : null,
     score: (Number(points) || 0).toFixed(2),
+    projected: projected == null ? null : projected.toFixed(2),
   };
+}
+
+// Score one player's projected stat line with the league's own scoring settings
+// (Sleeper only ships pts_ppr/half/std presets, which ignore custom bonuses).
+function projectPlayer(stats, scoring) {
+  if (!stats) return 0;
+  let pts = 0;
+  for (const key of Object.keys(scoring)) {
+    if (stats[key] != null && scoring[key]) pts += stats[key] * scoring[key];
+  }
+  return pts;
+}
+
+// Sum of projected points for a matchup's starters; null when no projections are available.
+function projectTeam(matchup, projections, scoring) {
+  if (!matchup || !projections || !Array.isArray(matchup.starters)) return null;
+  let total = 0;
+  let found = false;
+  for (const id of matchup.starters) {
+    const stats = projections[id];
+    if (!stats) continue;
+    found = true;
+    total += projectPlayer(stats, scoring);
+  }
+  return found ? total : null;
 }
 
 function findUser(users, name) {
@@ -208,8 +234,9 @@ async function run(input) {
         out.status_text = text;
       };
 
-      // Start the scores request now; it is needed in every non-terminal path below.
+      // Start the scores and projections requests now; they are needed in every non-terminal path below.
       const matchupsPromise = getJson(`${API}/league/${leagueId}/matchups/${week}`).catch(() => null);
+      const projectionsPromise = getJson(`${API}/projections/nfl/regular/${league.season}/${week}`).catch(() => null);
 
       let opponentId = null;
       if (isPlayoffs) {
@@ -240,9 +267,14 @@ async function run(input) {
       const oppRoster = rosters.find(r => r.roster_id === opponentId) || null;
       const oppUser = oppRoster ? users.find(u => u.user_id === oppRoster.owner_id) || null : null;
 
+      const projections = await projectionsPromise;
+      const scoring = league.scoring_settings || {};
+
       out.view = 'matchup';
-      out.team1 = team(user, roster, mine && mine.points);
-      out.team2 = oppRoster ? team(oppUser, oppRoster, oppMatchup && oppMatchup.points) : null;
+      out.team1 = team(user, roster, mine && mine.points, projectTeam(mine, projections, scoring));
+      out.team2 = oppRoster
+        ? team(oppUser, oppRoster, oppMatchup && oppMatchup.points, projectTeam(oppMatchup, projections, scoring))
+        : null;
     }
   } catch (err) {
     out.error = err && err.message ? err.message : String(err);

@@ -24,7 +24,8 @@
       "record": "",
       "wins": 0,
       "losses": 0,
-      "score": "0.00"
+      "score": "0.00",
+      "projected": "108.34"
     },
     "team2": {
       "team_name": "Actually Paying Attention",
@@ -33,7 +34,8 @@
       "record": "",
       "wins": 0,
       "losses": 0,
-      "score": "0.00"
+      "score": "0.00",
+      "projected": "103.02"
     },
     "status_text": null,
     "winner": null,

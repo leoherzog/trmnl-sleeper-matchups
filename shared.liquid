@@ -7,7 +7,7 @@ All data arrives pre-resolved from serverless.js as the `sleeper` merge variable
   sleeper.week / is_playoffs / playoff_round / bracket_type
   sleeper.league      { name, avatar, season }
   sleeper.my_team     configured user's team for the title bar (or null)
-  sleeper.team1/2     { team_name, username, avatar, record, wins, losses, score }
+  sleeper.team1/2     { team_name, username, avatar, record, wins, losses, score, projected }
   sleeper.status_text BYE WEEK | FIRST ROUND BYE | AWAITING OPPONENT | SEASON OVER
   sleeper.winner      { team_name, username, avatar }
   sleeper.error       message if the serverless function failed
@@ -180,7 +180,7 @@ IN-SEASON
 {% template matchup_card %}
 {% comment %}
 One team's card
-- team: { team_name, username, avatar, record, wins, losses, score }
+- team: { team_name, username, avatar, record, wins, losses, score, projected } (projected may be null)
 - alignment: 'left' or 'right'
 - layout_size
 {% endcomment %}
@@ -234,7 +234,8 @@ One team's card
     <div class="{{ text_align }}">
       <div class="title title--{{ title_size }}">{{ team.team_name }}</div>
       <div class="label label--{{ label_size }}">@{{ team.username }}</div>
-      <div class="value value--{{ value_size }} mt--2">{{ team.score }}</div>
+      <div class="value value--{{ value_size }} value--tnums mt--2">{{ team.score }}</div>
+      {% if team.projected %}<div class="label label--{{ label_size }} label--gray-40">Proj {{ team.projected }}</div>{% endif %}
     </div>
   {% else %}
     <div class="flex flex--between flex--center-y {{ flex_dir }} mb--4">
@@ -249,9 +250,17 @@ One team's card
       {% render 'record_pills', record: team.record, size: label_size, lg_class: lg_label, alignment: alignment %}
     </div>
 
-    <div class="flex flex--row {{ score_align }} gap--medium">
-      <span class="label label--{{ label_size }}{{ lg_label }} {{ order_label }}">Score</span>
-      <span class="value value--{{ value_size }}{{ lg_value }} {{ order_value }}">{{ team.score }}</span>
+    <div class="flex flex--row {{ score_align }} flex--center-y gap--medium">
+      <div class="flex flex--col {{ text_align }} {{ order_label }}">
+        <span class="label label--{{ label_size }}{{ lg_label }}">Score</span>
+        <span class="value value--{{ value_size }}{{ lg_value }} value--tnums">{{ team.score }}</span>
+      </div>
+      {% if team.projected %}
+      <div class="flex flex--col {{ text_align }} {{ order_value }}">
+        <span class="label label--{{ label_size }}{{ lg_label }} label--gray-40">Proj</span>
+        <span class="value value--xsmall{{ lg_label | replace: 'label', 'value' }} value--tnums">{{ team.projected }}</span>
+      </div>
+      {% endif %}
     </div>
   {% endif %}
 </div>
