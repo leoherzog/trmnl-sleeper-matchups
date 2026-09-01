@@ -144,8 +144,11 @@ Win/loss record as pills
 {% comment %}
 Per-layout size table used by the templates below:
   quadrant:        p--2, title/value/label small, no lg: bump
-  half-*:          p--3 lg:p--4, small → lg: base
-  full (default):  p--4 lg:p--6, base/base/small → lg: large/large/base
+  half-*:          p--3 lg:landscape:p--4, small -> lg: base
+  full (default):  p--4 lg:landscape:p--6, base/base/small -> lg: large/large/base
+
+The bump is `lg:landscape:`, never bare `lg:` — see ORIENTATION at the foot of
+this file for why, and for the cascade trap that makes bare `lg:` unfixable.
 {% endcomment %}
 
 {% comment %} ================================================================
@@ -157,18 +160,20 @@ PRE-SEASON
 {% when 'quadrant' %}
 {% assign lg_pre_title = '' %}
 {% when 'half-horizontal', 'half-vertical' %}
-{% assign lg_pre_title = ' lg:title--base' %}
+{% assign lg_pre_title = ' lg:landscape:title--base' %}
 {% else %}
-{% assign lg_pre_title = ' lg:title--large' %}
+{% assign lg_pre_title = ' lg:landscape:title--large' %}
 {% endcase %}
 
-<div class="flex flex--center-x flex--center-y w--full h--full">
-  <div class="text--center">
+<div class="layout">
+  <div class="flex flex--center-x flex--center-y w--full h--full">
+    <div class="text--center">
     {% if sleeper.season_start_date %}
       <span class="title title--small{{ lg_pre_title }}">Week 1 of the NFL season starts {{ sleeper.season_start_date | l_date: '%B %-d, %Y', trmnl.user.locale }}</span>
     {% else %}
       <span class="title title--small{{ lg_pre_title }}">{{ sleeper.league.name }} is in pre-season</span>
     {% endif %}
+    </div>
   </div>
 </div>
 {% endtemplate %}
@@ -198,19 +203,30 @@ One team's card
 {% assign title_size = 'small' %}
 {% assign value_size = 'small' %}
 {% assign label_size = 'small' %}
-{% assign padding = 'p--3 lg:p--4' %}
-{% assign lg_title = ' lg:title--base' %}
-{% assign lg_value = ' lg:value--base' %}
-{% assign lg_label = ' lg:label--base' %}
+{% assign padding = 'p--3 lg:landscape:p--4' %}
+{% assign lg_title = ' lg:landscape:title--base' %}
+{% assign lg_value = ' lg:landscape:value--base' %}
+{% assign lg_label = ' lg:landscape:label--base' %}
 {% else %}
 {% assign title_size = 'base' %}
 {% assign value_size = 'base' %}
 {% assign label_size = 'small' %}
-{% assign padding = 'p--4 lg:p--6' %}
-{% assign lg_title = ' lg:title--large' %}
-{% assign lg_value = ' lg:value--large' %}
-{% assign lg_label = ' lg:label--base' %}
+{% assign padding = 'p--4 lg:landscape:p--6' %}
+{% assign lg_title = ' lg:landscape:title--large' %}
+{% assign lg_value = ' lg:landscape:value--large' %}
+{% assign lg_label = ' lg:landscape:label--base' %}
 {% endcase %}
+
+{% comment %}
+The W/L pills are the first thing to go when space runs out: the same record is
+already on the username line as "8-5". Stacked portrait half-horizontal is the
+only box too short to hold them (two full cards need ~396px of a 353px layout).
+{% endcomment %}
+{% if layout_size == 'half-horizontal' %}
+{% assign pills_class = ' portrait:hidden' %}
+{% else %}
+{% assign pills_class = '' %}
+{% endif %}
 
 {% assign alignment = alignment | default: 'left' %}
 {% if alignment == 'right' %}
@@ -232,33 +248,35 @@ One team's card
 <div class="bg--white rounded {{ padding }} stretch-x">
   {% if layout_size == 'quadrant' %}
     <div class="{{ text_align }}">
-      <div class="title title--{{ title_size }}">{{ team.team_name }}</div>
-      <div class="label label--{{ label_size }}">@{{ team.username }}</div>
-      <div class="value value--{{ value_size }} value--tnums mt--2">{{ team.score }}</div>
+      <div class="title title--{{ title_size }}" data-clamp="2">{{ team.team_name }}</div>
+      <div class="label label--{{ label_size }}" data-clamp="1">@{{ team.username }}</div>
+      <div class="value value--{{ value_size }} value--tnums mt--2" data-fit-value="true">{{ team.score }}</div>
       {% if team.projected %}<div class="label label--{{ label_size }} label--gray-40">Proj {{ team.projected }}</div>{% endif %}
     </div>
   {% else %}
     <div class="flex flex--between flex--center-y {{ flex_dir }} mb--4">
       <div class="stretch-x {{ text_align }}">
-        <div class="title title--{{ title_size }}{{ lg_title }}">{{ team.team_name }}</div>
+        <div class="title title--{{ title_size }}{{ lg_title }}" data-clamp="2">{{ team.team_name }}</div>
         <div class="label label--{{ label_size }}{{ lg_label }}">@{{ team.username }}{% if team.wins != nil %} <span class="label label--{{ label_size }}{{ lg_label }} label--outline ml--1">{{ team.wins }}-{{ team.losses }}</span>{% endif %}</div>
       </div>
       {% render 'render_avatar', avatar_url: team.avatar, title_bar: false %}
     </div>
 
-    <div class="flex flex--row gap--xsmall {{ flex_align }} mb--4">
+    {% if team.record != blank %}
+    <div class="flex flex--row gap--xsmall {{ flex_align }} mb--4{{ pills_class }}">
       {% render 'record_pills', record: team.record, size: label_size, lg_class: lg_label, alignment: alignment %}
     </div>
+    {% endif %}
 
     <div class="flex flex--row {{ score_align }} flex--center-y gap--medium">
       <div class="flex flex--col {{ text_align }} {{ order_label }}">
         <span class="label label--{{ label_size }}{{ lg_label }}">Score</span>
-        <span class="value value--{{ value_size }}{{ lg_value }} value--tnums">{{ team.score }}</span>
+        <span class="value value--{{ value_size }}{{ lg_value }} value--tnums" data-fit-value="true">{{ team.score }}</span>
       </div>
       {% if team.projected %}
       <div class="flex flex--col {{ text_align }} {{ order_value }}">
         <span class="label label--{{ label_size }}{{ lg_label }} label--gray-40">Proj</span>
-        <span class="value value--xsmall{{ lg_label | replace: 'label', 'value' }} value--tnums">{{ team.projected }}</span>
+        <span class="value value--xsmall{{ lg_label | replace: 'label', 'value' }} value--tnums" data-fit-value="true">{{ team.projected }}</span>
       </div>
       {% endif %}
     </div>
@@ -277,17 +295,19 @@ Centered card for bye / awaiting opponent / eliminated
 {% assign title_class = 'title--small' %}
 {% assign label_class = 'label--small' %}
 {% when 'half-horizontal', 'half-vertical' %}
-{% assign padding = 'p--3 lg:p--4' %}
+{% assign padding = 'p--3 lg:landscape:p--4' %}
+{% assign title_class = 'title--base lg:landscape:title--large' %}
+{% assign label_class = 'label--small lg:landscape:label--base' %}
 {% else %}
-{% assign padding = 'p--4 lg:p--6' %}
+{% assign padding = 'p--4 lg:landscape:p--6' %}
+{% assign title_class = 'title--large lg:landscape:title--xlarge' %}
+{% assign label_class = 'label--small lg:landscape:label--base' %}
 {% endcase %}
-{% assign title_class = title_class | default: 'title--large lg:title--xlarge' %}
-{% assign label_class = label_class | default: 'label--small lg:label--base' %}
 
 <div class="bg--white rounded {{ padding }} stretch-x">
   <div class="flex flex--col flex--center-x flex--center-y h--full">
     <div class="text--center">
-      <div class="label {{ label_class }} mb--2">{{ team_name }}</div>
+      <div class="label {{ label_class }} mb--2" data-clamp="1">{{ team_name }}</div>
       <div class="title {{ title_class }}">{{ text }}</div>
     </div>
   </div>
@@ -300,26 +320,30 @@ Divider between the two cards: "vs" + week, or trophy + bracket/round in playoff
 - sleeper, layout_size
 {% endcomment %}
 {% if layout_size == 'quadrant' %}
-<div class="flex flex--center-x flex--center-y">
+<div class="flex flex--center-x flex--center-y no-shrink">
   <span class="label label--small flex flex--center-y gap--xsmall">{% if sleeper.is_playoffs %}{% render 'trophy_icon', trophy_class: 'w--4 h--4' %}{% else %}vs.{% endif %}</span>
 </div>
-{% elsif layout_size == 'half-vertical' %}
-<div class="flex flex--center-x flex--center-y">
-  {% if sleeper.is_playoffs %}
-  <span class="label label--small flex flex--center-y gap--xsmall">{% render 'trophy_icon', trophy_class: 'w--4 h--4' %}<span>{% if sleeper.bracket_type %}{{ sleeper.bracket_type }} {% endif %}Round {{ sleeper.playoff_round }}</span></span>
-  {% else %}
-  <span class="label label--small">vs • Week {{ sleeper.week }}</span>
-  {% endif %}
-</div>
 {% else %}
-<div class="flex flex--col flex--center-x flex--center-y no-shrink">
+{% comment %}
+The divider runs perpendicular to the card stack: stacked lines while the cards
+sit side by side, a single inline row once they stack. So it stays compact on
+whichever axis is scarce.
+{% endcomment %}
+{% if layout_size == 'half-vertical' %}
+{% assign divider_dir = 'flex--row' %}
+{% assign divider_trophy = 'w--4 h--4' %}
+{% else %}
+{% assign divider_dir = 'flex--col portrait:flex--row' %}
+{% assign divider_trophy = 'w--8 h--8' %}
+{% endif %}
+<div class="flex {{ divider_dir }} flex--center-x flex--center-y no-shrink">
   {% if sleeper.is_playoffs %}
-  <div class="title title--small">{% render 'trophy_icon', trophy_class: 'w--8 h--8' %}</div>
-  {% if sleeper.bracket_type %}<div class="label label--small">{{ sleeper.bracket_type }}</div>{% endif %}
-  <div class="label label--small">Round {{ sleeper.playoff_round }}</div>
+  {% render 'trophy_icon', trophy_class: divider_trophy %}
+  {% if sleeper.bracket_type %}<span class="label label--small">{{ sleeper.bracket_type }}</span>{% endif %}
+  <span class="label label--small">Round {{ sleeper.playoff_round }}</span>
   {% else %}
-  <div class="label label--small">vs</div>
-  <div class="label label--small">Week {{ sleeper.week }}</div>
+  <span class="label label--small">vs</span>
+  <span class="label label--small">Week {{ sleeper.week }}</span>
   {% endif %}
 </div>
 {% endif %}
@@ -334,22 +358,35 @@ Gray panel holding the matchup (or status) cards
 {% case layout_size %}
 {% when 'quadrant' %}
 {% assign padding = 'p--2' %}
-{% assign gap_size = 'small' %}
-{% when 'half-horizontal', 'half-vertical' %}
-{% assign padding = 'p--3 lg:p--4' %}
-{% assign gap_size = 'medium' %}
+{% assign gap_class = 'gap--small' %}
+{% when 'half-horizontal' %}
+{% comment %} Stacking costs height, and portrait half-horizontal has the least
+of it (460x385 -> 353px of layout). Tighten the gap there only. {% endcomment %}
+{% assign padding = 'p--3 lg:landscape:p--4' %}
+{% assign gap_class = 'gap--medium portrait:gap--small' %}
+{% when 'half-vertical' %}
+{% assign padding = 'p--3 lg:landscape:p--4' %}
+{% assign gap_class = 'gap--medium' %}
 {% else %}
-{% assign padding = 'p--4 lg:p--6' %}
-{% assign gap_size = 'medium' %}
+{% assign padding = 'p--4 lg:landscape:p--6' %}
+{% assign gap_class = 'gap--medium' %}
 {% endcase %}
+{% comment %}
+Side by side only survives while the view is wide. half-vertical is narrow in
+both orientations so it always stacks; the other three are wide in landscape and
+narrow in portrait, so they stack via `portrait:`. See ORIENTATION at the foot
+of this file.
+{% endcomment %}
 {% if layout_size == 'half-vertical' %}
-{% assign direction = 'col' %}
+{% assign layout_dir = 'layout--col' %}
+{% assign flex_dir = 'flex--col' %}
 {% else %}
-{% assign direction = 'row' %}
+{% assign layout_dir = 'layout--row portrait:layout--col' %}
+{% assign flex_dir = 'flex--row portrait:flex--col' %}
 {% endif %}
 
-<div class="layout layout--{{ direction }} layout--stretch-y bg--gray-70 {{ padding }} rounded--medium">
-  <div class="flex flex--{{ direction }} gap--{{ gap_size }} w--full">
+<div class="layout {{ layout_dir }} layout--stretch-y bg--gray-70 {{ padding }} rounded--medium">
+  <div class="flex {{ flex_dir }} portrait:flex--center-y {{ gap_class }} w--full h--full">
     {% if sleeper.view == 'status' %}
       {% render 'status_card', team_name: sleeper.team1.team_name, text: sleeper.status_text, layout_size: layout_size %}
     {% else %}
@@ -375,17 +412,18 @@ SEASON COMPLETE
 {% assign spacing_class = 'mb--2' %}
 {% assign lg_winner_title = '' %}
 {% when 'half-horizontal' %}
-{% assign trophy_svg_size = 'w--12 h--12' %}
-{% assign spacing_class = 'mb--4' %}
-{% assign lg_winner_title = ' lg:title--base' %}
+{% assign trophy_svg_size = 'w--10 h--10' %}
+{% assign spacing_class = 'mb--2' %}
+{% assign lg_winner_title = ' lg:landscape:title--base' %}
 {% else %}
 {% assign trophy_svg_size = 'w--16 h--16' %}
 {% assign spacing_class = 'mb--8' %}
-{% assign lg_winner_title = ' lg:title--base' %}
+{% assign lg_winner_title = ' lg:landscape:title--base' %}
 {% endcase %}
 
-<div class="flex flex--center-x flex--center-y w--full h--full">
-  <div class="text--center">
+<div class="layout">
+  <div class="flex flex--center-x flex--center-y w--full h--full">
+    <div class="text--center">
     {% if sleeper.winner %}
     <div class="{{ spacing_class }} flex flex--center-x">
       {% render 'trophy_icon', trophy_class: trophy_svg_size %}
@@ -396,13 +434,14 @@ SEASON COMPLETE
     <div class="flex flex--col flex--center-x flex--center-y gap--medium">
       {% render 'render_avatar', avatar_url: sleeper.winner.avatar, title_bar: false %}
       <div class="text--center">
-        <div class="title title--base lg:title--large">{{ sleeper.winner.team_name }}</div>
-        <div class="label label--small lg:label--base">@{{ sleeper.winner.username }}</div>
+        <div class="title title--base lg:landscape:title--large" data-clamp="2">{{ sleeper.winner.team_name }}</div>
+        <div class="label label--small lg:landscape:label--base" data-clamp="1">@{{ sleeper.winner.username }}</div>
       </div>
     </div>
     {% else %}
     <span class="label label--small">Winner data unavailable</span>
     {% endif %}
+    </div>
   </div>
 </div>
 {% endtemplate %}
@@ -427,13 +466,59 @@ MAIN CONTENT — routes on sleeper.view
 {% when 'winner' %}
   {% render 'season_complete_card', sleeper: sleeper, layout_size: layout_size %}
 {% else %}
-  <div class="flex flex--center-x flex--center-y w--full h--full">
-    <div class="text--center">
-      <span class="label label--small">{% if sleeper.error %}Sleeper data unavailable: {{ sleeper.error }}{% else %}No Sleeper data yet — check the plugin's League ID{% endif %}</span>
+  <div class="layout">
+    <div class="flex flex--center-x flex--center-y w--full h--full">
+      <div class="text--center">
+        <span class="label label--small">{% if sleeper.error %}Sleeper data unavailable: {{ sleeper.error }}{% else %}No Sleeper data yet — check the plugin's League ID{% endif %}</span>
+      </div>
     </div>
   </div>
 {% endcase %}
 {% endtemplate %}
+
+{% comment %} ================================================================
+ORIENTATION
+
+A device set to Portrait (Device Settings > Color & Rotation) does not get a new
+set of views — the framework just transposes the screen and every view size is
+recomputed from it:
+
+  .screen--portrait { --screen-w: var(--screen-h-original);
+                      --screen-h: var(--screen-w-original); /* then re-derives
+                      --full-*, --quadrant-*, --half_vertical-*, --half_horizontal-* */ }
+
+So on an OG the boxes swap shape entirely (measured, gap 10px):
+
+  view              landscape    portrait
+  full              780 x 460    460 x 780
+  half_horizontal   780 x 225    460 x 385
+  half_vertical     385 x 460    225 x 780
+  quadrant          385 x 225    225 x 385
+
+Two consequences drive the markup:
+
+1. `layout_size` stops predicting the shape. half_horizontal is no longer a
+   banner and quadrant is no longer a postcard — in portrait all four views are
+   taller than wide, so all four want a stacked axis. Liquid cannot know the
+   orientation, so the axis is chosen in CSS: templates emit BOTH classes
+   (`flex--row portrait:flex--col`) and let the framework pick. Stacking also
+   hands each card the full width back — a portrait full card is 428px against
+   337px in landscape — which is why nothing else has to shrink.
+
+2. `lg:` keeps firing and makes it worse. screen--sm/md/lg are device-model
+   aliases (the CSS groups `.screen--lg` with `.screen--v2` et al), not width
+   queries, so rotation does not clear them: a V2/X in portrait is 760px wide
+   and still takes every `lg:` bump meant for 1020px.
+
+   The trap: a bare `portrait:` CANNOT undo a bare `lg:`. Both resolve to one
+   class of specificity and `lg:` wins on source order (verified on v3.3.0
+   across title/value/label). Only `lg:portrait:` outranks it. So every bump
+   here is written `lg:landscape:` — opt-in per orientation, nothing to undo.
+
+   No `lg:portrait:` bumps are needed: a rotated V2/X is ~760/375px wide, within
+   3% of an OG in landscape (780/385), so dropping to the base scale in portrait
+   lands on the scale already tuned for that width.
+================================================================ {% endcomment %}
 
 {% comment %} ================================================================
 TITLE BAR FIT
@@ -471,6 +556,10 @@ window load), so the clamp engine measures the layout this leaves behind.
     return range.getBoundingClientRect().width;
   }
 
+  function fontSize(element) {
+    return parseFloat(window.getComputedStyle(element).fontSize) || 16;
+  }
+
   function fitTitleBars() {
     document.querySelectorAll('.title_bar').forEach(function (bar) {
       var title = bar.querySelector('.title');
@@ -485,9 +574,20 @@ window load), so the clamp engine measures the layout this leaves behind.
         return child === title || child === instance ? sum : sum + child.getBoundingClientRect().width;
       }, 0);
       var available = bar.clientWidth - padding - icons - gap * (children.length - 1);
+      var titleWidth = textWidth(title);
 
-      // Fits: leave it alone. The clamp on .instance handles the rest.
-      if (textWidth(title) <= available) return;
+      if (titleWidth <= available) {
+        // The title fits, so .instance gets whatever is left over. Given only a
+        // character or two the clamp engine can emit nothing but an ellipsis,
+        // which reads as damage rather than as truncation — drop it instead.
+        // Portrait halves the bar (225px on a quadrant), so this is where it
+        // first bites. Otherwise leave it alone; the clamp handles the rest.
+        var room = available - titleWidth;
+        if (instance && room < Math.min(textWidth(instance), 3 * fontSize(instance))) {
+          instance.classList.add('hidden');
+        }
+        return;
+      }
 
       if (instance && bar.closest('.view--half_vertical, .view--quadrant')) {
         instance.classList.add('hidden');
