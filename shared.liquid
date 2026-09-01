@@ -80,16 +80,16 @@ Parameters:
 
   {% if layout_size == 'week' %}
     {% if sleeper.view == 'pre_season' %}
-      <span class="instance">Pre-Season</span>
+      <span class="instance" data-clamp="1">Pre-Season</span>
     {% elsif sleeper.view == 'matchup' or sleeper.view == 'status' %}
       {% if sleeper.is_playoffs %}
-      <span class="instance">{% if sleeper.bracket_type %}{{ sleeper.bracket_type }} {% endif %}Round {{ sleeper.playoff_round }}</span>
+      <span class="instance" data-clamp="1">{% if sleeper.bracket_type %}{{ sleeper.bracket_type }} {% endif %}Round {{ sleeper.playoff_round }}</span>
       {% else %}
-      <span class="instance">Week {{ sleeper.week }}</span>
+      <span class="instance" data-clamp="1">Week {{ sleeper.week }}</span>
       {% endif %}
     {% endif %}
   {% elsif layout_size == 'team' and sleeper.my_team %}
-    <span class="instance">{{ sleeper.my_team.team_name }}</span>
+    <span class="instance" data-clamp="1">{{ sleeper.my_team.team_name }}</span>
     {% render 'render_avatar', avatar_url: sleeper.my_team.avatar, title_bar: true %}
   {% endif %}
 </div>
@@ -434,3 +434,73 @@ MAIN CONTENT — routes on sleeper.view
   </div>
 {% endcase %}
 {% endtemplate %}
+
+{% comment %} ================================================================
+TITLE BAR FIT
+
+The framework already encodes the priority we want: .title is `flex: 0 0 auto`
+(never shrinks) and .instance is `flex: 1 1 auto; min-width: 0` (absorbs all of
+the shrink). But both rules end in `overflow: visible` — needed so the pixel
+text-stroke isn't clipped — which overrides their own `overflow: hidden` and so
+defeats `text-overflow: ellipsis`. A squeezed .instance therefore spills its
+text over the avatar instead of truncating.
+
+`data-clamp="1"` on .instance restores the ellipsis (the clamp engine truncates
+by character in JS, so overflow:visible doesn't defeat it).
+
+This script covers the one case clamping can't: the league name ALONE needing
+more than the whole bar. .title never shrinks, so the clamp engine measures its
+natural width and finds nothing to trim. When that happens we drop the team name
+outright on the narrow views — giving the league name the full bar — and mark
+the title shrinkable so the clamp engine can then ellipsize it.
+
+DOMContentLoaded fires before the framework's terminalize() pass (scheduled on
+window load), so the clamp engine measures the layout this leaves behind.
+================================================================ {% endcomment %}
+<script>
+(function () {
+  // shared.liquid is emitted once per view, and a mashup renders several.
+  if (window.__sleeperTitleBarFit) return;
+  window.__sleeperTitleBarFit = true;
+
+  // .instance is squeezed to a narrow box while its text paints past it, so
+  // offsetWidth/scrollWidth report the box. Range measures the text itself.
+  function textWidth(element) {
+    var range = document.createRange();
+    range.selectNodeContents(element);
+    return range.getBoundingClientRect().width;
+  }
+
+  function fitTitleBars() {
+    document.querySelectorAll('.title_bar').forEach(function (bar) {
+      var title = bar.querySelector('.title');
+      if (!title) return;
+      var instance = bar.querySelector('.instance');
+
+      var style = window.getComputedStyle(bar);
+      var gap = parseFloat(style.columnGap || style.gap) || 0;
+      var padding = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
+      var children = Array.prototype.slice.call(bar.children);
+      var icons = children.reduce(function (sum, child) {
+        return child === title || child === instance ? sum : sum + child.getBoundingClientRect().width;
+      }, 0);
+      var available = bar.clientWidth - padding - icons - gap * (children.length - 1);
+
+      // Fits: leave it alone. The clamp on .instance handles the rest.
+      if (textWidth(title) <= available) return;
+
+      if (instance && bar.closest('.view--half_vertical, .view--quadrant')) {
+        instance.classList.add('hidden');
+      }
+      title.classList.add('flex-initial');
+      title.setAttribute('data-clamp', '1');
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fitTitleBars);
+  } else {
+    fitTitleBars();
+  }
+})();
+</script>
